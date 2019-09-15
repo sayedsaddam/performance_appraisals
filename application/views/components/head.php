@@ -1,3 +1,10 @@
+<?php 
+/*
+* Filename: head.php
+* Filepath: views / components / head.php
+* Author: Saddam
+*/
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,7 +29,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="<?= base_url('name_finder'); ?>">Performance Appraisals</a>
+      <a class="navbar-brand" href="javascript:void(0)">Performance Appraisals</a>
     </div>
     <?php $ucpo_session = $this->session->userdata('ucpo_cnic'); ?>
     <?php $tcsp_session = $this->session->userdata('tcsp_cnic'); ?>

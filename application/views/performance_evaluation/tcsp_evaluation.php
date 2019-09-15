@@ -18,11 +18,17 @@
 							<div class="row">
 								<div class="col-md-8">
 									<strong>Performance Evaluation Form [TCSP]</strong> |
-									<small>Currently Logged in:
-										<?php $peo_session = $this->session->userdata('peo_name'); ?>
-										<?php $ac_session = $this->session->userdata('ac_name'); ?>
+									<small>Welcome :
+										<?php $peo_session  = $this->session->userdata('peo_name');   ?>
+										<?php $ac_session   = $this->session->userdata('ac_name');     ?>
+										<?php $ucpo_session = $this->session->userdata('ucpo_name'); ?>
+										<?php $tcsp_session = $this->session->userdata('tcsp_name'); ?>
 										<strong>
-											<?php if($peo_session){ echo $this->session->userdata('peo_name'); }else{ echo $this->session->userdata('ac_name'); } ?>
+											<?php if($peo_session){ echo $peo_session; }
+													elseif($ac_session){ echo $ac_session; } 
+													elseif($ucpo_session){ echo $ucpo_session; }
+													elseif($tcsp_session){ echo $tcsp_session; }
+											?>
 											</strong> |
 									</small>
 									<a href="<?php echo base_url('Perf_login/logout'); ?>" class="btn btn-warning btn-xs">Logout</a>
@@ -102,12 +108,12 @@
 											<td>Evaluation Period</td>
 											<td>
 												<div class="inputFormMain">
-													<input type="text" name="app_start_date" class="form-control date" placeholder="Start date..." autocomplete="off">
+													<input type="date" name="app_start_date" class="form-control date" placeholder="Start date..." autocomplete="off">
 												</div>
 											</td>
 											<td>
 												<div class="inputFormMain">
-													<input type="text" name="app_end_date" class="form-control date" placeholder="End date..." autocomplete="off">
+													<input type="date" name="app_end_date" class="form-control date" placeholder="End date..." autocomplete="off">
 												</div>
 											</td>
 										</tr>
@@ -283,8 +289,9 @@
 									</div>
 								</div><br>
 								<div class="submitBtn">
-									<button type="submit" class="btn btnSubmit">Forward to TCSP</button>
-									<button type="reset" class="btn btnSubmit">Reset</button>
+									<?php $tcsp_session = $this->session->userdata('tcsp_cnic'); ?>
+									<button type="submit" class="btn btn-primary" <?php if($tcsp_session): ?>disabled="" <?php endif; ?>>Forward to TCSP</button>
+									<button type="reset" class="btn btn-default" <?php if($tcsp_session): ?> disabled="" <?php endif; ?>>Reset</button>
 								</div>
 							</form>
 							<!-- General and PTPP holder's different skills, ends here... -->
@@ -301,12 +308,11 @@
 											<select name="employee_tcsp" class="form-control select2" <?php if($peo_session OR $ac_session): ?> disabled <?php endif; ?>>
 												<option value="">Select an Employee</option>
 												<?php foreach($tcsp_employees as $tcsp): ?>
-													<option value="<?= $tcsp->empl_id; ?>">
-														<?= ucfirst($tcsp->first_name).' '.ucfirst($tcsp->last_name); ?>
+													<option value="<?= $tcsp->employee_id; ?>" <?php if($this->session->userdata('tcsp_cnic')): ?> selected="selected" <?php endif; ?>>
+														<?= $tcsp->name; ?>
 													</option>
 												<?php endforeach; ?>
 											</select>
-											<small>Here's the list of employees, you're requested to evaluate them one by one.</small>
 										</div>
 									</div>
 									<div class="col-md-8">
@@ -335,8 +341,10 @@
 									</div>
 								</div><br>
 								<div class="submitBtn">
-									<button type="submit" class="btn btnSubmit">Forward to AC</button>
-									<button type="reset" class="btn btnSubmit">Reset</button>
+									<?php $peo_sess = $this->session->userdata('peo_cnic'); ?>
+									<?php $ac_sess = $this->session->userdata('ac_cnic'); ?>
+									<button type="submit" class="btn btn-primary" <?php if($peo_sess OR $ac_sess): ?> disabled <?php endif; ?>>Forward to AC</button>
+									<button type="reset" class="btn btn-default" <?php if($peo_sess OR $ac_sess): ?> disabled <?php endif; ?>>Reset</button>
 								</div>
 							</form><hr>
 							<!-- PTPP holder's form ends here... -->
@@ -350,12 +358,11 @@
 											<select name="sec_level_tcsp" class="form-control select2">
 												<option value="">Select an Employee</option>
 												<?php foreach($tcsp_employees as $emps): ?>
-													<option value="<?= $emps->empl_id; ?>">
-														<?= ucfirst($emps->first_name).' '.ucfirst($emps->last_name); ?>
+													<option value="<?= $emps->employee_id; ?>">
+														<?= $emps->name; ?>
 													</option>
 												<?php endforeach; ?>
 											</select>
-											<small>Here's the list of employees forwarded to you by <strong>TCSP</strong>, and you're requested to evaluate them one by one!</small>
 										</div>
 									</div>
 								</div><br>
@@ -396,8 +403,9 @@
 									</div>
 								</div><br>
 								<div class="submitBtn">
-									<button type="submit" class="btn btnSubmit">Finalise</button>
-									<button type="submit" class="btn btnSubmit">Roll Back</button>
+									<?php $ac_session = $this->session->userdata('ac_cnic'); ?>
+									<button type="submit" class="btn btn-primary" <?php if($peo_session OR $ac_session): ?> disabled="disabled" <?php endif; ?>>Finalise</button>
+									<button type="submit" class="btn btn-default" <?php if($peo_session): ?> disabled="disabled" <?php endif; ?>>Roll Back</button>
 								</div>
 							</form>
 							<!-- Second level supervisor's form ends here... -->

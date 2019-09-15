@@ -34,15 +34,25 @@ class Performance_evaluation extends CI_Controller{
 	}
 	// Load the form view. For UCPO.
 	public function index(){
+		if($this->session->userdata('tcsp_cnic')){
+			redirect('performance_evaluation/tcsp_evaluation');
+		}
 		$data['ptpp_employees'] = $this->Performance_appraisal_model->ptpp_employees();
 		$data['ac_employees'] = $this->Performance_appraisal_model->get_ptpp();
-		$data['ucpos'] = $this->Perf_login_model->get_ucpos();
+		if($this->session->userdata('peo_cnic')){
+			$data['ucpos'] = $this->Perf_login_model->get_ucpos();
+		}else{
+			$data['ucpos'] = $this->Perf_login_model->get_ac_ucpos();
+		}
 		$data['title'] = 'Performance Evaluation';
 		$data['content'] ='performance_evaluation/performance_eval'; 
 		$this->load->view('components/template', $data);
 	}
 	// Get the previously added evaluations.
 	public function get_previous($offset = NULL, $id = ''){
+		if($this->session->userdata('ucpo_cnic')){
+			redirect('performance_evaluation');
+		}
 		$limit = 10;
 		if(!empty($offset)){
 			$this->uri->segment(3);
@@ -124,7 +134,6 @@ class Performance_evaluation extends CI_Controller{
 			'signature' => $this->input->post('sec_level_sign'),
 			'created_at' => date('Y-m-d', strtotime($this->input->post('sec_level_date')))
 		);
-		var_dump($data); exit;
 		$this->Performance_appraisal_model->add_sec_level_remarks($data);
 		$this->session->set_flashdata('success', 'Remarks by the Second level supervisor have been saved successfully!');
 		redirect('performance_evaluation/get_previous');
@@ -133,13 +142,24 @@ class Performance_evaluation extends CI_Controller{
 	/* ------------------------------------------------------------------------------------- */
 	// Performance evaluation form for TCSP (Tehsil Campaign Support Person).
 	public function tcsp_evaluation(){
+		if($this->session->userdata('ucpo_cnic')){
+			redirect('performance_evaluation');
+		}
 		$data['title'] = 'TCSP Evaluations';
-		$data['tcsps'] = $this->Perf_login_model->get_tcsps();
+		if($this->session->userdata('peo_cnic')){
+			$data['tcsps'] = $this->Perf_login_model->get_tcsps();
+		}else{
+			$data['tcsps'] = $this->Perf_login_model->get_ac_tcsps();
+		}
+		$data['tcsp_employees'] = $this->Performance_appraisal_model->get_tcsps();
 		$data['content'] = 'performance_evaluation/tcsp_evaluation';
 		$this->load->view('components/template', $data);
 	}
 	// Get the saved evaluations by TCSP.
 	public function tcsp_previous($offset = NULL){
+		if($this->session->userdata('tcsp_cnic')){
+			redirect('performance_evaluation/tcsp_evaluation');
+		}
 		$limit = 10;
 		if(!empty($offset)){
 			$this->uri->segment(3);

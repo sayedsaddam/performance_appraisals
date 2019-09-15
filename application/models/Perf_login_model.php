@@ -86,7 +86,7 @@ class Perf_login_model extends CI_Model
         $query = $this->db->get();
         return $query->result();
     }
-    // Get TCSP's for evaluation.
+    // Get TCSP's for PEO to evaluate.
     public function get_tcsps(){
         $this->db->select('tcsp_data.id,
                             tcsp_data.position,
@@ -103,6 +103,46 @@ class Perf_login_model extends CI_Model
         $this->db->from('tcsp_data');
         $this->db->join('peo_data', 'tcsp_data.cnic_peo = peo_data.peo_cnic', 'left');
         $this->db->where('tcsp_data.cnic_peo', $this->session->userdata('peo_cnic'));
+        $query = $this->db->get();
+        return $query->result();
+    }
+    // Get UCPO's for AC to evaluate.
+    public function get_ac_ucpos(){
+        $this->db->select('ucpo_data.id,
+                            ucpo_data.position,
+                            ucpo_data.province,
+                            ucpo_data.district,
+                            ucpo_data.tehsil,
+                            ucpo_data.uc,
+                            ucpo_data.cnic_name,
+                            ucpo_data.name,
+                            ucpo_data.cnic_ac,
+                            ac_data.ac_id,
+                            ac_data.ac_name,
+                            ac_data.ac_cnic');
+        $this->db->from('ucpo_data');
+        $this->db->join('ac_data', 'ucpo_data.cnic_ac = ac_data.ac_cnic', 'left');
+        $this->db->where('ucpo_data.cnic_ac', $this->session->userdata('ac_cnic'));
+        $query = $this->db->get();
+        return $query->result();
+    }
+    // Get TCSP's for AC to evaluate.
+    public function get_ac_tcsps(){
+        $this->db->select('tcsp_data.id,
+                            tcsp_data.position,
+                            tcsp_data.province,
+                            tcsp_data.district,
+                            tcsp_data.tehsil,
+                            tcsp_data.uc,
+                            tcsp_data.cnic_name,
+                            tcsp_data.name,
+                            tcsp_data.cnic_ac,
+                            ac_data.ac_id,
+                            ac_data.ac_name,
+                            ac_data.ac_cnic');
+        $this->db->from('tcsp_data');
+        $this->db->join('ac_data', 'tcsp_data.cnic_ac = ac_data.ac_cnic', 'left');
+        $this->db->where('tcsp_data.cnic_ac', $this->session->userdata('ac_cnic'));
         $query = $this->db->get();
         return $query->result();
     }

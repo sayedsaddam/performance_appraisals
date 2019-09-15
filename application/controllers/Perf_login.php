@@ -7,7 +7,7 @@
 class Perf_login extends CI_Controller
 {
     /**
-     * summary
+     * 
      */
     public function __construct()
     {
@@ -29,15 +29,15 @@ class Perf_login extends CI_Controller
 		$ac_name = $this->input->post('peo_name');
 		$ac_cnic = $this->input->post('peo_cnic');
         // UCPO Login.
-        $ucpo_name = $this->input->post('peo_name');
-        $ucpo_cnic = $this->input->post('peo_cnic');
+      $ucpo_name = $this->input->post('peo_name');
+      $ucpo_cnic = $this->input->post('peo_cnic');
         // TCSP login.
-        $tcsp_name = $this->input->post('peo_name');
-        $tcsp_cnic = $this->input->post('peo_cnic');
+      $tcsp_name = $this->input->post('peo_name');
+      $tcsp_cnic = $this->input->post('peo_cnic');
 		$peo_signin = $this->Perf_login_model->validate_user($peo_name, $peo_cnic); // PEO login.
 		$ac_signin = $this->Perf_login_model->validate_ac($ac_name, $ac_cnic); // AC login.
-        $ucpo_signin = $this->Perf_login_model->validate_ucpo($ucpo_name, $ucpo_name); // UCPO login.
-        $tcsp_signin = $this->Perf_login_model->validate_tcsp($tcsp_name, $tcsp_cnic); // TCSP login.
+      $ucpo_signin = $this->Perf_login_model->validate_ucpo($ucpo_name, $ucpo_cnic); // UCPO login.
+      $tcsp_signin = $this->Perf_login_model->validate_tcsp($tcsp_name, $tcsp_cnic); // TCSP login.
 		if($peo_signin){
 			$this->session->set_userdata(array('peo_name' => $peo_name, 'peo_cnic' => $peo_cnic));
 			redirect('performance_evaluation');

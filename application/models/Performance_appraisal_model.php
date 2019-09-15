@@ -66,7 +66,7 @@ class Performance_appraisal_model extends CI_Model {
 		$query = $this->db->get();
 		return $query->result();
 	}
-	// Get employees for AC to evaluate.
+	// Get employees for AC to evaluate. (UCPO's.)
 	public function get_ptpp(){
 		$this->db->select('ptpp_remarks.remark_id,
 									ptpp_remarks.employee_id,
@@ -207,6 +207,18 @@ class Performance_appraisal_model extends CI_Model {
 		$this->db->where('ucpo_data.cnic_ac', $this->session->userdata('ac_cnic'));
 		return $this->db->get()->result();
 	}
+	// Get employees for AC to evaluate. (TCSP's.)
+	public function get_tcsps(){
+		$this->db->select('tcsp_evaluations.evalu_id,
+									tcsp_evaluations.employee_id,
+									tcsp_data.id,
+									tcsp_data.name,
+									tcsp_data.cnic_name');
+		$this->db->from('tcsp_evaluations');
+		$this->db->join('tcsp_data', 'tcsp_evaluations.employee_id = tcsp_data.id', 'left');
+		$this->db->where('tcsp_data.cnic_name', $this->session->userdata('tcsp_cnic'));
+		return $this->db->get()->result();
+	}
 	// Get remarks by TCSP.
 	public function get_tcsp_remarks($id=''){
 		$this->db->select('tcsp_remarks.remarks_id,
@@ -231,10 +243,10 @@ class Performance_appraisal_model extends CI_Model {
 	// Get Second level TCSP remarks.
 	public function get_sec_level_tcsp($id=''){
 		$this->db->select('sec_level_tcsp_remarks.sec_tcsp_rem_id,
-							sec_level_tcsp_remarks.employee_id,
-							sec_level_tcsp_remarks.assessment_result,
-							sec_level_tcsp_remarks.signature,
-							sec_level_tcsp_remarks.created_at');
+									sec_level_tcsp_remarks.employee_id,
+									sec_level_tcsp_remarks.assessment_result,
+									sec_level_tcsp_remarks.signature,
+									sec_level_tcsp_remarks.created_at');
 		$this->db->from('sec_level_tcsp_remarks');
 		// $this->db->join('xin_employees', 'sec_level_tcsp_remarks.employee_id = xin_employees.employee_id');
 		$this->db->where('employee_id', $id);
