@@ -280,8 +280,9 @@
 								</div><br>
 								<div class="submitBtn">
 									<?php $ucpo_session = $this->session->userdata('ucpo_cnic'); ?>
-										<button type="submit" class="btn btn-primary" <?php if($ucpo_session): ?> disabled="" <?php endif; ?>>Forward to UCPO</button>
-										<button type="reset" class="btn btn-default" <?php if($ucpo_session): ?> disabled="" <?php endif; ?>>Reset</button>
+									<?php $ac_session = $this->session->userdata('ac_cnic'); ?>
+									<button type="submit" class="btn btn-primary" <?php if($ucpo_session OR $ac_session): ?> disabled="" <?php endif; ?>>Forward to UCPO</button>
+									<button type="reset" class="btn btn-default" <?php if($ucpo_session OR $ac_session): ?> disabled="" <?php endif; ?>>Reset</button>
 								</div>
 							</form>
 							<!-- General and PTPP holder's different skills, ends here... -->

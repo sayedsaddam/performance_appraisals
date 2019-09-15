@@ -290,8 +290,9 @@
 								</div><br>
 								<div class="submitBtn">
 									<?php $tcsp_session = $this->session->userdata('tcsp_cnic'); ?>
-									<button type="submit" class="btn btn-primary" <?php if($tcsp_session): ?>disabled="" <?php endif; ?>>Forward to TCSP</button>
-									<button type="reset" class="btn btn-default" <?php if($tcsp_session): ?> disabled="" <?php endif; ?>>Reset</button>
+									<?php $ac_session = $this->session->userdata('ac_cnic'); ?>
+									<button type="submit" class="btn btn-primary" <?php if($tcsp_session OR $ac_session): ?>disabled="" <?php endif; ?>>Forward to TCSP</button>
+									<button type="reset" class="btn btn-default" <?php if($tcsp_session OR $ac_session): ?> disabled="" <?php endif; ?>>Reset</button>
 								</div>
 							</form>
 							<!-- General and PTPP holder's different skills, ends here... -->
@@ -403,9 +404,8 @@
 									</div>
 								</div><br>
 								<div class="submitBtn">
-									<?php $ac_session = $this->session->userdata('ac_cnic'); ?>
-									<button type="submit" class="btn btn-primary" <?php if($peo_session OR $ac_session): ?> disabled="disabled" <?php endif; ?>>Finalise</button>
-									<button type="submit" class="btn btn-default" <?php if($peo_session): ?> disabled="disabled" <?php endif; ?>>Roll Back</button>
+									<button type="submit" class="btn btn-primary" <?php if($peo_session OR $tcsp_session): ?> disabled="disabled" <?php endif; ?>>Finalise</button>
+									<button type="submit" class="btn btn-default" <?php if($peo_session OR $tcsp_session): ?> disabled="disabled" <?php endif; ?>>Roll Back</button>
 								</div>
 							</form>
 							<!-- Second level supervisor's form ends here... -->
