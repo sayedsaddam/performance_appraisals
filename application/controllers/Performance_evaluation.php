@@ -34,11 +34,8 @@ class Performance_evaluation extends CI_Controller{
 	}
 	// Load the form view. For UCPO.
 	public function index(){
-		$session = $this->session->userdata('peo_cnic');
-		if(empty($session)){
-			redirect('');
-		}
 		$data['ptpp_employees'] = $this->Performance_appraisal_model->ptpp_employees();
+		$data['ac_employees'] = $this->Performance_appraisal_model->get_ptpp();
 		$data['ucpos'] = $this->Perf_login_model->get_ucpos();
 		$data['title'] = 'Performance Evaluation';
 		$data['content'] ='performance_evaluation/performance_eval'; 
@@ -46,10 +43,6 @@ class Performance_evaluation extends CI_Controller{
 	}
 	// Get the previously added evaluations.
 	public function get_previous($offset = NULL, $id = ''){
-		$session = $this->session->userdata('peo_name');
-		if(empty($session)){
-			redirect('');
-		}
 		$limit = 10;
 		if(!empty($offset)){
 			$this->uri->segment(3);
@@ -140,21 +133,13 @@ class Performance_evaluation extends CI_Controller{
 	/* ------------------------------------------------------------------------------------- */
 	// Performance evaluation form for TCSP (Tehsil Campaign Support Person).
 	public function tcsp_evaluation(){
-		$session = $this->session->userdata('ac_name');
-		if(empty($session)){
-			redirect('');
-		}
 		$data['title'] = 'TCSP Evaluations';
-		$data['ucpos'] = $this->Performance_appraisal_model->tcsp_employees();
+		$data['tcsps'] = $this->Perf_login_model->get_tcsps();
 		$data['content'] = 'performance_evaluation/tcsp_evaluation';
 		$this->load->view('components/template', $data);
 	}
 	// Get the saved evaluations by TCSP.
 	public function tcsp_previous($offset = NULL){
-		$session = $this->session->userdata('ac_name');
-		if(empty($session)){
-			redirect('');
-		}
 		$limit = 10;
 		if(!empty($offset)){
 			$this->uri->segment(3);

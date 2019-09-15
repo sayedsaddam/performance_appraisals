@@ -19,7 +19,11 @@
 								<div class="col-md-8">
 									<strong>Performance Evaluation Form [TCSP]</strong> |
 									<small>Currently Logged in:
-										<strong><?php echo $this->session->userdata('ac_name').' [ '. $this->session->userdata('ac_cnic').' ]'; ?></strong> |
+										<?php $peo_session = $this->session->userdata('peo_name'); ?>
+										<?php $ac_session = $this->session->userdata('ac_name'); ?>
+										<strong>
+											<?php if($peo_session){ echo $this->session->userdata('peo_name'); }else{ echo $this->session->userdata('ac_name'); } ?>
+											</strong> |
 									</small>
 									<a href="<?php echo base_url('Perf_login/logout'); ?>" class="btn btn-warning btn-xs">Logout</a>
 								</div>
@@ -41,8 +45,8 @@
 												<div class="inputFormMain">
 													<select name="emp_name" class="form-control select2">
 														<option value="">Select Employee</option>
-														<?php foreach($ucpos as $emp): ?>
-															<option value="<?= $emp->empl_id; ?>"><?= $emp->name; ?></option>
+														<?php foreach($tcsps as $emp): ?>
+															<option value="<?= $emp->id; ?>"><?= $emp->position.' - '.$emp->name; ?></option>
 														<?php endforeach; ?>
 												</select>
 												</div>
@@ -274,7 +278,7 @@
 									</div>
 									<div class="col-md-3">
 										<div class="inputFormMain">
-											<input type="text" name="1st_date" class="form-control date" placeholder="Date" autocomplete="off">Date
+											<input type="date" name="1st_date" class="form-control date" placeholder="Date" autocomplete="off">Date
 										</div>
 									</div>
 								</div><br>
@@ -289,10 +293,12 @@
 							<center><strong>For TCSP</strong></center>
 							<form action="<?= base_url('Performance_evaluation/remarks_by_tcsp'); ?>" method="post">
 								Remarks by the PTPP holder at the end of evaluation <br><br>
+								<?php $peo_session = $this->session->userdata('peo_cnic'); ?>
+								<?php $ac_session = $this->session->userdata('ac_cnic'); ?>
 								<div class="row">
 									<div class="col-md-4">
 										<div class="inputFormMain">
-											<select name="employee_tcsp" class="form-control select2">
+											<select name="employee_tcsp" class="form-control select2" <?php if($peo_session OR $ac_session): ?> disabled <?php endif; ?>>
 												<option value="">Select an Employee</option>
 												<?php foreach($tcsp_employees as $tcsp): ?>
 													<option value="<?= $tcsp->empl_id; ?>">
@@ -305,7 +311,7 @@
 									</div>
 									<div class="col-md-8">
 										<div class="inputFormMain">
-											<textarea name="tcsp_remarks" class="form-control" rows="5" placeholder="Start typing here. There's no returning back, once you save your data can't be changed, so be careful while filling the form. We didn't add an option to edit."></textarea>
+											<textarea name="tcsp_remarks" class="form-control" rows="5" placeholder="Start typing here. There's no returning back, once you save your data can't be changed, so be careful while filling the form. We didn't add an option to edit." <?php if($peo_session OR $ac_session): ?> disabled <?php endif; ?>></textarea>
 										</div><br>
 									</div>
 								</div>
@@ -314,17 +320,17 @@
 								<div class="row">
 									<div class="col-md-4">
 										<div class="inputFormMain">
-											<input type="text" name="apw_holder_name" class="form-control" placeholder="Name...">APW holder (Name)
+											<input type="text" name="apw_holder_name" class="form-control" placeholder="Name..." <?php if($peo_session OR $ac_session): ?> disabled <?php endif; ?>>APW holder (Name)
 										</div>
 									</div>
 									<div class="col-md-4">
 										<div class="inputFormMain">
-											<input type="text" name="apw_holder_sign" class="form-control" placeholder="Write your names as a signature...">APW holder (Signature)
+											<input type="text" name="apw_holder_sign" class="form-control" placeholder="Write your names as a signature..." <?php if($peo_session OR $ac_session): ?> disabled <?php endif; ?>>APW holder (Signature)
 										</div>
 									</div>
 									<div class="col-md-4">
 										<div class="inputFormMain">
-											<input type="text" name="apw_date" class="form-control date" placeholder="Date" autocomplete="off">Date
+											<input type="date" name="apw_date" class="form-control date" placeholder="Date" autocomplete="off" <?php if($peo_session OR $ac_session): ?> disabled <?php endif; ?>>Date
 										</div>
 									</div>
 								</div><br>
@@ -385,7 +391,7 @@
 									</div>
 									<div class="col-md-3">
 										<div class="inputFormMain">
-											<input type="text" name="sec_level_date" class="form-control date" placeholder="Date" autocomplete="off">Date
+											<input type="date" name="sec_level_date" class="form-control date" placeholder="Date" autocomplete="off">Date
 										</div>
 									</div>
 								</div><br>

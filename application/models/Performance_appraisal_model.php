@@ -36,12 +36,6 @@ class Performance_appraisal_model extends CI_Model {
 		return $this->db->from('performance_evaluation')->count_all_results();
 	}
 
-	// Get employees for evalution's dropdown.
-	public function get_employees(){
-		$this->db->select('employee_id, first_name, last_name');
-		$this->db->from('xin_employees');
-		return $this->db->get()->result();
-	}
 	// Add performance evaluation data to the database, general and PTPP holder's different skills.
 	public function add($data){
 
@@ -58,15 +52,35 @@ class Performance_appraisal_model extends CI_Model {
 		}
 
 	}
-	// Get employee for PTPP evaluation recently inserted.
+	// Get employees for UCPO's recently evaluated.
 	public function ptpp_employees(){
 		$this->db->select('performance_evaluation.eval_id,
 									performance_evaluation.employee_id as emp_id,
-									performance_evaluation.created_at');
+									performance_evaluation.created_at,
+									ucpo_data.id,
+									ucpo_data.name,
+									ucpo_data.cnic_name');
 		$this->db->from('performance_evaluation');
-		// $this->db->join('xin_employees', 'performance_evaluation.employee_id = xin_employees.employee_id');
-		$this->db->order_by('performance_evaluation.created_at', 'DESC');
-		return $this->db->get()->result();
+		$this->db->join('ucpo_data', 'performance_evaluation.employee_id = ucpo_data.id', 'left');
+		$this->db->where('ucpo_data.cnic_name', $this->session->userdata('ucpo_cnic'));
+		$query = $this->db->get();
+		return $query->result();
+	}
+	// Get employees for AC to evaluate.
+	public function get_ptpp(){
+		$this->db->select('ptpp_remarks.remark_id,
+									ptpp_remarks.employee_id,
+									ucpo_data.id,
+									ucpo_data.name,
+									ucpo_data.cnic_name,
+									ac_data.ac_id,
+									ac_data.ac_cnic');
+		$this->db->from('ptpp_remarks');
+		$this->db->join('ucpo_data', 'ptpp_remarks.employee_id = ucpo_data.id', 'left');
+		$this->db->join('ac_data', 'ucpo_data.cnic_ac = ac_data.ac_cnic', 'left');
+		$this->db->where('ucpo_data.cnic_name', $this->session->userdata('ac_cnic'));
+		$query = $this->db->get();
+		return $query->result();
 	}
 	// Add data to the database, remarks by the PTPP holder.
 	public function add_ptpp_remarks($data){
@@ -101,10 +115,10 @@ class Performance_appraisal_model extends CI_Model {
 	// Display second level supervisors' remarks. (Assessment result).
 	public function get_sec_level_remarks($id = ''){
 		$this->db->select('sec_level_sup_remarks.sec_remark_id, 
-							sec_level_sup_remarks.employee_id,
-							sec_level_sup_remarks.assessment_result,
-							sec_level_sup_remarks.signature,
-							sec_level_sup_remarks.created_at');
+									sec_level_sup_remarks.employee_id,
+									sec_level_sup_remarks.assessment_result,
+									sec_level_sup_remarks.signature,
+									sec_level_sup_remarks.created_at');
 		$this->db->from('sec_level_sup_remarks');
 		// $this->db->join('xin_employees', 'sec_level_sup_remarks.employee_id = xin_employees.employee_id');
 		$this->db->where('sec_level_sup_remarks.employee_id', $id);

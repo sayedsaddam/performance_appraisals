@@ -19,7 +19,11 @@
 								<div class="col-md-8">
 									<strong>Performance Evaluation Form [UCPO]</strong> | 
 									<small>Currently Logged in:
-										<strong><?php echo $this->session->userdata('peo_name').' [ '. $this->session->userdata('peo_cnic').' ]'; ?></strong> |
+										<?php $peo_session = $this->session->userdata('peo_name'); ?>
+										<?php $ac_session = $this->session->userdata('ac_name'); ?>
+										<strong>
+											<?php if($peo_session){ echo $this->session->userdata('peo_name'); }else{ echo $this->session->userdata('ac_name'); } ?>
+										</strong> |
 									</small>
 									<a href="<?php echo base_url('Perf_login/logout'); ?>" class="btn btn-warning btn-xs">Logout</a>
 								</div>
@@ -42,7 +46,7 @@
 													<select name="emp_name" class="form-control select2">
 														<option value="">Select an Employee</option>
 														<?php foreach($ucpos as $emp): ?>
-														<option value="<?= $emp->id; ?>"><?= $emp->position .' - '.$emp->id .' - '. $emp->name; ?></option>
+														<option value="<?= $emp->id; ?>"><?= $emp->position.' - '. $emp->name; ?></option>
 														<?php endforeach; ?>
 													</select>
 												</div>
@@ -263,7 +267,7 @@
 									</div>
 									<div class="col-md-3">
 										<div class="inputFormMain">
-											<input type="text" name="1st_date" class="form-control date" placeholder="Date" autocomplete="off">Date
+											<input type="date" name="1st_date" class="form-control date" placeholder="Date" autocomplete="off">Date
 										</div>
 										
 									</div>
@@ -281,12 +285,13 @@
 								<div class="row">
 									<div class="col-md-4">
 										<div class="inputFormMain">
-											<?php if($this->session->userdata('peo_cnic')): ?>
-											<select name="ptpp_employee" class="form-control select2" disabled="">
+											<?php $peo_session = $this->session->userdata('peo_cnic'); ?>
+											<?php $ac_session = $this->session->userdata('ac_cnic'); ?>
+											<select name="ptpp_employee" class="form-control select2" <?php if($peo_session OR $ac_session): ?> disabled <?php endif; ?>>
 												<option value="">Select an Employee</option>
 												<?php foreach($ptpp_employees as $employee): ?>
 													<option value="<?= $employee->emp_id; ?>">
-														<?= ucfirst($employee->first_name).' '.ucfirst($employee->last_name); ?>
+														<?= $employee->name; ?>
 													</option>
 												<?php endforeach; ?>
 											</select>
@@ -295,7 +300,7 @@
 									</div>
 									<div class="col-md-8">
 										<div class="inputFormMain">
-											<textarea name="ptpp_remarks" class="form-control" rows="5" placeholder="Start typing here... There's no returning back, once you save your data can't be changed, so be careful while filling the form. We didn't add an option to edit." disabled=""></textarea>
+											<textarea name="ptpp_remarks" class="form-control" rows="5" placeholder="Start typing here... There's no returning back, once you save your data can't be changed, so be careful while filling the form. We didn't add an option to edit." <?php if($peo_session OR $ac_session): ?> disabled <?php endif; ?>></textarea>
 										</div><br>
 									</div>
 								</div>
@@ -304,17 +309,17 @@
 								<div class="row">
 									<div class="col-md-4">
 										<div class="inputFormMain">
-											<input type="text" name="ptpp_holder_name" class="form-control" placeholder="Name..." disabled="">PTPP holder (Name)
+											<input type="text" name="ptpp_holder_name" class="form-control" placeholder="Name..." <?php if($peo_session OR $ac_session): ?> disabled <?php endif; ?>>PTPP holder (Name)
 										</div>
 									</div>
 									<div class="col-md-4">
 										<div class="inputFormMain">
-											<input type="text" name="ptpp_holder_sign" class="form-control" placeholder="Write your names as a signature..." disabled="">PTPP holder (Signature)
+											<input type="text" name="ptpp_holder_sign" class="form-control" placeholder="Write your names as a signature..." <?php if($peo_session OR $ac_session): ?> disabled <?php endif; ?>>PTPP holder (Signature)
 										</div>
 									</div>
 									<div class="col-md-4">
 										<div class="inputFormMain">
-											<input type="text" name="ptpp_date" class="form-control date" placeholder="Date" autocomplete="off" disabled="">Date
+											<input type="date" name="ptpp_date" class="form-control date" placeholder="Date" autocomplete="off" <?php if($peo_session OR $ac_session): ?> disabled <?php endif; ?>>Date
 										</div>
 									</div>
 								</div><br>
@@ -322,7 +327,7 @@
 									<button type="submit" class="btn btnSubmit">Forward to AC</button>
 									<button type="reset" class="btn btnSubmit">Reset</button>
 								</div>
-							</form><hr><?php endif; ?>
+							</form><hr>
 							<!-- PTPP holder's form ends here... -->
 							<center><strong>For Second level Supervisor</strong></center><br>
 							&nbsp; &nbsp;&nbsp;Overall assessment by Second level supervisor according to CTC staff accountability framework:- <br><br>
@@ -333,9 +338,9 @@
 										<div class="inputFormMain">
 											<select name="sec_level" class="form-control select2">
 												<option value="">Select an Employee</option>
-												<?php foreach($ptpp_employees as $sec_level): ?>
-													<option value="<?= $sec_level->employee_id; ?>">
-														<?= ucfirst($sec_level->first_name).' '.ucfirst($sec_level->last_name); ?>
+												<?php foreach($ac_employees as $ac): ?>
+													<option value="<?php echo $ac->emp_id; ?>">
+														<?php  echo $ac->name; ?>
 													</option>
 												<?php endforeach; ?>
 											</select>
@@ -375,7 +380,7 @@
 									</div>
 									<div class="col-md-3">
 										<div class="inputFormMain">
-											<input type="text" name="sec_level_date" class="form-control date" placeholder="Date" autocomplete="off"> Date
+											<input type="date" name="sec_level_date" class="form-control date" placeholder="Date" autocomplete="off"> Date
 										</div>
 									</div>
 								</div><br>
