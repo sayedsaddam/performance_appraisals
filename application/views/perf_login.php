@@ -32,18 +32,9 @@
 	<div class="container">
 		<div class="loginWhite">
 			<div class="row">
-				<div class="col-md-6">
-					<div class="mainLeftImg">
-						<div class="loginLogo">
-							<img src="<?php echo base_url('assets/img/loginLogo.png'); ?>" alt="">
-						</div>
-						<img src="<?php echo base_url('assets/img/login.png'); ?>" alt="">
-						<p>
-							Hiring staff for Civil Society Human and Institutional development Program (CHIP) in Pakistan.
-						</p>
-					</div>
+				<div class="col-md-2">
 				</div>
-				<div class="col-md-6">
+				<div class="col-md-8">
 					<form action="<?php echo base_url('Perf_login/validate'); ?>" method="post">
 						<div class="rightLoginMain">
 							<div class="aligmentWrap">
@@ -56,7 +47,7 @@
 								</div>
 								<div class="loginInput">
 									<button type="submit" class="btn btn-block">
-										proceed
+										Login
 									</button>
 								</div>
 								<?php if($failed = $this->session->flashdata('failed')): ?>
@@ -65,10 +56,17 @@
 									<p><?php echo $failed; ?></p>
 								</div>
 								<?php endif; ?>
+								<?php if($logged_out = $this->session->flashdata('logged_out')): ?>
+								<div class="alert alert-danger alert-dismissable text-center">
+								<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+									<p><?php echo $logged_out; ?></p>
+								</div>
+								<?php endif; ?>
 							</div>
 						</div>
 					</form>
 				</div>
+				<div class="col-md-2"></div>
 			</div>
 		</div>
 	</div>

@@ -1,3 +1,10 @@
+<?php 
+/*
+* Filename: performance_eval.php
+* Filepath: views / performance_evaluation / performance_eval.php
+* Author: Saddam
+*/
+?>
 <style type="text/css">
 	table th{
 		text-align: center;
@@ -19,15 +26,17 @@
 								<div class="col-md-8">
 									<strong>Performance Evaluation Form [UCPO]</strong> | 
 									<small>Welcome :
-										<?php $peo_session = $this->session->userdata('peo_name'); ?>
-										<?php $ac_session = $this->session->userdata('ac_name'); ?>
-										<?php $ucpo_session = $this->session->userdata('ucpo_name'); ?>
-										<?php $tcsp_session = $this->session->userdata('tcsp_name'); ?>
+										<?php $peo_session = $this->session->userdata('peo_cnic'); ?>
+										<?php $ac_session = $this->session->userdata('ac_cnic'); ?>
+										<?php $ucpo_session = $this->session->userdata('ucpo_cnic'); ?>
+										<?php $tcsp_session = $this->session->userdata('tcsp_cnic'); ?>
+										<?php $admin_session = $this->session->userdata('admin_cnic'); ?>
 										<strong>
 											<?php if($peo_session){ echo $peo_session; }
 													elseif($ac_session){ echo $ac_session; }
 													elseif($ucpo_session){ echo $ucpo_session; }
 													elseif($tcsp_session){ echo $tcsp_session; }
+													elseif($admin_session){ echo $admin_session; }
 												?>
 										</strong> |
 									</small>
@@ -39,6 +48,7 @@
 							</div>
 						</div>
 						<div class="panel-body">
+							<?php //if(!empty($this->uri->segment(3))): ?>
 							<!-- General and PTPP holder's different skills, starts here... -->
 							<form action="<?= base_url('performance_evaluation/save_evaluation'); ?>" method="post">
 								<strong>I. General</strong>
@@ -76,27 +86,18 @@
 													<div class="col-sm-4">
 														<div class="inputFormMain">
 															<select name="duty_province" class="form-control select2">
-																<option value="">Select Province</option>
-																<option value="Khyber Pakhtoonkhwa">Khyber Pakhtoonkhwa</option>
-																<option value="Punjab">Punjab</option>
-																<option value="Balochistan">Balochistan</option>
-																<option value="Sindh">Sindh</option>
 															</select>
 														</div>
 													</div>
 													<div class="col-sm-4">
 														<div class="inputFormMain">
 															<select name="duty_distt" class="form-control select2">
-																<option value="">Select District</option>
-																<option value="Peshawar">Peshawar</option>
 															</select>
 														</div>
 													</div>
 													<div class="col-sm-4">
 														<div class="inputFormMain">
-															<select name="duty_uc" class="form-control select2">
-																<option value="">Select UC</option>
-																<option value="Town One">Town One</option>
+															<select name="duty_tehsil" class="form-control select2" id="tehsil">
 															</select>
 														</div>
 													</div>
@@ -108,12 +109,12 @@
 											<td>Evaluation Period</td>
 											<td>
 												<div class="inputFormMain">
-													<input type="date" name="app_start_date" class="form-control date" placeholder="Start date..." autocomplete="off">
+													<input type="text" name="app_start_date" class="form-control date" placeholder="Start date..." autocomplete="off" value="08-01-2019">
 												</div>
 											</td>
 											<td>
 												<div class="inputFormMain">
-													<input type="date" name="app_end_date" class="form-control date" placeholder="End date..." autocomplete="off">
+													<input type="text" name="app_end_date" class="form-control date" placeholder="End date..." autocomplete="off" value="31-10-2019">
 												</div>
 											</td>
 										</tr>
@@ -135,58 +136,58 @@
 											<tr>
 												<td>1)</td>
 												<td>UC / Area level Micro-plans development and desk revision</td>
-												<td align="center"><input type="radio" name="remark" value="1"></td>
-												<td align="center"><input type="radio" name="remark" value="2"></td>
-												<td align="center"><input type="radio" name="remark" value="3"></td>
+												<td align="center"><input type="radio" name="remark" value="1" <?php if(@$previously_added->que_one == '1'){ ?> checked <?php } ?>></td>
+												<td align="center"><input type="radio" name="remark" value="2" <?php if(@$previously_added->que_one == '2'){ ?> checked <?php } ?>></td>
+												<td align="center"><input type="radio" name="remark" value="3" <?php if(@$previously_added->que_one == '3'){ ?> checked <?php } ?>></td>
 											</tr>
 											<tr>
 												<td>2)</td>
 												<td>UC / Area level Micro-plans field validation</td>
-												<td align="center"><input type="radio" name="remark1" value="1"></td>
-												<td align="center"><input type="radio" name="remark1" value="2"></td>
-												<td align="center"><input type="radio" name="remark1" value="3"></td>
+												<td align="center"><input type="radio" name="remark1" value="1" <?php if(@$previously_added->que_two == '1'){ ?> checked <?php } ?>></td>
+												<td align="center"><input type="radio" name="remark1" value="2" <?php if(@$previously_added->que_two == '2'){ ?> checked <?php } ?>></td>
+												<td align="center"><input type="radio" name="remark1" value="3" <?php if(@$previously_added->que_two == '3'){ ?> checked <?php } ?>></td>
 											</tr>
 											<tr>
 												<td>3)</td>
 												<td>Status of selection of the house to house vaccination teams</td>
-												<td align="center"><input type="radio" name="remark2" value="1"></td>
-												<td align="center"><input type="radio" name="remark2" value="2"></td>
-												<td align="center"><input type="radio" name="remark2" value="3"></td>
+												<td align="center"><input type="radio" name="remark2" value="1" <?php if(@$previously_added->que_three == '1'){ ?> checked <?php } ?>></td>
+												<td align="center"><input type="radio" name="remark2" value="2" <?php if(@$previously_added->que_three == '2'){ ?> checked <?php } ?>></td>
+												<td align="center"><input type="radio" name="remark2" value="3" <?php if(@$previously_added->que_three == '3'){ ?> checked <?php } ?>></td>
 											</tr>
 											<tr>
 												<td>4)</td>
 												<td>Training of the vaccination teams</td>
-												<td align="center"><input type="radio" name="remark3" value="1"></td>
-												<td align="center"><input type="radio" name="remark3" value="2"></td>
-												<td align="center"><input type="radio" name="remark3" value="3"></td>
+												<td align="center"><input type="radio" name="remark3" value="1" <?php if(@$previously_added->que_four == '1'){ ?> checked <?php } ?>></td>
+												<td align="center"><input type="radio" name="remark3" value="2" <?php if(@$previously_added->que_four == '2'){ ?> checked <?php } ?>></td>
+												<td align="center"><input type="radio" name="remark3" value="3" <?php if(@$previously_added->que_four == '3'){ ?> checked <?php } ?>></td>
 											</tr>
 											<tr>
 												<td>5)</td>
 												<td>Training of the UC supervisors (Area In-charges)</td>
-												<td align="center"><input type="radio" name="remark4" value="1"></td>
-												<td align="center"><input type="radio" name="remark4" value="2"></td>
-												<td align="center"><input type="radio" name="remark4" value="3"></td>
+												<td align="center"><input type="radio" name="remark4" value="1" <?php if(@$previously_added->que_five == '1'){ ?> checked <?php } ?>></td>
+												<td align="center"><input type="radio" name="remark4" value="2" <?php if(@$previously_added->que_five == '2'){ ?> checked <?php } ?>></td>
+												<td align="center"><input type="radio" name="remark4" value="3" <?php if(@$previously_added->que_five == '3'){ ?> checked <?php } ?>></td>
 											</tr>
 											<tr>
 												<td>6)</td>
 												<td>Pre campaign data collection, collation and timely transmission to the next level</td>
-												<td align="center"><input type="radio" name="remark5" value="1"></td>
-												<td align="center"><input type="radio" name="remark5" value="2"></td>
-												<td align="center"><input type="radio" name="remark5" value="3"></td>
+												<td align="center"><input type="radio" name="remark5" value="1" <?php if(@$previously_added->que_six == '1'){ ?> checked <?php } ?>></td>
+												<td align="center"><input type="radio" name="remark5" value="2" <?php if(@$previously_added->que_six == '2'){ ?> checked <?php } ?>></td>
+												<td align="center"><input type="radio" name="remark5" value="3" <?php if(@$previously_added->que_six == '3'){ ?> checked <?php } ?>></td>
 											</tr>
 											<tr>
 												<td>7)</td>
 												<td>Data collection, collation and timely transmission to the next level during the campaign</td>
-												<td align="center"><input type="radio" name="remark6" value="1"></td>
-												<td align="center"><input type="radio" name="remark6" value="2"></td>
-												<td align="center"><input type="radio" name="remark6" value="3"></td>
+												<td align="center"><input type="radio" name="remark6" value="1" <?php if(@$previously_added->que_seven == '1'){ ?> checked <?php } ?>></td>
+												<td align="center"><input type="radio" name="remark6" value="2" <?php if(@$previously_added->que_seven == '2'){ ?> checked <?php } ?>></td>
+												<td align="center"><input type="radio" name="remark6" value="3" <?php if(@$previously_added->que_seven == '3'){ ?> checked <?php } ?>></td>
 											</tr>
 											<tr>
 												<td>8)</td>
 												<td>Corrective measures following the identification of the gaps</td>
-												<td align="center"><input type="radio" name="remark7" value="1"></td>
-												<td align="center"><input type="radio" name="remark7" value="2"></td>
-												<td align="center"><input type="radio" name="remark7" value="3"></td>
+												<td align="center"><input type="radio" name="remark7" value="1" <?php if(@$previously_added->que_eight == '1'){ ?> checked <?php } ?>></td>
+												<td align="center"><input type="radio" name="remark7" value="2" <?php if(@$previously_added->que_eight == '2'){ ?> checked <?php } ?>></td>
+												<td align="center"><input type="radio" name="remark7" value="3" <?php if(@$previously_added->que_eight == '3'){ ?> checked <?php } ?>></td>
 											</tr>
 										</tbody>
 									</table>
@@ -205,39 +206,39 @@
 										<tbody>
 											<tr>
 												<td>Reliability</td>
-												<td align="center"><input type="radio" name="attribute" value="Satisfactory"></td>
-												<td align="center"><input type="radio" name="attribute" value="Needs Improvement"></td>
-												<td align="center"><input type="radio" name="attribute" value="Unsatisfactory"></td>
+												<td align="center"><input type="radio" name="attribute" value="Satisfactory" <?php if(@$previously_added->attrib_1 == 'Satisfactory'){ ?> checked <?php } ?>></td>
+												<td align="center"><input type="radio" name="attribute" value="Needs Improvement" <?php if(@$previously_added->attrib_1 == 'Needs Improvement'){ ?> checked <?php } ?>></td>
+												<td align="center"><input type="radio" name="attribute" value="Unsatisfactory" <?php if(@$previously_added->attrib_1 == 'Unsatisfactory'){ ?> checked <?php } ?>></td>
 											</tr>
 											<tr>
 												<td>Work independently with minimal supervision</td>
-												<td align="center"><input type="radio" name="attribute1" value="Satisfactory"></td>
-												<td align="center"><input type="radio" name="attribute1" value="Needs Improvement"></td>
-												<td align="center"><input type="radio" name="attribute1" value="Unsatisfactory"></td>
+												<td align="center"><input type="radio" name="attribute1" value="Satisfactory" <?php if(@$previously_added->attrib_2 == 'Satisfactory'){ ?> checked <?php } ?>></td>
+												<td align="center"><input type="radio" name="attribute1" value="Needs Improvement" <?php if(@$previously_added->attrib_2 == 'Needs Improvement'){ ?> checked <?php } ?>></td>
+												<td align="center"><input type="radio" name="attribute1" value="Unsatisfactory" <?php if(@$previously_added->attrib_2 == 'Unsatisfactory'){ ?> checked <?php } ?>></td>
 											</tr>
 											<tr>
 												<td>Punctuality</td>
-												<td align="center"><input type="radio" name="attribute2" value="Satisfactory"></td>
-												<td align="center"><input type="radio" name="attribute2" value="Needs Improvement"></td>
-												<td align="center"><input type="radio" name="attribute2" value="Unsatisfactory"></td>
+												<td align="center"><input type="radio" name="attribute2" value="Satisfactory" <?php if(@$previously_added->attrib_3 == 'Satisfactory'){ ?> checked <?php } ?>></td>
+												<td align="center"><input type="radio" name="attribute2" value="Needs Improvement" <?php if(@$previously_added->attrib_3 == 'Needs Improvement'){ ?> checked <?php } ?>></td>
+												<td align="center"><input type="radio" name="attribute2" value="Unsatisfactory" <?php if(@$previously_added->attrib_3 == 'Unsatisfactory'){ ?> checked <?php } ?>></td>
 											</tr>
 											<tr>
 												<td>Initiative</td>
-												<td align="center"><input type="radio" name="attribute3" value="Satisfactory"></td>
-												<td align="center"><input type="radio" name="attribute3" value="Needs Improvement"></td>
-												<td align="center"><input type="radio" name="attribute3" value="Unsatisfactory"></td>
+												<td align="center"><input type="radio" name="attribute3" value="Satisfactory" <?php if(@$previously_added->attrib_4 == 'Satisfactory'){ ?> checked <?php } ?>></td>
+												<td align="center"><input type="radio" name="attribute3" value="Needs Improvement" <?php if(@$previously_added->attrib_4 == 'Needs Improvement'){ ?> checked <?php } ?>></td>
+												<td align="center"><input type="radio" name="attribute3" value="Unsatisfactory" <?php if(@$previously_added->attrib_4 == 'Unsatisfactory'){ ?> checked <?php } ?>></td>
 											</tr>
 											<tr>
 												<td>Good team player</td>
-												<td align="center"><input type="radio" name="attribute4" value="Satisfactory"></td>
-												<td align="center"><input type="radio" name="attribute4" value="Needs Improvement"></td>
-												<td align="center"><input type="radio" name="attribute4" value="Unsatisfactory"></td>
+												<td align="center"><input type="radio" name="attribute4" value="Satisfactory" <?php if(@$previously_added->attrib_5 == 'Satisfactory'){ ?> checked <?php } ?>></td>
+												<td align="center"><input type="radio" name="attribute4" value="Needs Improvement" <?php if(@$previously_added->attrib_5 == 'Needs Improvement'){ ?> checked <?php } ?>></td>
+												<td align="center"><input type="radio" name="attribute4" value="Unsatisfactory" <?php if(@$previously_added->attrib_5 == 'Unsatisfactory'){ ?> checked <?php } ?>></td>
 											</tr>
 											<tr>
 												<td>Fimiliarity with WHO required procedures</td>
-												<td align="center"><input type="radio" name="attribute5" value="Satisfactory"></td>
-												<td align="center"><input type="radio" name="attribute5" value="Needs Improvement"></td>
-												<td align="center"><input type="radio" name="attribute5" value="Unsatisfactory"></td>
+												<td align="center"><input type="radio" name="attribute5" value="Satisfactory" <?php if(@$previously_added->attrib_6 == 'Satisfactory'){ ?> checked <?php } ?>></td>
+												<td align="center"><input type="radio" name="attribute5" value="Needs Improvement" <?php if(@$previously_added->attrib_6 == 'Needs Improvement'){ ?> checked <?php } ?>></td>
+												<td align="center"><input type="radio" name="attribute5" value="Unsatisfactory" <?php if(@$previously_added->attrib_6 == 'Unsatisfactory'){ ?> checked <?php } ?>></td>
 											</tr>
 										</tbody>
 									</table>
@@ -245,35 +246,35 @@
 								<strong>IV. Others:-</strong><br><br>
 								a)&nbsp; &nbsp;Describe any exceptional accoplishment for which the PTPP staff deserves a special recommendation or recognition <br><br>
 								<div class="inputFormMain">
-									<textarea name="others_a" class="form-control" rows="5" placeholder="Start typing here..."></textarea>
+									<textarea name="others_a" class="form-control" rows="5" placeholder="Start typing here..."><?php if(!empty($previously_added)){ echo $previously_added->comment_1; } ?></textarea>
 								</div><br>
 								b)&nbsp; &nbsp; Overall Assessment <br><br>
 								<div class="inputFormMain">
-									<textarea name="others_b" class="form-control" rows="5" placeholder="Start typing here..."></textarea>
+									<textarea name="others_b" class="form-control" rows="5" placeholder="Start typing here..."><?php if(!empty($previously_added)){ echo $previously_added->comment_2; } ?></textarea>
 								</div>
 								<br><br><br>
 								<div class="row">
 									<div class="col-md-3">
 										<div class="inputFormMain">
-											<input type="text" name="name" class="form-control" placeholder="Name...">1<sup>st</sup> level spervisor (Name)
+											<input type="text" name="name" class="form-control" placeholder="Name..." value="<?php if(!empty($previously_added)){ echo $previously_added->signature; } ?>">1<sup>st</sup> level spervisor (Name)
 										</div>
 										
 									</div>
 									<div class="col-md-3">
 										<div class="inputFormMain">
-											<input type="text" name="title" class="form-control" placeholder="Title...">1<sup>st</sup> level supervisor (Title: PEO)
+											<input type="text" name="title" class="form-control" placeholder="Title..." value="<?php if(!empty($previously_added)){ echo "PEO"; } ?>">1<sup>st</sup> level supervisor (Title: PEO)
 										</div>
 										
 									</div>
 									<div class="col-md-3">
 										<div class="inputFormMain">
-											<input type="text" name="1st_signature" class="form-control" placeholder="Write your name as a signature...">1<sup>st</sup> level supervisor (Signature)
+											<input type="text" name="1st_signature" class="form-control" placeholder="Write your name as a signature..." value="<?php if(!empty($previously_added)){ echo $previously_added->signature; } ?>">1<sup>st</sup> level supervisor (Signature)
 										</div>
 										
 									</div>
 									<div class="col-md-3">
 										<div class="inputFormMain">
-											<input type="date" name="1st_date" class="form-control date" placeholder="Date" autocomplete="off">Date
+											<input type="text" name="1st_date" class="form-control date" placeholder="Date" autocomplete="off"value="<?php if(!empty($previously_added)){ echo date('m-d-Y', strtotime($previously_added->created_at)); } ?>">Date
 										</div>
 										
 									</div>
@@ -285,7 +286,8 @@
 									<button type="reset" class="btn btn-default" <?php if($ucpo_session OR $ac_session): ?> disabled="" <?php endif; ?>>Reset</button>
 								</div>
 							</form>
-							<!-- General and PTPP holder's different skills, ends here... -->
+							<!-- General and PTPP holder's different skills, ends here... -->	
+							<?php //endif; ?>
 							<hr>
 							<!-- Remarks by the PTPP holder, 2nd form starts here... -->
 							<form action="<?= base_url('Performance_evaluation/remarks_by_ptpp'); ?>" method="post">
@@ -311,7 +313,17 @@
 										</div><br>
 									</div>
 								</div>
-								I have discussed and reviewed the performance evaluation with my supervisor:
+								<div class="row">
+									<div class="col-md-8">
+										I have discussed and reviewed the performance evaluation with my supervisor:
+									</div>
+									<div class="col-md-2">
+										<input type="radio" name="remarks_by_ucpo" value="Agree"> <strong>Agree</strong>
+									</div>
+									<div class="col-md-2">
+										<input type="radio" name="remarks_by_ucpo" value="Disagree"> <strong>Disagree</strong>
+									</div>
+								</div>
 								<br><br><br>
 								<div class="row">
 									<div class="col-md-4">
@@ -326,7 +338,7 @@
 									</div>
 									<div class="col-md-4">
 										<div class="inputFormMain">
-											<input type="date" name="ptpp_date" class="form-control date" placeholder="Date" autocomplete="off" <?php if($peo_session OR $ac_session): ?> disabled <?php endif; ?>>Date
+											<input type="text" name="ptpp_date" class="form-control date" placeholder="Date" autocomplete="off" value="<?php echo date('m-d-Y') ?>"> <?php if($peo_session OR $ac_session): ?> disabled <?php endif; ?>Date
 										</div>
 									</div>
 								</div><br>
@@ -408,3 +420,31 @@
 		</div>
 	</section>
 </section>
+<!-- Select employee and his/her address will populate itself in the dropdown list. -->
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('select[name="emp_name"]').on('change', function(){
+			var empID = $(this).val();
+			if(empID){
+				$.ajax({
+					url: '<?php echo base_url("Performance_evaluation/get_address_ucpos/"); ?>'+empID,
+					type: 'post',
+					dataType: 'json',
+					success: function(data){
+						console.log(data); // Log data to the console.
+						$('select[name="duty_province"]').empty();
+						$('select[name="duty_distt"]').empty();
+						$('select[name="duty_tehsil"]').empty();
+						$('select[name="duty_province"]').append('<option value="'+ data.province +'">'+ data.province +'</option>');
+						$('select[name="duty_distt"]').append('<option value="'+ data.district +'" selected>'+ data.district +'</option>');
+						$('select[name="duty_tehsil"]').append('<option value="'+ data.tehsil +'" selected>'+ data.tehsil +'</option>');
+					}
+				});
+			}else{
+				$('select[name="duty_province"]').empty();
+				$('select[name="duty_distt"]').empty();
+				$('select[name="duty_tehsil"]').empty();
+			}
+		});
+	});
+</script>

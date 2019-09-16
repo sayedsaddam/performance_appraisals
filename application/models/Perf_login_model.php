@@ -15,11 +15,11 @@ class Perf_login_model extends CI_Model
         $this->load->database();
     }
     // PEO login.
-    public function validate_user($peo_name, $peo_cnic)
+    public function validate_user($peo_cnic)
     {
     	$this->db->select('peo_id, peo_name, peo_cnic');
     	$this->db->from('peo_data');
-		$this->db->where('peo_name', $peo_name);
+		// /$this->db->where('peo_name', $peo_name);
 		$this->db->where('peo_cnic', $peo_cnic);
 		$query = $this->db->get();
 		if($query->num_rows() == 0)
@@ -28,11 +28,11 @@ class Perf_login_model extends CI_Model
 			return $query->row_array();
     }
     // AC login.
-    public function validate_ac($ac_name, $ac_cnic)
+    public function validate_ac($ac_cnic)
     {
         $this->db->select('ac_id, ac_name, ac_cnic');
         $this->db->from('ac_data');
-        $this->db->where('ac_name', $ac_name);
+        // $this->db->where('ac_name', $ac_name);
         $this->db->where('ac_cnic', $ac_cnic);
         $query = $this->db->get();
         if($query->num_rows() == 0)
@@ -41,11 +41,11 @@ class Perf_login_model extends CI_Model
             return $query->row_array();
     }
     // UCPO login.
-    public function validate_ucpo($ucpo_name, $ucpo_cnic)
+    public function validate_ucpo($ucpo_cnic)
     {
         $this->db->select('id, name, cnic_name');
         $this->db->from('ucpo_data');
-        $this->db->where('name', $ucpo_name);
+        // $this->db->where('name', $ucpo_name);
         $this->db->where('cnic_name', $ucpo_cnic);
         $query = $this->db->get();
         if($query->num_rows() == 0)
@@ -54,12 +54,23 @@ class Perf_login_model extends CI_Model
             return $query->row_array();
     }
     // TCSP login.
-    public function validate_tcsp($tcsp_name, $tcsp_cnic)
+    public function validate_tcsp($tcsp_cnic)
     {
         $this->db->select('id, name, cnic_name');
         $this->db->from('tcsp_data');
-        $this->db->where('name', $tcsp_name);
+        // $this->db->where('name', $tcsp_name);
         $this->db->where('cnic_name', $tcsp_cnic);
+        $query = $this->db->get();
+        if($query->num_rows() == 0)
+            return false;
+        else
+            return $query->row_array();
+    }
+    // Validate the administrators to view everything.
+    public function validate_admin($admin_cnic){
+        $this->db->select('admin_id, admin_name, admin_cnic, admin_role');
+        $this->db->from('administrators');
+        $this->db->where('admin_cnic', $admin_cnic);
         $query = $this->db->get();
         if($query->num_rows() == 0)
             return false;

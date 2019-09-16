@@ -124,6 +124,36 @@ class Performance_appraisal_model extends CI_Model {
 		$this->db->where('sec_level_sup_remarks.employee_id', $id);
 		return $this->db->get()->row();
 	}
+	// Get address for the selected employee (On Change function). [UCPO's].
+	public function get_address_ucpos($id){
+		$this->db->select('id, province, district, tehsil, uc');
+		$this->db->from('ucpo_data');
+		$this->db->where('id', $id);
+		return $this->db->get()->row();
+	}
+	// Get address the selected employee (On change function). [TCSP's].
+	public function get_address_tcsps($id){
+		$this->db->select('id, province, district, tehsil, uc');
+		$this->db->from('tcsp_data');
+		$this->db->where('id', $id);
+		return $this->db->get()->row();
+	}
+	// Get previously added UCPO's form attributes.
+	public function get_previously_added($id = ''){ // UCPO's data...
+		$this->db->select('*');
+		$this->db->from('performance_evaluation');
+		$this->db->where('employee_id', $this->uri->segment(3));
+		$this->db->limit(1);
+		return $this->db->get()->row();
+	}
+	// Get previously added TCSP's form attributes.
+	public function get_previously_added_tcsps($id = ''){ // TCSP's data...
+		$this->db->select('*');
+		$this->db->from('tcsp_evaluations');
+		$this->db->where('employee_id', $this->uri->segment(3));
+		$this->db->limit(1);
+		return $this->db->get()->row();
+	}
 	
 
 	// Function to Delete selected record from table

@@ -37,6 +37,7 @@ class Performance_evaluation extends CI_Controller{
 		if($this->session->userdata('tcsp_cnic')){
 			redirect('performance_evaluation/tcsp_evaluation');
 		}
+		$data['previously_added'] = $this->Performance_appraisal_model->get_previously_added();
 		$data['ptpp_employees'] = $this->Performance_appraisal_model->ptpp_employees();
 		$data['ac_employees'] = $this->Performance_appraisal_model->get_ptpp();
 		if($this->session->userdata('peo_cnic')){
@@ -44,7 +45,7 @@ class Performance_evaluation extends CI_Controller{
 		}else{
 			$data['ucpos'] = $this->Perf_login_model->get_ac_ucpos();
 		}
-		$data['title'] = 'Performance Evaluation';
+		$data['title'] = 'UCPO | Performance Appraisals';
 		$data['content'] ='performance_evaluation/performance_eval'; 
 		$this->load->view('components/template', $data);
 	}
@@ -138,6 +139,11 @@ class Performance_evaluation extends CI_Controller{
 		$this->session->set_flashdata('success', 'Remarks by the Second level supervisor have been saved successfully!');
 		redirect('performance_evaluation/get_previous');
 	}
+	// Get province, district, tehsil for selected employee in the dropdown.
+	public function get_address_ucpos($id = ''){
+		$ucpo_address = $this->Performance_appraisal_model->get_address_ucpos($id);
+		echo json_encode($ucpo_address);
+	}
 
 	/* ------------------------------------------------------------------------------------- */
 	// Performance evaluation form for TCSP (Tehsil Campaign Support Person).
@@ -145,7 +151,8 @@ class Performance_evaluation extends CI_Controller{
 		if($this->session->userdata('ucpo_cnic')){
 			redirect('performance_evaluation');
 		}
-		$data['title'] = 'TCSP Evaluations';
+		$data['prev_added_tcsps'] = $this->Performance_appraisal_model->get_previously_added_tcsps();
+		$data['title'] = 'TCSP | Performance Appraisals';
 		if($this->session->userdata('peo_cnic')){
 			$data['tcsps'] = $this->Perf_login_model->get_tcsps();
 		}else{
@@ -246,6 +253,11 @@ class Performance_evaluation extends CI_Controller{
 		$this->Performance_appraisal_model->add_sec_level_tcsp($data);
 		$this->session->set_flashdata('success', 'Overall Assessment by the CTC staff has been saved successfully.');
 		redirect('Performance_evaluation/tcsp_previous');
+	}
+	// Get province, district, tehsil for selected employee in the dropdown list.
+	public function get_address_tcsps($id = ''){
+		$tcsp_address = $this->Performance_appraisal_model->get_address_tcsps($id);
+		echo json_encode($tcsp_address);
 	}
 }
 ?>
