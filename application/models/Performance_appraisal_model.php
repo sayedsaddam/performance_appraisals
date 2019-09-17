@@ -24,10 +24,14 @@ class Performance_appraisal_model extends CI_Model {
 	  							ucpo_data.join_date,
 	  							peo_data.peo_id,
 	  							peo_data.peo_name,
-	  							peo_data.peo_cnic');
+	  							peo_data.peo_cnic,
+	  							ac_data.ac_id,
+	  							ac_data.ac_name,
+	  							ac_data.ac_cnic');
 	  $this->db->from('performance_evaluation');
 	  $this->db->join('ucpo_data', 'performance_evaluation.employee_id = ucpo_data.id');
 	  $this->db->join('peo_data', 'ucpo_data.cnic_peo = peo_data.peo_cnic');
+	  $this->db->join('ac_data', 'ucpo_data.cnic_ac = ac_data.ac_cnic', 'left');
 	  $this->db->limit($limit, $offset);
 	  return $this->db->get()->result();
 	}
@@ -196,21 +200,25 @@ class Performance_appraisal_model extends CI_Model {
 	// Get all evaluations previously made.
 	public function get_tcsp_evaluations($limit = '', $offset = ''){
 		$this->db->select('tcsp_evaluations.*,
-		  							ucpo_data.id,
-		  							ucpo_data.name,
-		  							ucpo_data.position,
-		  							ucpo_data.cnic_name,
-		  							ucpo_data.province,
-		  							ucpo_data.district,
-		  							ucpo_data.tehsil,
-		  							ucpo_data.uc,
-		  							ucpo_data.join_date,
+		  							tcsp_data.id,
+		  							tcsp_data.name,
+		  							tcsp_data.position,
+		  							tcsp_data.cnic_name,
+		  							tcsp_data.province,
+		  							tcsp_data.district,
+		  							tcsp_data.tehsil,
+		  							tcsp_data.uc,
+		  							tcsp_data.join_date,
+		  							peo_data.peo_id,
+		  							peo_data.peo_name,
+		  							peo_data.peo_cnic,
 		  							ac_data.ac_id,
 		  							ac_data.ac_name,
 		  							ac_data.ac_cnic');
 	   $this->db->from('tcsp_evaluations');
-	   $this->db->join('ucpo_data', 'tcsp_evaluations.employee_id = ucpo_data.id');
-	   $this->db->join('ac_data', 'ucpo_data.cnic_ac = ac_data.ac_cnic');
+	   $this->db->join('tcsp_data', 'tcsp_evaluations.employee_id = tcsp_data.id');
+	   $this->db->join('peo_data', 'tcsp_data.cnic_peo = peo_data.peo_cnic', 'left');
+	   $this->db->join('ac_data', 'tcsp_data.cnic_ac = ac_data.ac_cnic', 'left');
 	   $this->db->limit($limit, $offset);
 	   return $this->db->get()->result();
 	}
@@ -290,6 +298,60 @@ class Performance_appraisal_model extends CI_Model {
 		}else{
 			return false;
 		}
+	}
+
+  // ---------------------------------------------------------------------------
+  // Export to Excel..
+	// Export to excel using Codeigniter's library phpSpreadsheet. [TCSP's data].
+	public function export_excel(){
+		$this->db->select('tcsp_evaluations.*,
+		  							tcsp_data.id,
+		  							tcsp_data.name,
+		  							tcsp_data.position,
+		  							tcsp_data.cnic_name,
+		  							tcsp_data.province,
+		  							tcsp_data.district,
+		  							tcsp_data.tehsil,
+		  							tcsp_data.uc,
+		  							tcsp_data.join_date,
+		  							peo_data.peo_id,
+		  							peo_data.peo_name,
+		  							peo_data.peo_cnic,
+		  							ac_data.ac_id,
+		  							ac_data.ac_name,
+		  							ac_data.ac_cnic');
+	   $this->db->from('tcsp_evaluations');
+	   $this->db->limit(10);
+	   $this->db->join('tcsp_data', 'tcsp_evaluations.employee_id = tcsp_data.id');
+	   $this->db->join('peo_data', 'tcsp_data.cnic_peo = peo_data.peo_cnic', 'left');
+	   $this->db->join('ac_data', 'tcsp_data.cnic_ac = ac_data.ac_cnic', 'left');
+	   return $this->db->get()->result_array();
+	}
+
+	// Export to Excel [UCPO's data].
+	public function export_excel_ucpos() {
+	  $this->db->select('performance_evaluation.*,
+	  							ucpo_data.id,
+	  							ucpo_data.name,
+	  							ucpo_data.position,
+	  							ucpo_data.cnic_name,
+	  							ucpo_data.province,
+	  							ucpo_data.district,
+	  							ucpo_data.tehsil,
+	  							ucpo_data.uc,
+	  							ucpo_data.join_date,
+	  							peo_data.peo_id,
+	  							peo_data.peo_name,
+	  							peo_data.peo_cnic,
+	  							ac_data.ac_id,
+	  							ac_data.ac_name,
+	  							ac_data.ac_cnic');
+	  $this->db->from('performance_evaluation');
+	  $this->db->limit(10);
+	  $this->db->join('ucpo_data', 'performance_evaluation.employee_id = ucpo_data.id');
+	  $this->db->join('peo_data', 'ucpo_data.cnic_peo = peo_data.peo_cnic');
+	  $this->db->join('ac_data', 'ucpo_data.cnic_ac = ac_data.ac_cnic', 'left');
+	  return $this->db->get()->result_array();
 	}
 
 

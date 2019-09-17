@@ -108,12 +108,12 @@
 											<td>Evaluation Period</td>
 											<td>
 												<div class="inputFormMain">
-													<input type="date" name="app_start_date" class="form-control date" placeholder="Start date..." autocomplete="off">
+													<input type="text" name="app_start_date" class="form-control date" value="08-01-2019" autocomplete="off">
 												</div>
 											</td>
 											<td>
 												<div class="inputFormMain">
-													<input type="date" name="app_end_date" class="form-control date" placeholder="End date..." autocomplete="off">
+													<input type="text" name="app_end_date" class="form-control date" value="31-10-2019" autocomplete="off">
 												</div>
 											</td>
 										</tr>

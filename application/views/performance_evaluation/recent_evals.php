@@ -1,3 +1,10 @@
+<?php 
+/*
+* Filename: recent_evals.php
+* Filepath: views / performance_evaluation / recent_evals.php
+* Author: Saddam
+*/
+?>
 <style type="text/css">
 .ui-datepicker {
     display: none !important;
@@ -65,6 +72,9 @@ $(document).ready(function() {
                     <div class="label label-primary">
                       <i class="fa fa-plus"></i> add new evaluation
                     </div>
+                  </a>&nbsp;
+                  <a href="<?php echo base_url('Export_excel/exportExcel'); ?>">
+                    <div class="label label-success">Export to Excel</div>
                   </a>
                 </small>
               </h3>
@@ -98,6 +108,7 @@ $(document).ready(function() {
                       <th>CNIC</th>
                       <th>Joining date</th>
                       <th>PEO</th>
+                      <th>AC</th>
                       <th>start date</th>
                       <th>end date</th>
                       <th>evaluation date</th>
@@ -360,6 +371,9 @@ $(document).ready(function() {
                       </td>
                       <td>
                         <?php echo $rec_evals->peo_name; ?>
+                      </td>
+                      <td>
+                        <?php echo $rec_evals->ac_name; ?>
                       </td>
                       <td>
                       <?php echo date('M d, Y', strtotime($rec_evals->start_date)); ?>
