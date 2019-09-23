@@ -117,13 +117,18 @@ class Performance_evaluation extends CI_Controller{
 	}
 	// Save the remarks by PTPP to the database.
 	public function remarks_by_ptpp(){
+		$emp_id = $_POST['ptpp_employee'];
 		$data = array(
-			'employee_id' => $this->input->post('ptpp_employee'),
+			'employee_id' => $emp_id,
 			'remarks' => $this->input->post('ptpp_remarks'),
+			'comment' => $this->input->post('remarks_by_ucpo'),
 			'signature' => $this->input->post('ptpp_holder_sign'),
-			'created_at' => date('Y-m-d', strtotime($this->input->post('ptpp_date')))
+			'created_at' => $this->input->post('ptpp_date')
 		);
 		$this->Performance_appraisal_model->add_ptpp_remarks($data);
+		$this->db->select('status')->from('performance_evaluation')->get()->row();
+		$this->db->where('employee_id', $_POST['ptpp_employee']);
+		$this->db->update('performance_evaluation', array('status' => '1'));
 		$this->session->set_flashdata('success', 'PTPP Remarks have been saved successfully!');
 		redirect('performance_evaluation/get_previous');
 	}
@@ -136,7 +141,17 @@ class Performance_evaluation extends CI_Controller{
 			'created_at' => date('Y-m-d', strtotime($this->input->post('sec_level_date')))
 		);
 		$this->Performance_appraisal_model->add_sec_level_remarks($data);
-		$this->session->set_flashdata('success', 'Remarks by the Second level supervisor have been saved successfully!');
+		$this->db->select('status')->from('performance_evaluation')->get()->row();
+		$this->db->where('employee_id', $_POST['sec_level']);
+		if(isset($_POST['submit_1'])){
+			$this->db->update('performance_evaluation', array('status' => '3', 'rollback_comment' => $this->input->post('rollback_comment')));
+			$this->db->where('employee_id', $_POST['sec_level']);
+			$this->db->delete('sec_level_sup_remarks');
+			$this->session->set_flashdata('success', '<strong>Sucess !</strong> The rollback operation was successful.');
+		}else{
+			$this->db->update('performance_evaluation', array('status' => '2'));
+			$this->session->set_flashdata('success', 'Remarks by the Second level supervisor have been saved successfully!');
+		}
 		redirect('performance_evaluation/get_previous');
 	}
 	// Get province, district, tehsil for selected employee in the dropdown.
@@ -159,6 +174,7 @@ class Performance_evaluation extends CI_Controller{
 			$data['tcsps'] = $this->Perf_login_model->get_ac_tcsps();
 		}
 		$data['tcsp_employees'] = $this->Performance_appraisal_model->get_tcsps();
+		$data['ac_tcsps'] = $this->Performance_appraisal_model->get_tcsps_for_ac();
 		$data['content'] = 'performance_evaluation/tcsp_evaluation';
 		$this->load->view('components/template', $data);
 	}
@@ -239,6 +255,9 @@ class Performance_evaluation extends CI_Controller{
 			'created_at' => date('Y-m-d', strtotime($this->input->post('apw_date')))
 		);
 		$this->Performance_appraisal_model->add_tcsp_remarks($data);
+		$this->db->select('status')->from('tcsp_evaluations')->get()->row();
+		$this->db->where('employee_id', $_POST['employee_tcsp']);
+		$this->db->update('tcsp_evaluations', array('status' => '1'));
 		$this->session->set_flashdata('success', 'Remarks by TCSP have been saved successfully!');
 		redirect('Performance_evaluation/tcsp_previous');
 	}
@@ -251,7 +270,17 @@ class Performance_evaluation extends CI_Controller{
 			'created_at' => date('Y-m-d', strtotime($this->input->post('sec_level_date')))
 		);
 		$this->Performance_appraisal_model->add_sec_level_tcsp($data);
-		$this->session->set_flashdata('success', 'Overall Assessment by the CTC staff has been saved successfully.');
+		$this->db->select('status')->from('tcsp_evaluations')->get()->row();
+		$this->db->where('employee_id', $_POST['sec_level_tcsp']);
+		if(isset($_POST['submit_1'])){
+			$this->db->update('tcsp_evaluations', array('status' => $this->input->post('rollback_comment')));
+			$this->db->where('employee_id', $_POST['sec_level_tcsp']);
+			$this->db->delete('sec_level_tcsp_remarks');
+			$this->session->set_flashdata('success', '<strong>Success ! </strong> The Roll back operation was successful !');
+		}else{
+			$this->db->update('tcsp_evaluations', array('status' => '2'));
+			$this->session->set_flashdata('success', 'Overall Assessment by the CTC staff has been saved successfully.');
+		}
 		redirect('Performance_evaluation/tcsp_previous');
 	}
 	// Get province, district, tehsil for selected employee in the dropdown list.

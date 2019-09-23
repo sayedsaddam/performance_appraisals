@@ -60,9 +60,9 @@
 												<div class="inputFormMain">
 													<select name="emp_name" class="form-control select2">
 														<option value="">Select Employee</option>
-														<?php foreach($tcsps as $emp): ?>
+														<?php if($peo_session): foreach($tcsps as $emp): ?>
 															<option value="<?= $emp->id; ?>"><?= $emp->position.' - '.$emp->name; ?></option>
-														<?php endforeach; ?>
+														<?php endforeach; endif; ?>
 												</select>
 												</div>
 											</td>
@@ -358,11 +358,11 @@
 										<div class="inputFormMain">
 											<select name="sec_level_tcsp" class="form-control select2">
 												<option value="">Select an Employee</option>
-												<?php foreach($tcsp_employees as $emps): ?>
+												<?php if($ac_session): foreach($ac_tcsps as $emps): ?>
 													<option value="<?= $emps->employee_id; ?>">
 														<?= $emps->name; ?>
 													</option>
-												<?php endforeach; ?>
+												<?php endforeach; endif; ?>
 											</select>
 										</div>
 									</div>
@@ -405,7 +405,25 @@
 								</div><br>
 								<div class="submitBtn">
 									<button type="submit" class="btn btn-primary" <?php if($peo_session OR $tcsp_session): ?> disabled="disabled" <?php endif; ?>>Finalise</button>
-									<button type="submit" class="btn btn-default" <?php if($peo_session OR $tcsp_session): ?> disabled="disabled" <?php endif; ?>>Roll Back</button>
+									<button data-toggle="modal" data-target="#rollback" type="button" class="btn btn-default" <?php if($peo_session OR $tcsp_session): ?> disabled="disabled" <?php endif; ?>>Roll Back</button>
+									<div id="rollback" class="modal fade" role="dialog">
+									  <div class="modal-dialog">
+									    <!-- Modal content-->
+									    <div class="modal-content">
+									      <div class="modal-header">
+									        <button type="button" class="close" data-dismiss="modal">&times;</button>
+									        <h4 class="modal-title">Roll Back Comment...</h4>
+									      </div>
+									      <div class="modal-body">
+									        <textarea name="rollback_comment" class="form-control" placeholder="Type some words why do you want to Roll back ?"></textarea><br>
+									        <input type="submit" name="submit_1" class="btn btn-primary" value="Roll Back">
+									      </div>
+									      <div class="modal-footer">
+									        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+									      </div>
+									    </div>
+									  </div>
+									</div>
 								</div>
 							</form>
 							<!-- Second level supervisor's form ends here... -->

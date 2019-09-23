@@ -61,9 +61,10 @@
 												<div class="inputFormMain">
 													<select name="emp_name" class="form-control select2">
 														<option value="">Select an Employee</option>
-														<?php foreach($ucpos as $emp): ?>
+														<?php if($peo_session):
+														foreach($ucpos as $emp): ?>
 														<option value="<?= $emp->id; ?>"><?= $emp->position.' - '. $emp->name; ?></option>
-														<?php endforeach; ?>
+														<?php endforeach; endif; ?>
 													</select>
 												</div>
 											</td>
@@ -338,7 +339,7 @@
 									</div>
 									<div class="col-md-4">
 										<div class="inputFormMain">
-											<input type="text" name="ptpp_date" class="form-control date" placeholder="Date" autocomplete="off" value="<?php echo date('m-d-Y') ?>"> <?php if($peo_session OR $ac_session): ?> disabled <?php endif; ?>Date
+											<input type="text" name="ptpp_date" class="form-control date" placeholder="Date" autocomplete="off" value="<?php echo date('Y-m-d'); ?>"> <?php if($peo_session OR $ac_session): ?> disabled <?php endif; ?>Date
 										</div>
 									</div>
 								</div><br>
@@ -359,11 +360,11 @@
 										<div class="inputFormMain">
 											<select name="sec_level" class="form-control select2">
 												<option value="">Select an Employee</option>
-												<?php foreach($ac_employees as $ac): ?>
-													<option value="<?php echo $ac->emp_id; ?>">
+												<?php if($ac_session): foreach($ac_employees as $ac): ?>
+													<option value="<?php echo $ac->employee_id; ?>">
 														<?php  echo $ac->name; ?>
 													</option>
-												<?php endforeach; ?>
+												<?php endforeach; endif; ?>
 											</select>
 										</div>
 									</div>
@@ -406,10 +407,28 @@
 								</div><br>
 								<div class="submitBtn">
 									<?php $ucpo_session = $this->session->userdata('ucpo_cnic'); ?>
-										<button type="submit" class="btn btn-primary" <?php if($ucpo_session OR $peo_session): ?> disabled="disabled" <?php endif; ?>>Finalise</button>
-										<button type="submit" class="btn btn-default" <?php if($ucpo_session OR $peo_session): ?> disabled="disabled" <?php endif; ?>>Roll Back</button>
-								</div>
-							</form>
+										<button type="submit" name="submit" class="btn btn-primary" <?php if($ucpo_session OR $peo_session): ?> disabled="disabled" <?php endif; ?>>Finalise</button>
+										<button type="button" data-toggle="modal" data-target="#rollback" class="btn btn-default" <?php if($ucpo_session OR $peo_session): ?> disabled="disabled" <?php endif; ?>>Roll Back</button>
+											<div id="rollback" class="modal fade" role="dialog">
+											  <div class="modal-dialog">
+											    <!-- Modal content-->
+											    <div class="modal-content">
+											      <div class="modal-header">
+											        <button type="button" class="close" data-dismiss="modal">&times;</button>
+											        <h4 class="modal-title">Roll Back Comment...</h4>
+											      </div>
+											      <div class="modal-body">
+											        <textarea name="rollback_comment" class="form-control" placeholder="Type some words why do you want to Roll back ?"></textarea><br>
+											        <input type="submit" name="submit_1" class="btn btn-primary" value="Roll Back">
+											      </div>
+											      <div class="modal-footer">
+											        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+											      </div>
+											    </div>
+											  </div>
+											</div>
+										</div>
+								</form>
 							<!-- Second level supervisor's form ends here... -->
 							<hr>
 						</div>

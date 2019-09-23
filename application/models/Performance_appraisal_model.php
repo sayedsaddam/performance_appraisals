@@ -39,7 +39,13 @@ class Performance_appraisal_model extends CI_Model {
 	public function count_evaluations(){
 		return $this->db->from('performance_evaluation')->count_all_results();
 	}
-
+	// Get UCPO's by ID.
+	public function get_by_id($eval_id){
+		$this->db->select('rollback_comment');
+		$this->db->from('performance_evaluation');
+		$this->db->where('eval_id', $eval_id);
+		return $this->db->get()->row();
+	}
 	// Add performance evaluation data to the database, general and PTPP holder's different skills.
 	public function add($data){
 
@@ -82,7 +88,8 @@ class Performance_appraisal_model extends CI_Model {
 		$this->db->from('ptpp_remarks');
 		$this->db->join('ucpo_data', 'ptpp_remarks.employee_id = ucpo_data.id', 'left');
 		$this->db->join('ac_data', 'ucpo_data.cnic_ac = ac_data.ac_cnic', 'left');
-		$this->db->where('ucpo_data.cnic_name', $this->session->userdata('ac_cnic'));
+		$this->db->where('ucpo_data.cnic_ac', $this->session->userdata('ac_cnic'));
+		$this->db->where('employee_id NOT IN(SELECT employee_id FROM sec_level_sup_remarks)');
 		$query = $this->db->get();
 		return $query->result();
 	}
@@ -255,6 +262,19 @@ class Performance_appraisal_model extends CI_Model {
 		$this->db->from('tcsp_evaluations');
 		$this->db->join('tcsp_data', 'tcsp_evaluations.employee_id = tcsp_data.id', 'left');
 		$this->db->where('tcsp_data.cnic_name', $this->session->userdata('tcsp_cnic'));
+		return $this->db->get()->result();
+	}
+	// Get for AC.
+	public function get_tcsps_for_ac(){
+		$this->db->select('tcsp_evaluations.evalu_id,
+									tcsp_evaluations.employee_id,
+									tcsp_data.id,
+									tcsp_data.name,
+									tcsp_data.cnic_ac');
+		$this->db->from('tcsp_evaluations');
+		$this->db->join('tcsp_data', 'tcsp_evaluations.employee_id = tcsp_data.id', 'left');
+		$this->db->where('tcsp_data.cnic_ac', $this->session->userdata('ac_cnic'));
+		$this->db->where('employee_id NOT IN(SELECT employee_id FROM sec_level_tcsp_remarks)');
 		return $this->db->get()->result();
 	}
 	// Get remarks by TCSP.

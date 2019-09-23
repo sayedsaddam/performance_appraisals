@@ -112,10 +112,12 @@ $(document).ready(function() {
                       <th>start date</th>
                       <th>end date</th>
                       <th>evaluation date</th>
+                      <th>status</th>
                     </tr>
                   </thead>
                   <tbody id="filter_results">
                     <?php foreach($recents as $rec_evals): ?>
+                    <?php $rollback_comment = $this->Performance_appraisal_model->get_by_id($rec_evals->eval_id); ?>
                     <tr>
                       <td>
                         CTC-0<?php echo $rec_evals->employee_id; ?>
@@ -383,6 +385,36 @@ $(document).ready(function() {
                       </td>
                       <td>
                         <?php echo date('M d, Y', strtotime($rec_evals->created_at)); ?>
+                      </td>
+                      <td>
+                        <?php if($rec_evals->status == 0){ ?>
+                          <div class="label label-primary">UCPO</div>
+                        <?php }elseif($rec_evals->status == 1){ ?>
+                          <div class="label label-primary">AC</div>
+                        <?php }elseif($rec_evals->status == 2){ ?>
+                          <div class="label label-success">Completed</div>
+                       <?php }else{ ?>
+                          <a href="#" data-toggle="modal" data-target="#commentModal<?php echo $rec_evals->eval_id; ?>">
+                            <div class="label label-danger">Rolled Back</div>
+                          </a>
+                          <div id="commentModal<?php echo $rec_evals->eval_id; ?>" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                              <!-- Modal content-->
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                  <strong>Roll Back comment...</strong>
+                                  <p><?php echo $rollback_comment->rollback_comment; ?></p>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        <?php } ?>
                       </td>
                     </tr>
                     <?php endforeach; ?>

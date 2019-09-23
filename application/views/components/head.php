@@ -43,6 +43,13 @@
           <a href="<?= base_url('performance_evaluation/tcsp_evaluation'); ?>">TCSP Evaluation</a>
         </li>
       </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <?php if($this->session->userdata('peo_cnic') OR $this->session->userdata('ac_cnic') OR $this->session->userdata('ucpo_cnic') OR $this->session->userdata('tcsp_cnic')): ?>
+          <li>
+            <a href="<?php echo base_url('Perf_login/logout'); ?>">Logout <span class="glyphicon glyphicon-log-out"></span></a>
+          </li>
+        <?php endif; ?>
+      </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>

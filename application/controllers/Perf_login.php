@@ -45,10 +45,10 @@ class Perf_login extends CI_Controller
       $admin_signin = $this->Perf_login_model->validate_admin($admin_cnic); // Admin login.
   		if($peo_signin){
   			$this->session->set_userdata(array('peo_cnic' => $peo_cnic));
-  			redirect('performance_evaluation');
+  			redirect('performance_evaluation/get_previous');
   		}elseif($ac_signin){
   			$this->session->set_userdata(array('ac_cnic' => $ac_cnic));
-  			redirect('performance_evaluation');
+  			redirect('performance_evaluation/get_previous');
   		}elseif($ucpo_signin){
   			$this->session->set_userdata(array('ucpo_cnic' => $ucpo_cnic));
         $this->db->select('id');

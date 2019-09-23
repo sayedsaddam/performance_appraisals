@@ -112,6 +112,7 @@ $(document).ready(function() {
                       <th>start date</th>
                       <th>end date</th>
                       <th>evaluation date</th>
+                      <th>status</th>
                     </tr>
                   </thead>
                   <tbody id="filter_results">
@@ -399,6 +400,17 @@ $(document).ready(function() {
                       </td>
                       <td>
                         <?php echo date('M d, Y', strtotime($rec_evals->created_at)); ?>
+                      </td>
+                      <td>
+                        <?php if($rec_evals->status == 0){ ?>
+                          <div class="label label-primary">TCSP</div>
+                        <?php }elseif($rec_evals->status == 1){ ?>
+                          <div class="label label-primary">AC</div>
+                        <?php }elseif($rec_evals->status == 2){ ?>
+                          <div class="label label-success">Completed</div>
+                       <?php }else{ ?>
+                          <div class="label label-danger">Rolled Back</div>
+                        <?php } ?>
                       </td>
                     </tr>
                     <?php endforeach; ?>
