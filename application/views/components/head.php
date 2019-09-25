@@ -36,15 +36,23 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li <?php if($tcsp_session): ?> class="disabled" <?php endif; ?>>
-          <a href="<?= base_url('performance_evaluation'); ?>">UCPO Evaluation</a>
+        <li <?php if($tcsp_session OR $ucpo_session): ?> class="disabled" <?php endif; ?>>
+          <a href="<?php if(!$tcsp_session){ echo base_url('performance_evaluation/get_previous'); } ?>">UCPO Evaluation</a>
         </li>
-        <li <?php if($ucpo_session): ?> class="disabled" <?php endif; ?>>
-          <a href="<?= base_url('performance_evaluation/tcsp_evaluation'); ?>">TCSP Evaluation</a>
+        <li <?php if($ucpo_session OR $tcsp_session): ?> class="disabled" <?php endif; ?>>
+          <a href="<?php if(!$ucpo_session){ echo base_url('performance_evaluation/tcsp_previous'); } ?>">TCSP Evaluation</a>
         </li>
+        <?php if($this->session->userdata('admin_cnic')): ?>
+          <li>
+          <a href="<?php echo base_url('performance_evaluation/summary'); ?>">Summary</a>
+        </li>
+      <?php endif; ?>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <?php if($this->session->userdata('peo_cnic') OR $this->session->userdata('ac_cnic') OR $this->session->userdata('ucpo_cnic') OR $this->session->userdata('tcsp_cnic')): ?>
+        <?php if($this->session->userdata('peo_cnic') OR $this->session->userdata('ac_cnic') OR $this->session->userdata('ucpo_cnic') OR $this->session->userdata('tcsp_cnic') OR $this->session->userdata('admin_cnic')): ?>
+          <li>
+            <a href="<?php echo base_url('Perf_login/change_password'); ?>">Change Password</a>
+          </li>
           <li>
             <a href="<?php echo base_url('Perf_login/logout'); ?>">Logout <span class="glyphicon glyphicon-log-out"></span></a>
           </li>
@@ -53,4 +61,3 @@
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-

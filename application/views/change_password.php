@@ -35,37 +35,20 @@
 				<div class="col-md-2">
 				</div>
 				<div class="col-md-8">
-					<form action="<?php echo base_url('Perf_login/validate'); ?>" method="post">
+					<form action="<?php echo base_url('Perf_login/password_change'); ?>" method="post">
 						<div class="rightLoginMain">
 							<div class="aligmentWrap">
-								<h3 style="margin-bottom: 4px;">Appraisal's Login</h3>
-								<small>Enter your CNIC & Password to proceed.</small>
+								<h3 style="margin-bottom: 4px;">Change Password</h3>
+								<small>Please enter your new password. You can update your password just once.</small>
 								<div class="loginInput">
-									<input name="peo_cnic" type="text" class="form-control" placeholder="Enter your cnic here..." required><br>
-									<input name="password" type="password" class="form-control" placeholder="Enter your password here..." required>
+									<input type="hidden" name="eval_date" value="<?php echo date('Y-m-d'); ?>">
+									<input name="pass" type="password" class="form-control" placeholder="Enter your new password here..." required>
 								</div>
 								<div class="loginInput">
 									<button type="submit" class="btn btn-block">
-										Login
+										Change
 									</button>
 								</div>
-								<?php if($failed = $this->session->flashdata('failed')): ?>
-								<div class="alert alert-danger alert-dismissable text-center">
-								<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-									<p><?php echo $failed; // Login attempt failed. ?></p>
-								</div>
-								<?php endif; ?>
-								<?php if($logged_out = $this->session->flashdata('logged_out')): ?>
-								<div class="alert alert-danger alert-dismissable text-center">
-								<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-									<p><?php echo $logged_out; // Logout successful. ?></p>
-								</div>
-								<?php endif; ?>
-								<?php if($success = $this->session->flashdata('success')): ?>
-								<div class="alert alert-success">
-									<?php echo $success; // Password change. ?>
-								</div>
-								<?php endif; ?>
 							</div>
 						</div>
 					</form>

@@ -25,17 +25,17 @@
 							<div class="row">
 								<div class="col-md-8">
 									<strong>Performance Evaluation Form [TCSP]</strong> |
-									<small>Welcome :
+									<small>Now Logged in:
 										<?php $peo_session  = $this->session->userdata('peo_cnic');    ?>
 										<?php $ac_session   = $this->session->userdata('ac_cnic');     ?>
 										<?php $ucpo_session = $this->session->userdata('ucpo_cnic'); 	?>
 										<?php $tcsp_session = $this->session->userdata('tcsp_cnic'); 	?>
 										<?php $admin_session = $this->session->userdata('admin_cnic'); 	?>
 										<strong>
-											<?php if($peo_session){ echo $peo_session; }
-													elseif($ac_session){ echo $ac_session; } 
-													elseif($ucpo_session){ echo $ucpo_session; }
-													elseif($tcsp_session){ echo $tcsp_session; }
+											<?php if($peo_session){ echo $peo_session.' | PEO'; }
+													elseif($ac_session){ echo $ac_session.' | AC'; } 
+													elseif($ucpo_session){ echo $ucpo_session.' | UCPO'; }
+													elseif($tcsp_session){ echo $tcsp_session.' | TCSP'; }
 													elseif($admin_session){ echo $admin_session; }
 											?>
 											</strong> |
@@ -49,13 +49,14 @@
 						</div>
 						<div class="panel-body">
 							<!-- General and PTPP holder's different skills, starts here... -->
-							<form action="<?= base_url('performance_evaluation/save_tcsp_evaluation'); ?>" method="post">
+							<form action="<?php if($this->uri->segment(3)){ echo base_url('performance_evaluation/update_rolledback_tcsp'); }else{ echo base_url('performance_evaluation/save_tcsp_evaluation');} ?>" method="post">
+								<input type="hidden" name="rolledback_tcsp" value="<?php echo $this->uri->segment(3); ?>">
 								<strong>I. General</strong>
 								<table class="table table-condensed">
 									<tbody>
 										<tr>
 											<td>1.</td>
-											<td>Name</td>
+											<td>TCSP Name</td>
 											<td colspan="2">
 												<div class="inputFormMain">
 													<select name="emp_name" class="form-control select2">
@@ -292,7 +293,8 @@
 									<?php $tcsp_session = $this->session->userdata('tcsp_cnic'); ?>
 									<?php $ac_session = $this->session->userdata('ac_cnic'); ?>
 									<button type="submit" class="btn btn-primary" <?php if($tcsp_session OR $ac_session): ?>disabled="" <?php endif; ?>>Forward to TCSP</button>
-									<button type="reset" class="btn btn-default" <?php if($tcsp_session OR $ac_session): ?> disabled="" <?php endif; ?>>Reset</button>
+									<button type="reset" class="btn btn-default" <?php if($tcsp_session OR $ac_session): ?> disabled="" <?php endif; ?>>Reset</button> | 
+									<small><strong>Note: </strong> Form once submitted, can't be edited. So be careful while filling it.</small>
 								</div>
 							</form>
 							<!-- General and PTPP holder's different skills, ends here... -->
@@ -322,7 +324,17 @@
 										</div><br>
 									</div>
 								</div>
-								I have discussed and reviewed the performance evaluation with my supervisor:
+								<div class="row">
+									<div class="col-md-8">
+										I have discussed and reviewed the performance evaluation with my supervisor:
+									</div>
+									<div class="col-md-2">
+										<input type="radio" name="remarks_by_tcsp" value="Agree"> <strong>Agree</strong>
+									</div>
+									<div class="col-md-2">
+										<input type="radio" name="remarks_by_tcsp" value="Disagree"> <strong>Disagree</strong>
+									</div>
+								</div>
 								<br><br><br>
 								<div class="row">
 									<div class="col-md-4">
@@ -337,7 +349,7 @@
 									</div>
 									<div class="col-md-4">
 										<div class="inputFormMain">
-											<input type="date" name="apw_date" class="form-control date" placeholder="Date" autocomplete="off" <?php if($peo_session OR $ac_session): ?> disabled <?php endif; ?>>Date
+											<input type="text" name="apw_date" class="form-control" <?php if($peo_session OR $ac_session): ?> disabled <?php endif; ?> value="<?php echo date('Y-m-d'); ?>">Date
 										</div>
 									</div>
 								</div><br>
@@ -345,7 +357,8 @@
 									<?php $peo_sess = $this->session->userdata('peo_cnic'); ?>
 									<?php $ac_sess = $this->session->userdata('ac_cnic'); ?>
 									<button type="submit" class="btn btn-primary" <?php if($peo_sess OR $ac_sess): ?> disabled <?php endif; ?>>Forward to AC</button>
-									<button type="reset" class="btn btn-default" <?php if($peo_sess OR $ac_sess): ?> disabled <?php endif; ?>>Reset</button>
+									<button type="reset" class="btn btn-default" <?php if($peo_sess OR $ac_sess): ?> disabled <?php endif; ?>>Reset</button> | 
+									<small><strong>Note: </strong> Form once submitted, can't be edited. So be careful while filling it.</small>
 								</div>
 							</form><hr>
 							<!-- PTPP holder's form ends here... -->
@@ -399,13 +412,14 @@
 									</div>
 									<div class="col-md-3">
 										<div class="inputFormMain">
-											<input type="date" name="sec_level_date" class="form-control date" placeholder="Date" autocomplete="off">Date
+											<input type="text" name="sec_level_date" class="form-control"  value="<?php echo date('Y-m-d'); ?>">Date
 										</div>
 									</div>
 								</div><br>
 								<div class="submitBtn">
 									<button type="submit" class="btn btn-primary" <?php if($peo_session OR $tcsp_session): ?> disabled="disabled" <?php endif; ?>>Finalise</button>
-									<button data-toggle="modal" data-target="#rollback" type="button" class="btn btn-default" <?php if($peo_session OR $tcsp_session): ?> disabled="disabled" <?php endif; ?>>Roll Back</button>
+									<button data-toggle="modal" data-target="#rollback" type="button" class="btn btn-default" <?php if($peo_session OR $tcsp_session): ?> disabled="disabled" <?php endif; ?>>Roll Back</button> | 
+									<small><strong>Note: </strong> Form once submitted, can't be edited. So be careful while filling it.</small>
 									<div id="rollback" class="modal fade" role="dialog">
 									  <div class="modal-dialog">
 									    <!-- Modal content-->

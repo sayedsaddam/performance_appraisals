@@ -59,9 +59,23 @@ $(document).ready(function() {
     <section class="secIndexTable">
       <div class="mainTableWhite">
         <div class="row">
-          <div class="col-md-8">
+          <div class="col-md-9">
             <div class="tabelHeading">
-              <h3>recently added evaluations by UCPO <small>[Union Council Polio Officer]</small> | 
+              <?php 
+              $peo_session = $this->session->userdata('peo_cnic');
+              $ac_session = $this->session->userdata('ac_cnic');
+              $ucpo_session = $this->session->userdata('ucpo_cnic');
+              $tcsp_session = $this->session->userdata('tcsp_cnic');
+              ?>
+              <h3>performance evaluation by first supervisor - PEO</small> | 
+                <small>Now logged in:
+                  <strong>
+                    <?php if($peo_session){ echo $peo_session .' | PEO'; } ?>
+                    <?php if($ac_session){ echo $ac_session .' | AC'; } ?>
+                    <?php if($ucpo_session){ echo $ucpo_session .' | UCPO'; } ?>
+                    <?php if($tcsp_session){ echo $tcsp_session .' | TCSP'; } ?>
+                  </strong>
+                </small> |
                 <small>
                   <a href="javascript:history.go(-1);">
                     <div class="label label-warning">
@@ -80,7 +94,7 @@ $(document).ready(function() {
               </h3>
             </div>
           </div>
-          <div class="col-md-3">
+          <div class="col-md-2">
             <div class="tabelHeading">
               <?php if($success = $this->session->flashdata('success')): ?>
               <div class="alert alert-success alert-dismissible">
@@ -109,8 +123,6 @@ $(document).ready(function() {
                       <th>Joining date</th>
                       <th>PEO</th>
                       <th>AC</th>
-                      <th>start date</th>
-                      <th>end date</th>
                       <th>evaluation date</th>
                       <th>status</th>
                     </tr>
@@ -120,7 +132,7 @@ $(document).ready(function() {
                     <?php $rollback_comment = $this->Performance_appraisal_model->get_by_id($rec_evals->eval_id); ?>
                     <tr>
                       <td>
-                        CTC-0<?php echo $rec_evals->employee_id; ?>
+                        <a href="<?php if($rec_evals->status == 3 AND $peo_session){ echo base_url("performance_evaluation/index/{$rec_evals->employee_id}"); }else{ echo base_url('performance_evaluation'); } ?>">CTC-0<?php echo $rec_evals->employee_id; ?></a>
                       </td>
                       <td>
                         <a href="#" data-toggle="modal" data-target="#evaluationDetail<?= $rec_evals->eval_id; ?>">
@@ -298,7 +310,8 @@ $(document).ready(function() {
                                   <div class="col-md-6">
                                     <?php if(!empty($recent_ptpp = $this->Performance_appraisal_model->get_ptpp_remarks($rec_evals->employee_id))): ?>
                                     <strong>PTPP Remarks</strong><br><br>
-                                    <?= $recent_ptpp->remarks; ?>
+                                    <?= $recent_ptpp->remarks; ?><br>
+                                    <strong>Comment: </strong><?= $recent_ptpp->comment; ?>
                                   </div>
                                   <div class="col-md-6 text-right">
                                     <strong>PTPP Holder's Detail</strong><br><br>
@@ -378,19 +391,13 @@ $(document).ready(function() {
                         <?php echo $rec_evals->ac_name; ?>
                       </td>
                       <td>
-                      <?php echo date('M d, Y', strtotime($rec_evals->start_date)); ?>
-                      </td>
-                      <td>
-                      <?php echo date('M d, Y', strtotime($rec_evals->end_date)); ?>
-                      </td>
-                      <td>
                         <?php echo date('M d, Y', strtotime($rec_evals->created_at)); ?>
                       </td>
                       <td>
                         <?php if($rec_evals->status == 0){ ?>
-                          <div class="label label-primary">UCPO</div>
+                          <div class="label label-primary">UCPO Pending</div>
                         <?php }elseif($rec_evals->status == 1){ ?>
-                          <div class="label label-primary">AC</div>
+                          <div class="label label-primary">AC Pending</div>
                         <?php }elseif($rec_evals->status == 2){ ?>
                           <div class="label label-success">Completed</div>
                        <?php }else{ ?>

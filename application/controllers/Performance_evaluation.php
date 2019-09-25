@@ -82,7 +82,11 @@ class Performance_evaluation extends CI_Controller{
 	    $config["num_tag_close"] = "</li>";
 		$this->pagination->initialize($config);
 		$data['title'] = 'Previous Evaluations';
-		$data['recents'] = $this->Performance_appraisal_model->get_performance_evaluation($limit, $offset);
+		if(!$this->session->userdata('admin_cnic')){
+			$data['recents'] = $this->Performance_appraisal_model->get_performance_evaluation($limit, $offset);
+		}else{
+			$data['recents'] = $this->Performance_appraisal_model->get_performance_evaluation_admin($limit, $offset);
+		}
 		$data['content'] = 'performance_evaluation/recent_evals';
 		$this->load->view('components/template', $data);
 	}
@@ -109,10 +113,42 @@ class Performance_evaluation extends CI_Controller{
 			'comment_1' => $this->input->post('others_a'),
 			'comment_2' => $this->input->post('others_b'),
 			'signature' => $this->input->post('1st_signature'),
-			'created_at' => date('Y-m-d', strtotime($this->input->post('1st_date')))
+			'created_at' => $this->input->post('1st_date')
 		);
 		$this->Performance_appraisal_model->add($data);
 		$this->session->set_flashdata('success', 'Evaluation has successfully been forwarded to UCPO!');
+		redirect('performance_evaluation/get_previous');
+	}
+	// Update UCPO evaluation if rolled back.
+	public function update_rolledback(){
+		$employee_id = $this->input->post('rollback_update');
+		$data = array(
+			'start_date' => date('Y-m-d', strtotime($this->input->post('app_start_date'))),
+			'end_date' => date('Y-m-d', strtotime($this->input->post('app_end_date'))),
+			'que_one' => $this->input->post('remark'),
+			'que_two' => $this->input->post('remark1'),
+			'que_three' => $this->input->post('remark2'),
+			'que_four' => $this->input->post('remark3'),
+			'que_five' => $this->input->post('remark4'),
+			'que_six' => $this->input->post('remark5'),
+			'que_seven' => $this->input->post('remark6'),
+			'que_eight' => $this->input->post('remark7'),
+			'attrib_1' => $this->input->post('attribute'),
+			'attrib_2' => $this->input->post('attribute1'),
+			'attrib_3' => $this->input->post('attribute2'),
+			'attrib_4' => $this->input->post('attribute3'),
+			'attrib_5' => $this->input->post('attribute4'),
+			'attrib_6' => $this->input->post('attribute5'),
+			'comment_1' => $this->input->post('others_a'),
+			'comment_2' => $this->input->post('others_b'),
+			'signature' => $this->input->post('1st_signature'),
+			'status' => 0,
+			'created_at' => $this->input->post('1st_date')
+		);
+		$this->Performance_appraisal_model->update_rolled_back($employee_id, $data);
+		$this->db->where('employee_id', $_POST['rollback_update']);
+		$this->db->delete('ptpp_remarks');
+		$this->session->set_flashdata('success', '<strong>Success !</strong> Record has been updated successfully !');
 		redirect('performance_evaluation/get_previous');
 	}
 	// Save the remarks by PTPP to the database.
@@ -240,11 +276,41 @@ class Performance_evaluation extends CI_Controller{
 			'comment_1' => $this->input->post('others_a'),
 			'comment_2' => $this->input->post('others_b'),
 			'signature' => $this->input->post('1st_signature'),
-			'created_at' => date('Y-m-d', strtotime($this->input->post('1st_date')))
+			'created_at' => $this->input->post('1st_date')
 		);
 		$this->Performance_appraisal_model->insert_tcsp_evaluations($data);
 		$this->session->set_flashdata('success', 'Evaluation saved successfully!');
 		redirect('Performance_evaluation/get_tcsp_data');
+	}
+	// Update rolled back TCSP Evaluations.
+	public function update_rolledback_tcsp(){
+		$employee_id = $this->input->post('rolledbback_tcsp');
+		$data = array(
+			'start_date' => date('Y-m-d', strtotime($this->input->post('app_start_date'))),
+			'end_date' => date('Y-m-d', strtotime($this->input->post('app_end_date'))),
+			'que_one' => $this->input->post('remark'),
+			'que_two' => $this->input->post('remark1'),
+			'que_three' => $this->input->post('remark2'),
+			'que_four' => $this->input->post('remark3'),
+			'que_five' => $this->input->post('remark4'),
+			'que_six' => $this->input->post('remark5'),
+			'que_seven' => $this->input->post('remark6'),
+			'que_eight' => $this->input->post('remark7'),
+			'que_nine' => $this->input->post('remark8'),
+			'que_ten' => $this->input->post('remark9'),
+			'attrib_1' => $this->input->post('attribute'),
+			'attrib_2' => $this->input->post('attribute1'),
+			'attrib_3' => $this->input->post('attribute2'),
+			'attrib_4' => $this->input->post('attribute3'),
+			'attrib_5' => $this->input->post('attribute4'),
+			'attrib_6' => $this->input->post('attribute5'),
+			'comment_1' => $this->input->post('others_a'),
+			'comment_2' => $this->input->post('others_b'),
+			'signature' => $this->input->post('1st_signature'),
+			'status' => 0,
+			'created_at' => $this->input->post('1st_date')
+		);
+		var_dump($data); exit;
 	}
 	// Save TCSP remarks.
 	public function remarks_by_tcsp(){
@@ -252,6 +318,7 @@ class Performance_evaluation extends CI_Controller{
 			'employee_id' => $this->input->post('employee_tcsp'),
 			'remarks' => $this->input->post('tcsp_remarks'),
 			'signature' => $this->input->post('apw_holder_sign'),
+			'comment' => $this->input->post('remarks_by_tcsp'),
 			'created_at' => date('Y-m-d', strtotime($this->input->post('apw_date')))
 		);
 		$this->Performance_appraisal_model->add_tcsp_remarks($data);
@@ -273,7 +340,7 @@ class Performance_evaluation extends CI_Controller{
 		$this->db->select('status')->from('tcsp_evaluations')->get()->row();
 		$this->db->where('employee_id', $_POST['sec_level_tcsp']);
 		if(isset($_POST['submit_1'])){
-			$this->db->update('tcsp_evaluations', array('status' => $this->input->post('rollback_comment')));
+			$this->db->update('tcsp_evaluations', array('status' => '3', 'rollback_comment' => $this->input->post('rollback_comment')));
 			$this->db->where('employee_id', $_POST['sec_level_tcsp']);
 			$this->db->delete('sec_level_tcsp_remarks');
 			$this->session->set_flashdata('success', '<strong>Success ! </strong> The Roll back operation was successful !');
@@ -287,6 +354,14 @@ class Performance_evaluation extends CI_Controller{
 	public function get_address_tcsps($id = ''){
 		$tcsp_address = $this->Performance_appraisal_model->get_address_tcsps($id);
 		echo json_encode($tcsp_address);
+	}
+	// Get summary of all the data.
+	public function summary(){
+		$data['count_ucpos'] = $this->Performance_appraisal_model->get_summary_ucpos();
+		$data['count_tcsps'] = $this->Performance_appraisal_model->get_summary_tcsps();
+		$data['title'] = 'Summary Dashboard';
+		$data['content'] = 'performance_evaluation/admin_dashboard';
+		$this->load->view('components/template', $data);
 	}
 }
 ?>

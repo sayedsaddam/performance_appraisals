@@ -32,10 +32,10 @@
 										<?php $tcsp_session = $this->session->userdata('tcsp_cnic'); ?>
 										<?php $admin_session = $this->session->userdata('admin_cnic'); ?>
 										<strong>
-											<?php if($peo_session){ echo $peo_session; }
-													elseif($ac_session){ echo $ac_session; }
-													elseif($ucpo_session){ echo $ucpo_session; }
-													elseif($tcsp_session){ echo $tcsp_session; }
+											<?php if($peo_session){ echo $peo_session .' | PEO'; }
+													elseif($ac_session){ echo $ac_session . ' | AC'; }
+													elseif($ucpo_session){ echo $ucpo_session.' | UCPO'; }
+													elseif($tcsp_session){ echo $tcsp_session.' | TCSP'; }
 													elseif($admin_session){ echo $admin_session; }
 												?>
 										</strong> |
@@ -50,18 +50,19 @@
 						<div class="panel-body">
 							<?php //if(!empty($this->uri->segment(3))): ?>
 							<!-- General and PTPP holder's different skills, starts here... -->
-							<form action="<?= base_url('performance_evaluation/save_evaluation'); ?>" method="post">
+							<form action="<?php if($this->uri->segment(3)){ echo base_url('performance_evaluation/update_rolledback'); }else{ echo base_url('performance_evaluation/save_evaluation'); } ?>" method="post">
+								<input type="hidden" name="rollback_update" value="<?php echo $this->uri->segment(3); ?>">
 								<strong>I. General</strong>
 								<table class="table table-condensed">
 									<tbody>
 										<tr>
 											<td>1.</td>
-											<td>Name</td>
+											<td>UCPO Name</td>
 											<td colspan="2">
 												<div class="inputFormMain">
 													<select name="emp_name" class="form-control select2">
 														<option value="">Select an Employee</option>
-														<?php if($peo_session):
+														<?php if($peo_session AND !$this->uri->segment(3)):
 														foreach($ucpos as $emp): ?>
 														<option value="<?= $emp->id; ?>"><?= $emp->position.' - '. $emp->name; ?></option>
 														<?php endforeach; endif; ?>
@@ -275,7 +276,7 @@
 									</div>
 									<div class="col-md-3">
 										<div class="inputFormMain">
-											<input type="text" name="1st_date" class="form-control date" placeholder="Date" autocomplete="off"value="<?php if(!empty($previously_added)){ echo date('m-d-Y', strtotime($previously_added->created_at)); } ?>">Date
+											<input type="text" name="1st_date" class="form-control date" placeholder="Date" autocomplete="off"value="<?php if(!empty($previously_added)){ echo date('Y-m-d', strtotime($previously_added->created_at)); }else{ echo date('Y-m-d'); } ?>">Date
 										</div>
 										
 									</div>
@@ -284,7 +285,8 @@
 									<?php $ucpo_session = $this->session->userdata('ucpo_cnic'); ?>
 									<?php $ac_session = $this->session->userdata('ac_cnic'); ?>
 									<button type="submit" class="btn btn-primary" <?php if($ucpo_session OR $ac_session): ?> disabled="" <?php endif; ?>>Forward to UCPO</button>
-									<button type="reset" class="btn btn-default" <?php if($ucpo_session OR $ac_session): ?> disabled="" <?php endif; ?>>Reset</button>
+									<button type="reset" class="btn btn-default" <?php if($ucpo_session OR $ac_session): ?> disabled="" <?php endif; ?>>Reset</button> | 
+									<small><strong>Note: </strong> Form once submitted, can't be edited. So be careful while filling it.</small>
 								</div>
 							</form>
 							<!-- General and PTPP holder's different skills, ends here... -->	
@@ -347,7 +349,8 @@
 									<?php $peo_session = $this->session->userdata('peo_cnic'); ?>
 									<?php $ac_session = $this->session->userdata('ac_cnic'); ?>
 									<button type="submit" class="btn btn-primary" <?php if($peo_session OR $ac_session): ?> disabled <?php endif; ?>>Forward to AC</button>
-									<button type="reset" class="btn btn-default" <?php if($peo_session OR $ac_session): ?> disabled <?php endif; ?>>Reset</button>
+									<button type="reset" class="btn btn-default" <?php if($peo_session OR $ac_session): ?> disabled <?php endif; ?>>Reset</button> | 
+									<small><strong>Note: </strong> Form once submitted, can't be edited. So be careful while filling it.</small>
 								</div>
 							</form><hr>
 							<!-- PTPP holder's form ends here... -->
@@ -401,14 +404,15 @@
 									</div>
 									<div class="col-md-3">
 										<div class="inputFormMain">
-											<input type="date" name="sec_level_date" class="form-control date" placeholder="Date" autocomplete="off"> Date
+											<input type="text" name="sec_level_date" class="form-control" value="<?php echo date('Y-m-d'); ?>">Date
 										</div>
 									</div>
 								</div><br>
 								<div class="submitBtn">
 									<?php $ucpo_session = $this->session->userdata('ucpo_cnic'); ?>
 										<button type="submit" name="submit" class="btn btn-primary" <?php if($ucpo_session OR $peo_session): ?> disabled="disabled" <?php endif; ?>>Finalise</button>
-										<button type="button" data-toggle="modal" data-target="#rollback" class="btn btn-default" <?php if($ucpo_session OR $peo_session): ?> disabled="disabled" <?php endif; ?>>Roll Back</button>
+										<button type="button" data-toggle="modal" data-target="#rollback" class="btn btn-default" <?php if($ucpo_session OR $peo_session): ?> disabled="disabled" <?php endif; ?>>Roll Back</button> | 
+										<small><strong>Note: </strong> Form once submitted, can't be edited. So be careful while filling it.</small>
 											<div id="rollback" class="modal fade" role="dialog">
 											  <div class="modal-dialog">
 											    <!-- Modal content-->

@@ -59,9 +59,23 @@ $(document).ready(function() {
     <section class="secIndexTable">
       <div class="mainTableWhite">
         <div class="row">
-          <div class="col-md-8">
+          <div class="col-md-9">
             <div class="tabelHeading">
-              <h3>recently added evaluations by TCSP <small>[Tehsil Campaign Support Person]</small> | 
+              <?php 
+              $peo_session = $this->session->userdata('peo_cnic');
+              $ac_session = $this->session->userdata('ac_cnic');
+              $ucpo_session = $this->session->userdata('ucpo_cnic');
+              $tcsp_session = $this->session->userdata('tcsp_cnic');
+              ?>
+              <h3>performance evaluation by first supervisor - PEO</small> | 
+                <small>Now Logged in:
+                  <strong>
+                    <?php if($peo_session){ echo $peo_session .' | PEO'; } ?>
+                    <?php if($ac_session){ echo $ac_session .' | AC'; } ?>
+                    <?php if($ucpo_session){ echo $ucpo_session .' | UCPO'; } ?>
+                    <?php if($tcsp_session){ echo $tcsp_session .' | TCSP'; } ?>
+                  </strong>
+                </small> |
                 <small>
                   <a href="javascript:history.go(-1);">
                     <div class="label label-warning">
@@ -80,7 +94,7 @@ $(document).ready(function() {
               </h3>
             </div>
           </div>
-          <div class="col-md-3">
+          <div class="col-md-2">
             <div class="tabelHeading">
               <?php if($success = $this->session->flashdata('success')): ?>
               <div class="alert alert-success alert-dismissible">
@@ -109,17 +123,16 @@ $(document).ready(function() {
                       <th>Joining date</th>
                       <th>PEO</th>
                       <th>AC</th>
-                      <th>start date</th>
-                      <th>end date</th>
                       <th>evaluation date</th>
                       <th>status</th>
                     </tr>
                   </thead>
                   <tbody id="filter_results">
                     <?php foreach($recent_tcsp as $rec_evals): ?>
+                    <?php $rollback_comment = $this->Performance_appraisal_model->get_tcsp_by_id($rec_evals->evalu_id); ?>
                     <tr>
                       <td>
-                        CTC-0<?php echo $rec_evals->employee_id; ?>
+                        <a href="<?php if($rec_evals->status == 3 AND $peo_session){ echo base_url("performance_evaluation/tcsp_evaluation/{$rec_evals->employee_id}"); } ?>">CTC-0<?php echo $rec_evals->employee_id; ?></a>
                       </td>
                       <td>
                         <a href="#" data-toggle="modal" data-target="#evaluationDetail<?= $rec_evals->evalu_id; ?>">
@@ -313,7 +326,8 @@ $(document).ready(function() {
                                   <div class="col-md-6">
                                     <?php if(!empty($recent_tcsp = $this->Performance_appraisal_model->get_tcsp_remarks($rec_evals->employee_id))): ?>
                                     <strong>APW Remarks</strong><br><br>
-                                    <?= $recent_tcsp->remarks; ?>
+                                    <?= $recent_tcsp->remarks; ?><br>
+                                    <strong>Comment: </strong><?= $recent_tcsp->comment; ?>
                                   </div>
                                   <div class="col-md-6 text-right">
                                     <strong>APW Holder's Detail</strong><br><br>
@@ -393,23 +407,36 @@ $(document).ready(function() {
                         <?php echo $rec_evals->ac_name; ?>
                       </td>
                       <td>
-                        <?php echo date('M d, Y', strtotime($rec_evals->start_date)); ?>
-                      </td>
-                      <td>
-                      <?php echo date('M d, Y', strtotime($rec_evals->end_date)); ?>
-                      </td>
-                      <td>
                         <?php echo date('M d, Y', strtotime($rec_evals->created_at)); ?>
                       </td>
                       <td>
                         <?php if($rec_evals->status == 0){ ?>
-                          <div class="label label-primary">TCSP</div>
+                          <div class="label label-primary">TCSP pending</div>
                         <?php }elseif($rec_evals->status == 1){ ?>
-                          <div class="label label-primary">AC</div>
+                          <div class="label label-primary">AC pending</div>
                         <?php }elseif($rec_evals->status == 2){ ?>
                           <div class="label label-success">Completed</div>
                        <?php }else{ ?>
-                          <div class="label label-danger">Rolled Back</div>
+                          <a href="#" data-toggle="modal" data-target="#commentModal<?php echo $rec_evals->evalu_id; ?>">
+                            <div class="label label-danger">Rolled Back</div>
+                          </a>
+                          <div id="commentModal<?php echo $rec_evals->evalu_id; ?>" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                              <!-- Modal content-->
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                  <strong>Roll Back comment...</strong>
+                                  <p><?php echo $rollback_comment->rollback_comment; ?></p>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                         <?php } ?>
                       </td>
                     </tr>
