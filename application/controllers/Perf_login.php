@@ -69,7 +69,7 @@ class Perf_login extends CI_Controller
           $this->session->set_userdata(array('admin_cnic' => $admin_cnic));
           redirect('performance_evaluation/get_previous');
       }else{
-        $this->session->set_flashdata('failed', '<strong>Aww snap! </strong> Looks like you do not have to permission to make an appraisal, contract your supervisor for further detail.');
+        $this->session->set_flashdata('failed', '<strong>Aww snap! </strong> Looks like you do not have the permission to make an appraisal, contact your supervisor for further detail.');
           $this->index();
       }
     }

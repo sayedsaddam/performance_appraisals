@@ -355,13 +355,5 @@ class Performance_evaluation extends CI_Controller{
 		$tcsp_address = $this->Performance_appraisal_model->get_address_tcsps($id);
 		echo json_encode($tcsp_address);
 	}
-	// Get summary of all the data.
-	public function summary(){
-		$data['count_ucpos'] = $this->Performance_appraisal_model->get_summary_ucpos();
-		$data['count_tcsps'] = $this->Performance_appraisal_model->get_summary_tcsps();
-		$data['title'] = 'Summary Dashboard';
-		$data['content'] = 'performance_evaluation/admin_dashboard';
-		$this->load->view('components/template', $data);
-	}
 }
 ?>

@@ -66,6 +66,7 @@ $(document).ready(function() {
               $ac_session = $this->session->userdata('ac_cnic');
               $ucpo_session = $this->session->userdata('ucpo_cnic');
               $tcsp_session = $this->session->userdata('tcsp_cnic');
+              $admin_session = $this->session->userdata('admin_cnic');
               ?>
               <h3>performance evaluation by first supervisor - PEO</small> | 
                 <small>Now logged in:
@@ -74,6 +75,7 @@ $(document).ready(function() {
                     <?php if($ac_session){ echo $ac_session .' | AC'; } ?>
                     <?php if($ucpo_session){ echo $ucpo_session .' | UCPO'; } ?>
                     <?php if($tcsp_session){ echo $tcsp_session .' | TCSP'; } ?>
+                    <?php if($admin_session){ echo $admin_session .' | Admin'; } ?>
                   </strong>
                 </small> |
                 <small>

@@ -422,22 +422,38 @@ class Performance_appraisal_model extends CI_Model {
 	}
 
 	// ---------------------------------------------------------------------------------
-	// Summary dashboard.
+	// Summary dashboard. For Administrators...
 	// count number of all the ucpo's in the database.
 	public function all_ucpos(){
-		return $this->db->from('ucpo_data')->count_all_results();
+		return $this->db->from('ucpo_data')->count_all_results(); // Count all TCSP's.
 	}
 	// count number of all the tcsp's in the database.
 	public function all_tcsps(){
-		return $this->db->from('tcsp_data')->count_all_results();
+		return $this->db->from('tcsp_data')->count_all_results(); // Count all UCPO's.
+	}
+	// Count no. of UCPO's pending from UCPOS.
+	public function count_pending_from_ucpos(){
+		return $this->db->where('employee_id NOT IN(SELECT employee_id FROM ptpp_remarks)')->from('performance_evaluation')->count_all_results();
+	}
+	// Count no. of TCSP's pending from TCSP's.
+	public function count_pending_from_tcsps(){
+		return $this->db->where('employee_id NOT IN(SELECT employee_id FROM tcsp_remarks)')->from('tcsp_evaluations')->count_all_results();
 	}
 	// Count number of all UCPO's evaluated by PEO.
 	public function count_ucpos_pending(){
-		return $this->db->where('id NOT IN(SELECT employee_id FROM ptpp_remarks)')->from('ucpo_data')->count_all_results();
+		return $this->db->where('id NOT IN(SELECT employee_id FROM ptpp_remarks)')->from('ucpo_data')->count_all_results(); // returns no. of ucpo's of which id not in PTPP remarks table.
 	}
 	// Count number of UCPO's pending for AC.
 	public function count_ac_ucpos_pending(){
-		return $this->db->where('employee_id NOT IN(SELECT employee_id FROM sec_level_sup_remarks)')->from('ptpp_remarks')->count_all_results();
+		return $this->db->where('employee_id NOT IN(SELECT employee_id FROM sec_level_sup_remarks)')->from('ptpp_remarks')->count_all_results(); // returns no. of ucpo not evaluated by AC.
+	}
+	// Count no. of UCPO's completed.
+	public function completed_ucpos(){
+		return $this->db->from('sec_level_sup_remarks')->count_all_results();
+	}
+	// Count no. of TCSP's completed.
+	public function completed_tcsps(){
+		return $this->db->from('sec_level_tcsp_remarks')->count_all_results();
 	}
 	// Count number of all TCSP's.
 	public function count_tcsps_pending(){
@@ -448,15 +464,77 @@ class Performance_appraisal_model extends CI_Model {
 		return $this->db->where('employee_id NOT IN(SELECT employee_id FROM sec_level_tcsp_remarks)')->from('tcsp_remarks')->count_all_results();
 	}
 	// Get summary UCPO's.
-	public function get_summary_ucpos(){
-		$this->db->select('*');
+	public function get_summary_ucpos($limit, $offset){
+		$this->db->select('ucpo_data.id,
+							ucpo_data.name,
+							ucpo_data.cnic_name,
+							ucpo_data.cnic_peo,
+							ucpo_data.cnic_ac,
+							peo_data.peo_cnic,
+							peo_data.peo_name,
+							ac_data.ac_cnic,
+							ac_data.ac_name');
 		$this->db->from('ucpo_data');
+		$this->db->join('peo_data', 'ucpo_data.cnic_peo = peo_data.peo_cnic', 'left');
+		$this->db->join('ac_data', 'ucpo_data.cnic_ac = ac_data.ac_cnic', 'left');
+		$this->db->where('id NOT IN(SELECT employee_id FROM ptpp_remarks)');
+		$this->db->limit($limit, $offset);
 		return $this->db->get()->result();
 	}
 	// Get summary TCSP's.
-	public function get_summary_tcsps(){
-		$this->db->select('*');
+	public function get_summary_tcsps($limit, $offset){
+		$this->db->select('tcsp_data.id,
+							tcsp_data.name,
+							tcsp_data.cnic_name,
+							tcsp_data.cnic_peo,
+							tcsp_data.cnic_ac,
+							peo_data.peo_cnic,
+							peo_data.peo_name,
+							ac_data.ac_cnic,
+							ac_data.ac_name');
 		$this->db->from('tcsp_data');
+		$this->db->join('peo_data', 'tcsp_data.cnic_peo = peo_data.peo_cnic', 'left');
+		$this->db->join('ac_data', 'tcsp_data.cnic_ac = ac_data.ac_cnic', 'left');
+		$this->db->where('id NOT IN(SELECT employee_id FROM tcsp_remarks)');
+		$this->db->limit($limit, $offset);
+		return $this->db->get()->result();
+	}
+	// Search for UCPO's
+	public function search_ucpos($search = ''){
+		$this->db->select('ucpo_data.id,
+							ucpo_data.name,
+							ucpo_data.cnic_name,
+							ucpo_data.cnic_peo,
+							ucpo_data.cnic_ac,
+							peo_data.peo_cnic,
+							peo_data.peo_name,
+							ac_data.ac_cnic,
+							ac_data.ac_name');
+		$this->db->from('ucpo_data');
+		$this->db->join('peo_data', 'ucpo_data.cnic_peo = peo_data.peo_cnic', 'left');
+		$this->db->join('ac_data', 'ucpo_data.cnic_ac = ac_data.ac_cnic', 'left');
+		$this->db->where('id NOT IN(SELECT employee_id FROM ptpp_remarks)');
+		$this->db->like('peo_data.peo_name', $search);
+		$this->db->or_like('ac_data.ac_name', $search);
+		return $this->db->get()->result();
+	}
+	// Search for TCSP's.
+	public function search_tcsps($search = ''){
+		$this->db->select('tcsp_data.id,
+							tcsp_data.name,
+							tcsp_data.cnic_name,
+							tcsp_data.cnic_peo,
+							tcsp_data.cnic_ac,
+							peo_data.peo_cnic,
+							peo_data.peo_name,
+							ac_data.ac_cnic,
+							ac_data.ac_name');
+		$this->db->from('tcsp_data');
+		$this->db->join('peo_data', 'tcsp_data.cnic_peo = peo_data.peo_cnic', 'left');
+		$this->db->join('ac_data', 'tcsp_data.cnic_ac = ac_data.ac_cnic', 'left');
+		$this->db->where('id NOT IN(SELECT employee_id FROM tcsp_remarks)');
+		$this->db->like('peo_data.peo_name', $search);
+		$this->db->or_like('ac_data.ac_name', $search);
 		return $this->db->get()->result();
 	}
 

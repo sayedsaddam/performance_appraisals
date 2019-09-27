@@ -29,7 +29,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="javascript:void(0)">Performance Appraisals</a>
+      <a class="navbar-brand" href="<?php if($this->session->userdata('admin_cnic')){ echo base_url('admin_dashboard'); }else{ ?>javascript:void(0);<?php } ?>">Performance Appraisals</a>
     </div>
     <?php $ucpo_session = $this->session->userdata('ucpo_cnic'); ?>
     <?php $tcsp_session = $this->session->userdata('tcsp_cnic'); ?>
@@ -44,7 +44,7 @@
         </li>
         <?php if($this->session->userdata('admin_cnic')): ?>
           <li>
-          <a href="<?php echo base_url('performance_evaluation/summary'); ?>">Summary</a>
+          <a href="<?php echo base_url('admin_dashboard'); ?>">Summary</a>
         </li>
       <?php endif; ?>
       </ul>

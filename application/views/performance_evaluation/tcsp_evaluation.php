@@ -36,7 +36,7 @@
 													elseif($ac_session){ echo $ac_session.' | AC'; } 
 													elseif($ucpo_session){ echo $ucpo_session.' | UCPO'; }
 													elseif($tcsp_session){ echo $tcsp_session.' | TCSP'; }
-													elseif($admin_session){ echo $admin_session; }
+													elseif($admin_session){ echo $admin_session.' | Admin'; }
 											?>
 											</strong> |
 									</small>
