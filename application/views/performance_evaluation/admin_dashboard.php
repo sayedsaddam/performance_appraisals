@@ -22,7 +22,8 @@
           <div class="col-md-4">
             <div class="tabelTopBtn">
               <div class="input-group-btn">
-                <a class="btn btn-defaul" href="javascript:void(0);"><<< <i class="fa fa-refresh"></i> >>></a>
+                <a href="<?php echo base_url('admin_dashboard/add_ucpos'); ?>" class="btn btn-default"><i class="fa fa-plus"></i> add ucpo's</a>
+                <a class="btn btn-default" href="javascript:void(0);"><<< <i class="fa fa-refresh"></i> >>></a>
               </div>
             </div>
           </div>
@@ -68,7 +69,8 @@
           <div class="col-md-4">
             <div class="tabelTopBtn">
               <div class="input-group-btn">
-                <a class="btn btn-defaul" href="javascript:void(0);"><<< <i class="fa fa-refresh"></i> >>></a>
+                <a href="<?php echo base_url('admin_dashboard/add_tcsps'); ?>" class="btn btn-default"><i class="fa fa-plus"></i> add tcsp's</a>
+                <a class="btn btn-default" href="javascript:void(0);"><<< <i class="fa fa-refresh"></i> >>></a>
               </div>
             </div>
           </div>
@@ -115,6 +117,7 @@
             <div class="tabelTopBtn">
               <div class="input-group-btn">
                 <a class="btn btn-defaul" href="<?= base_url('admin_dashboard/all_ucpos'); ?>">view all</a>
+                <a class="btn btn-defaul" href="<?= base_url('admin_dashboard/add_peos'); ?>"><i class="fa fa-plus"></i> add peo's</a>
               </div>
             </div>
           </div>
@@ -161,6 +164,7 @@
             <div class="tabelTopBtn">
               <div class="input-group-btn">
                 <a class="btn btn-defaul" href="<?= base_url('admin_dashboard/all_tcsps'); ?>">view all</a>
+                <a class="btn btn-defaul" href="<?= base_url('admin_dashboard/add_peos'); ?>"><i class="fa fa-plus"></i> add ac's</a>
               </div>
             </div>
           </div>

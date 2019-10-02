@@ -537,6 +537,36 @@ class Performance_appraisal_model extends CI_Model {
 		$this->db->or_like('ac_data.ac_name', $search);
 		return $this->db->get()->result();
 	}
+	// ------- Get all PEO's & AC's to list them in the UCPO's addtion form -----------------//
+	public function get_peos(){
+		$this->db->select('peo_id, peo_name, peo_cnic');
+		$this->db->from('peo_data');
+		return $this->db->get()->result();
+	}
+	public function get_acs(){
+		$this->db->select('ac_id, ac_name, ac_cnic');
+		$this->db->from('ac_data');
+		return $this->db->get()->result();
+	}
+	//--------------------- Add PEO's, AC's, UCPO's and TCSP's -------------------------------// 
+	// Add PEO's
+	public function add_peos($data){
+		$this->db->insert('peo_data', $data);
+		if($this->db->affected_rows() > 0){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	// Add AC's
+	public function add_acs($data){
+		$this->db->insert('ac_data', $data);
+		if($this->db->affected_rows() > 0){
+			return true;
+		}else{
+			return false;
+		}
+	}
 
 }
 

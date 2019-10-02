@@ -110,6 +110,51 @@ class Admin_dashboard extends CI_Controller
 		$data['search_results'] = $this->Performance_appraisal_model->search_tcsps($search);
 		$this->load->view('components/template', $data);
 	}
+	// -----------------------------------------------------------------------------------------//
+	// Add new UCPO's.
+	public function add_ucpos(){
+		$data['title'] = 'Add UCPOs | Performance Appraisal';
+		$data['content'] = 'performance_evaluation/add_ucpos';
+		$data['peos'] = $this->Performance_appraisal_model->get_peos();
+		$data['acs'] = $this->Performance_appraisal_model->get_acs();
+		$this->load->view('components/template', $data);
+	}
+	// Add new TCSP's.
+	public function add_tcsps(){
+		$data['title'] = 'Add TCSPs | Performance Appraisal';
+		$data['content'] = 'performance_evaluation/add_tcsps';
+		$data['peos'] = $this->Performance_appraisal_model->get_peos();
+		$data['acs'] = $this->Performance_appraisal_model->get_acs();
+		$this->load->view('components/template', $data);
+	}
+	// Add new PEO's and AC's.
+	public function add_peos(){
+		$data['title'] = 'Add PEOs | Performance Appraisal';
+		$data['content'] = 'performance_evaluation/add_peos';
+		$this->load->view('components/template', $data);
+	}
+	// Save PEO's to the database.
+	public function save_peos(){
+		$data = array(
+			'peo_name' => $this->input->post('peo_name'),
+			'peo_cnic' => $this->input->post('peo_cnic'),
+			'peo_password' => $this->input->post('peo_pass')
+		);
+		$this->Performance_appraisal_model->add_peos($data);
+		$this->session->set_flashdata('success_peo', '<strong>Success! </strong> PEO has been saved successfully!');
+		redirect('admin_dashboard/add_peos');
+	}
+	// Save AC's to the database.
+	public function save_acs(){
+		$data = array(
+			'ac_name' => $this->input->post('ac_name'),
+			'ac_cnic' => $this->input->post('ac_cnic'),
+			'ac_password' => $this->input->post('ac_pass')
+		);
+		$this->Performance_appraisal_model->add_acs($data);
+		$this->session->set_flashdata('success_ac', '<strong>Success !</strong> AC has been added successfully!');
+		redirect('admin_dashboard/add_peos');
+	}
 }
 
 ?>
