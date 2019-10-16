@@ -59,7 +59,7 @@ $(document).ready(function() {
     <section class="secIndexTable">
       <div class="mainTableWhite">
         <div class="row">
-          <div class="col-md-9">
+          <div class="col-md-10">
             <div class="tabelHeading">
               <?php 
               $peo_session = $this->session->userdata('peo_cnic');
@@ -96,17 +96,22 @@ $(document).ready(function() {
               </h3>
             </div>
           </div>
-          <div class="col-md-2">
+          <div class="col-md-1">
             <div class="tabelHeading">
-              <?php if($success = $this->session->flashdata('success')): ?>
-              <div class="alert alert-success alert-dismissible">
-                <a href="#" class="close" aria-lable="close" data-dismiss="alert">&times;</a>
-                <p class="text-center"><?php echo $success; ?></p>
-              </div>
-              <?php endif; ?>
+              
             </div>
           </div>
         </div>
+         <?php if($success = $this->session->flashdata('success')): ?>
+             <div class="row">
+               <div class="col-md-10 col-md-offset-1">
+                 <div class="alert alert-success alert-dismissible">
+                  <a href="#" class="close" aria-lable="close" data-dismiss="alert">&times;</a>
+                  <p class="text-center"><?php echo $success; ?></p>
+                </div>
+               </div>
+             </div> 
+          <?php endif; ?>
         <div class="row">
           <div class="col-md-12">
             <div class="tableMain">

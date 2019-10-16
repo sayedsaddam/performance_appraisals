@@ -386,12 +386,19 @@ class Performance_appraisal_model extends CI_Model {
 		  							peo_data.peo_cnic,
 		  							ac_data.ac_id,
 		  							ac_data.ac_name,
-		  							ac_data.ac_cnic');
+		  							ac_data.ac_cnic,
+		  							tcsp_remarks.employee_id as tcsp_id,
+		  							tcsp_remarks.comment,
+		  							sec_level_tcsp_remarks.employee_id as sec_tcsp_id,
+		  							sec_level_tcsp_remarks.assessment_result');
 	   $this->db->from('tcsp_evaluations');
-	   $this->db->limit(10);
+	   // $this->db->limit(10);
 	   $this->db->join('tcsp_data', 'tcsp_evaluations.employee_id = tcsp_data.id');
 	   $this->db->join('peo_data', 'tcsp_data.cnic_peo = peo_data.peo_cnic', 'left');
 	   $this->db->join('ac_data', 'tcsp_data.cnic_ac = ac_data.ac_cnic', 'left');
+	   $this->db->join('tcsp_remarks', 'tcsp_data.id = tcsp_remarks.employee_id', 'left');
+	   $this->db->join('sec_level_tcsp_remarks', 'tcsp_data.id = sec_level_tcsp_remarks.employee_id', 'left');
+	   $this->db->query('SET SQL_BIG_SELECTS=1');
 	   return $this->db->get()->result_array();
 	}
 
@@ -412,12 +419,18 @@ class Performance_appraisal_model extends CI_Model {
 	  							peo_data.peo_cnic,
 	  							ac_data.ac_id,
 	  							ac_data.ac_name,
-	  							ac_data.ac_cnic');
+	  							ac_data.ac_cnic,
+	  							ptpp_remarks.employee_id as ptpp_id,
+	  							ptpp_remarks.comment,
+	  							sec_level_sup_remarks.employee_id as sup_id,
+	  							sec_level_sup_remarks.assessment_result');
 	  $this->db->from('performance_evaluation');
-	  $this->db->limit(10);
-	  $this->db->join('ucpo_data', 'performance_evaluation.employee_id = ucpo_data.id');
-	  $this->db->join('peo_data', 'ucpo_data.cnic_peo = peo_data.peo_cnic');
+	  // $this->db->limit(10);
+	  $this->db->join('ucpo_data', 'performance_evaluation.employee_id = ucpo_data.id', 'left');
+	  $this->db->join('peo_data', 'ucpo_data.cnic_peo = peo_data.peo_cnic', 'left');
 	  $this->db->join('ac_data', 'ucpo_data.cnic_ac = ac_data.ac_cnic', 'left');
+	  $this->db->join('ptpp_remarks', 'ucpo_data.id = ptpp_remarks.employee_id', 'left');
+	  $this->db->join('sec_level_sup_remarks', 'ucpo_data.id = sec_level_sup_remarks.employee_id', 'left');
 	  return $this->db->get()->result_array();
 	}
 
