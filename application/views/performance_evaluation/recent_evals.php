@@ -173,7 +173,7 @@ $(document).ready(function() {
                                         <small>1. UC/Area level Micro-plans development and desk revision</small>
                                       </div>
                                       <div class="col-md-2">
-                                        <?php if($rec_evals->que_one == 1){ echo 'Best'; }elseif($rec_evals->que_one == 2){ echo 'Fair'; }else{ echo 'Bad'; } ?>
+                                        <?php if($rec_evals->que_one == 3){ echo 'Best'; }elseif($rec_evals->que_one == 2){ echo 'Fair'; }else{ echo 'Bad'; } ?>
                                       </div>
                                     </div>
                                     <div class="row">
@@ -181,7 +181,7 @@ $(document).ready(function() {
                                         <small>2. UC / Area level Micro-plans field validation</small>
                                       </div>
                                       <div class="col-md-2">
-                                        <?php if($rec_evals->que_two == 1){ echo 'Best'; }elseif($rec_evals->que_two == 2){ echo 'Fair'; }else{ echo 'Bad'; } ?>
+                                        <?php if($rec_evals->que_two == 3){ echo 'Best'; }elseif($rec_evals->que_two == 2){ echo 'Fair'; }else{ echo 'Bad'; } ?>
                                       </div>
                                     </div>
                                     <div class="row">
@@ -189,7 +189,7 @@ $(document).ready(function() {
                                         <small>3. Status of selection of the house to house vaccination teams</small>
                                       </div>
                                       <div class="col-md-2">
-                                        <?php if($rec_evals->que_three == 1){ echo 'Best'; }elseif($rec_evals->que_three == 2){ echo 'Fair'; }else{ echo 'Bad'; } ?>
+                                        <?php if($rec_evals->que_three == 3){ echo 'Best'; }elseif($rec_evals->que_three == 2){ echo 'Fair'; }else{ echo 'Bad'; } ?>
                                       </div>
                                     </div>
                                     <div class="row">
@@ -197,7 +197,7 @@ $(document).ready(function() {
                                         <small>4. Training of the vaccination teams</small>
                                       </div>
                                       <div class="col-md-2">
-                                        <?php if($rec_evals->que_four == 1){ echo 'Best'; }elseif($rec_evals->que_four == 2){ echo 'Fair'; }else{ echo 'Bad'; } ?>
+                                        <?php if($rec_evals->que_four == 3){ echo 'Best'; }elseif($rec_evals->que_four == 2){ echo 'Fair'; }else{ echo 'Bad'; } ?>
                                       </div>
                                     </div>
                                     <div class="row">
@@ -205,7 +205,7 @@ $(document).ready(function() {
                                         <small>5. Training of the UC supervisors (Area In-charges)</small>
                                       </div>
                                       <div class="col-md-2">
-                                        <?php if($rec_evals->que_five == 1){ echo 'Best'; }elseif($rec_evals->que_five == 2){ echo 'Fair'; }else{ echo 'Bad'; } ?>
+                                        <?php if($rec_evals->que_five == 3){ echo 'Best'; }elseif($rec_evals->que_five == 2){ echo 'Fair'; }else{ echo 'Bad'; } ?>
                                       </div>
                                     </div>
                                     <div class="row">
@@ -213,7 +213,7 @@ $(document).ready(function() {
                                         <small>6. Pre campaign data collection, collation and timely transmission to the next level</small>
                                       </div>
                                       <div class="col-md-2">
-                                        <?php if($rec_evals->que_six == 1){ echo 'Best'; }elseif($rec_evals->que_six == 2){ echo 'Fair'; }else{ echo 'Bad'; } ?>
+                                        <?php if($rec_evals->que_six == 3){ echo 'Best'; }elseif($rec_evals->que_six == 2){ echo 'Fair'; }else{ echo 'Bad'; } ?>
                                       </div>
                                     </div>
                                     <div class="row">
@@ -221,7 +221,7 @@ $(document).ready(function() {
                                         <small>7. Data collection, collation and timely transmission to the next level during the campaign</small>
                                       </div>
                                       <div class="col-md-2">
-                                        <?php if($rec_evals->que_seven == 1){ echo 'Best'; }elseif($rec_evals->que_seven == 2){ echo 'Fair'; }else{ echo 'Bad'; } ?>
+                                        <?php if($rec_evals->que_seven == 3){ echo 'Best'; }elseif($rec_evals->que_seven == 2){ echo 'Fair'; }else{ echo 'Bad'; } ?>
                                       </div>
                                     </div>
                                     <div class="row">
@@ -229,7 +229,7 @@ $(document).ready(function() {
                                         <small>8. Corrective measures following the identification of the gaps</small>
                                       </div>
                                       <div class="col-md-2">
-                                        <?php if($rec_evals->que_eight == 1){ echo 'Best'; }elseif($rec_evals->que_eight == 2){ echo 'Fair'; }else{ echo 'Bad'; } ?>
+                                        <?php if($rec_evals->que_eight == 3){ echo 'Best'; }elseif($rec_evals->que_eight == 2){ echo 'Fair'; }else{ echo 'Bad'; } ?>
                                       </div>
                                     </div>
                                   </div>
@@ -248,7 +248,8 @@ $(document).ready(function() {
                                         <small>Reliability</small>
                                       </div>
                                       <div class="col-md-4">
-                                        <?php echo $rec_evals->attrib_1; ?>
+                                        <?php if($rec_evals->attrib_1 == '3'){ echo 'Satisfactory'; }elseif($rec_evals->attrib_1 == '2'){ echo 'Needs Improvement'; }else{ echo 'Unsatisfactory'; }
+                                        ?>
                                       </div>
                                     </div>
                                     <div class="row">
@@ -256,7 +257,7 @@ $(document).ready(function() {
                                         <small>Work independently with minimal supervision</small>
                                       </div>
                                       <div class="col-md-4">
-                                        <?php echo $rec_evals->attrib_2; ?>
+                                        <?php if($rec_evals->attrib_2 == '3'){ echo 'Satisfactory'; }elseif($rec_evals->attrib_2 == '2'){ echo 'Needs Improvement'; }else{ echo 'Unsatisfactory'; } ?>
                                       </div>
                                     </div>
                                     <div class="row">
@@ -264,7 +265,7 @@ $(document).ready(function() {
                                         <small>Punctuality</small>
                                       </div>
                                       <div class="col-md-4">
-                                        <?php echo $rec_evals->attrib_3; ?>
+                                        <?php if($rec_evals->attrib_3 == '3'){ echo 'Satisfactory'; }elseif($rec_evals->attrib_3 == '2'){ echo 'Needs Improvement'; }else{ echo 'Unsatisfactory'; } ?>
                                       </div>
                                     </div>
                                     <div class="row">
@@ -272,7 +273,7 @@ $(document).ready(function() {
                                         <small>Initiative</small>
                                       </div>
                                       <div class="col-md-4">
-                                        <?php echo $rec_evals->attrib_4; ?>
+                                        <?php if($rec_evals->attrib_4 == '3'){ echo 'Satisfactory'; }elseif($rec_evals->attrib_4 == '2'){ echo 'Needs Improvement'; }else{ echo 'Unsatisfactory'; } ?>
                                       </div>
                                     </div>
                                     <div class="row">
@@ -280,7 +281,7 @@ $(document).ready(function() {
                                         <small>Good team player</small>
                                       </div>
                                       <div class="col-md-4">
-                                        <?php echo $rec_evals->attrib_5; ?>
+                                        <?php if($rec_evals->attrib_5 == '3'){ echo 'Satisfactory'; }elseif($rec_evals->attrib_5 == '2'){ echo 'Needs Improvement'; }else{ echo 'Unsatisfactory'; } ?>
                                       </div>
                                     </div>
                                     <div class="row">
@@ -288,7 +289,7 @@ $(document).ready(function() {
                                         <small>Familiarity with WHO required procedures</small>
                                       </div>
                                       <div class="col-md-4">
-                                        <?php echo $rec_evals->attrib_6; ?>
+                                        <?php if($rec_evals->attrib_6 == '3'){ echo 'Satisfactory'; }elseif($rec_evals->attrib_6 == '2'){ echo 'Needs Improvement'; }else{ echo 'Unsatisfactory'; } ?>
                                       </div>
                                     </div>
                                   </div>
@@ -364,6 +365,7 @@ $(document).ready(function() {
                               </div>
                               <!--Footer-->
                               <div class="modal-footer">
+                                <a target="blank" href="<?= base_url();?>Performance_evaluation/print_appraisal/<?= $rec_evals->eval_id; ?>" class="btn btn-primary">Print</a>
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                               </div>
                             </div>

@@ -355,5 +355,37 @@ class Performance_evaluation extends CI_Controller{
 		$tcsp_address = $this->Performance_appraisal_model->get_address_tcsps($id);
 		echo json_encode($tcsp_address);
 	}
+	// -------------------------- Generate PDF --------------------------------------//
+	public function print_appraisal($eval_id){
+		$this->load->library('Pdf');
+	    $pdf = new Pdf('P', 'mm', 'A4', true, 'UTF-8', false);
+	    $pdf->SetTitle('Performance Appraisal');
+	    $pdf->SetHeaderMargin(30);
+	    $pdf->SetTopMargin(20);
+	    $pdf->setFooterMargin(20);
+	    $pdf->SetAutoPageBreak(true);
+	    $pdf->SetCreator(PDF_CREATOR);
+	    $pdf->SetAuthor('Saddam');
+	    $pdf->SetDisplayMode('real', 'default');
+	    $pdf->SetCreator(PDF_CREATOR);
+	    $pdf->setFontSubsetting(true);
+	    $pdf->setFont('times', '', 12);
+	    $pdf->setPrintHeader(false);
+	    $pdf->setPrintFooter(false);
+	    // Add a page
+	    $data['emp'] = $this->Performance_appraisal_model->appraisal_print($eval_id);
+	    // foreach($data as $print){
+	    //   // $title = $print->title;
+	    //   $name = $print->name;
+	    //   $position = $print->position;
+	    //   $province = $print->province;
+	    //   $cnic = $print->cnic_name;
+	    // }
+	    $pdf->AddPage(); // Data will be loaded to the page here.
+	    $html = $this->load->view('generate_pdf', $data, true);
+	    $pdf->writeHTML($html, true, false, true, false, '');
+	    ob_clean();
+	    $pdf->Output(md5(time()).'.pdf', 'I');
+	}
 }
 ?>

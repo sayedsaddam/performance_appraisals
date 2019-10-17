@@ -580,7 +580,33 @@ class Performance_appraisal_model extends CI_Model {
 			return false;
 		}
 	}
-
+	// ---------------------------------- Get data for PDF --------------------------------- //
+	public function appraisal_print($eval_id){
+		$this->db->select('performance_evaluation.*,
+							ucpo_data.id,
+							ucpo_data.name,
+							ucpo_data.position,
+							ucpo_data.cnic_name,
+							ucpo_data.province,
+							ucpo_data.district,
+							ucpo_data.tehsil,
+							ucpo_data.uc,
+							ucpo_data.join_date,
+							peo_data.peo_id,
+							peo_data.peo_name,
+							peo_data.peo_cnic,
+							ac_data.ac_id,
+							ac_data.ac_name,
+							ac_data.ac_cnic');
+	  $this->db->from('performance_evaluation');
+	  $this->db->join('ucpo_data', 'performance_evaluation.employee_id = ucpo_data.id');
+	  $this->db->join('peo_data', 'ucpo_data.cnic_peo = peo_data.peo_cnic', 'left');
+	  $this->db->join('ac_data', 'ucpo_data.cnic_ac = ac_data.ac_cnic', 'left');
+	  $this->db->where('eval_id', $eval_id);
+	  // $this->db->or_where('ucpo_data.cnic_ac', $this->session->userdata('ac_cnic'));
+	  $query = $this->db->get();
+	  return $query->row();
+	}
 }
 
 ?>
