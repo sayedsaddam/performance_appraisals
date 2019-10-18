@@ -30,18 +30,29 @@
             </form>
           </div>
         </div>
+        <?php if($success = $this->session->flashdata('success')): ?>
+          <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+              <div class="alert alert-success text-center">
+                <?php echo $success; ?>
+              </div>
+            </div>
+          </div>
+        <?php endif; ?>
         <div class="row">
           <div class="col-md-12">
             <div class="tableMain">
               <div class="table-responsive">
-                <table class="table">
+                <table class="table table-condensed">
                   <thead>
                     <tr>
                       <th>name of UCPO</th>
                       <th>UCPO CNIC</th>
                       <th>name of PEO</th>
+                      <th>PEO CNIC</th>
                       <th>name of AC</th>
-                      <th>status</th>
+                      <th>AC CNIC</th>
+                      <th>status | Actions</th>
                     </tr>
                   </thead>
                   <?php if(empty($search_results)): ?>
@@ -51,8 +62,14 @@
                         <td><?php echo $pending->name; ?></td>
                         <td><?php echo $pending->cnic_name; ?></td>
                         <td><?php echo $pending->peo_name; ?></td>
+                        <td><?php echo $pending->cnic_peo; ?></td>
                         <td><?php echo $pending->ac_name; ?></td>
-                        <td><div class="label label-info">Pending...</div></td>
+                        <td><?php echo $pending->cnic_ac; ?></td>
+                        <td>
+                          <button class="btn btn-info btn-xs">Pending...</button>
+                          <a href="<?php echo base_url(); ?>admin_dashboard/edit_ucpo/<?php echo $pending->id; ?>" class="btn btn-primary btn-xs">Edit</a>
+                          <a href="<?php echo base_url(); ?>admin_dashboard/delete_ucpo/<?php echo $pending->id; ?>" class="btn btn-danger btn-xs" onclick="javascript:return confirm('Are you sure to delete ?');">Delete</a>
+                        </td>
                       </tr>
                     <?php endforeach; ?>
                   </tbody>
@@ -63,8 +80,15 @@
                         <td><?php echo $result->name; ?></td>
                         <td><?php echo $result->cnic_name; ?></td>
                         <td><?php echo $result->peo_name; ?></td>
+                        <td><?php echo $result->cnic_peo; ?></td>
                         <td><?php echo $result->ac_name; ?></td>
-                        <td><div class="label label-info">Pending...</div></td>
+                        <td><?php echo $result->cnic_ac;
+                         ?></td>
+                        <td>
+                           <button class="btn btn-info btn-xs">Pending...</button>
+                          <a href="<?php echo base_url(); ?>admin_dashboard/edit_ucpo/<?php echo $result->id; ?>" class="btn btn-primary btn-xs">Edit</a>
+                          <a href="<?php echo base_url(); ?>admin_dashboard/delete_ucpo/<?php echo $result->id; ?>" class="btn btn-danger btn-xs" onclick="javascript:return confirm('Are you sure to delete ?');">Delete</a>
+                        </td>
                       </tr>
                     <?php endforeach; ?>
                   </tbody>

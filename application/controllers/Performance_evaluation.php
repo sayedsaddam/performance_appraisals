@@ -247,7 +247,11 @@ class Performance_evaluation extends CI_Controller{
 	    $config["num_tag_close"] = "</li>";
 		$this->pagination->initialize($config);
 		$data['title'] = 'TCSP Evaluations | Rcently Added';
-		$data['recent_tcsp'] = $this->Performance_appraisal_model->get_tcsp_evaluations($limit, $offset);
+		if(!$this->session->userdata('admin_cnic')){
+			$data['recent_tcsp'] = $this->Performance_appraisal_model->get_tcsp_evaluations($limit, $offset);
+		}else{
+			$data['recent_tcsp'] = $this->Performance_appraisal_model->get_tcsp_evaluations_admin($limit, $offset);
+		}
 		$data['content'] = 'performance_evaluation/recent_tcsp';
 		$this->load->view('components/template', $data);
 	}
@@ -284,7 +288,7 @@ class Performance_evaluation extends CI_Controller{
 	}
 	// Update rolled back TCSP Evaluations.
 	public function update_rolledback_tcsp(){
-		$employee_id = $this->input->post('rolledbback_tcsp');
+		$employee_id = $this->input->post('rolledback_tcsp');
 		$data = array(
 			'start_date' => date('Y-m-d', strtotime($this->input->post('app_start_date'))),
 			'end_date' => date('Y-m-d', strtotime($this->input->post('app_end_date'))),
@@ -356,10 +360,11 @@ class Performance_evaluation extends CI_Controller{
 		echo json_encode($tcsp_address);
 	}
 	// -------------------------- Generate PDF --------------------------------------//
+	// Generate PDF, UCPO report.
 	public function print_appraisal($eval_id){
 		$this->load->library('Pdf');
 	    $pdf = new Pdf('P', 'mm', 'A4', true, 'UTF-8', false);
-	    $pdf->SetTitle('Performance Appraisal');
+	    $pdf->SetTitle('Performance Appraisal UCPO');
 	    $pdf->SetHeaderMargin(30);
 	    $pdf->SetTopMargin(20);
 	    $pdf->setFooterMargin(20);
@@ -374,15 +379,35 @@ class Performance_evaluation extends CI_Controller{
 	    $pdf->setPrintFooter(false);
 	    // Add a page
 	    $data['emp'] = $this->Performance_appraisal_model->appraisal_print($eval_id);
-	    // foreach($data as $print){
-	    //   // $title = $print->title;
-	    //   $name = $print->name;
-	    //   $position = $print->position;
-	    //   $province = $print->province;
-	    //   $cnic = $print->cnic_name;
-	    // }
+	    ob_start();
 	    $pdf->AddPage(); // Data will be loaded to the page here.
 	    $html = $this->load->view('generate_pdf', $data, true);
+	    $pdf->writeHTML($html, true, false, true, false, '');
+	    ob_clean();
+	    $pdf->Output(md5(time()).'.pdf', 'I');
+	}
+	// Generate PDF, TCSP report.
+	public function print_appraisal_tcsp($evalu_id){
+		$this->load->library('Pdf');
+	    $pdf = new Pdf('P', 'mm', 'A4', true, 'UTF-8', false);
+	    $pdf->SetTitle('Performance Appraisal TCSP');
+	    $pdf->SetHeaderMargin(30);
+	    $pdf->SetTopMargin(20);
+	    $pdf->setFooterMargin(20);
+	    $pdf->SetAutoPageBreak(true);
+	    $pdf->SetCreator(PDF_CREATOR);
+	    $pdf->SetAuthor('Saddam');
+	    $pdf->SetDisplayMode('real', 'default');
+	    $pdf->SetCreator(PDF_CREATOR);
+	    $pdf->setFontSubsetting(true);
+	    $pdf->setFont('times', '', 12);
+	    $pdf->setPrintHeader(false);
+	    $pdf->setPrintFooter(false);
+	    // Add a page
+	    $data['emp'] = $this->Performance_appraisal_model->appraisal_print_tcsp($evalu_id);
+	    ob_start();
+	    $pdf->AddPage(); // Data will be loaded to the page here.
+	    $html = $this->load->view('generate_pdf_tcsp', $data, true);
 	    $pdf->writeHTML($html, true, false, true, false, '');
 	    ob_clean();
 	    $pdf->Output(md5(time()).'.pdf', 'I');

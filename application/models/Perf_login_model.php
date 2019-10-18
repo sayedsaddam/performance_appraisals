@@ -115,6 +115,7 @@ class Perf_login_model extends CI_Model
         $this->db->from('tcsp_data');
         $this->db->join('peo_data', 'tcsp_data.cnic_peo = peo_data.peo_cnic', 'left');
         $this->db->where('tcsp_data.cnic_peo', $this->session->userdata('peo_cnic'));
+        $this->db->where('id NOT IN(SELECT employee_id FROM tcsp_evaluations)');
         $query = $this->db->get();
         return $query->result();
     }

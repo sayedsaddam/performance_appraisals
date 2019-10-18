@@ -155,6 +155,122 @@ class Admin_dashboard extends CI_Controller
 		$this->session->set_flashdata('success_ac', '<strong>Success !</strong> AC has been added successfully!');
 		redirect('admin_dashboard/add_peos');
 	}
+	// Save UCPO's to the database.
+	public function save_ucpos(){
+		$data = array(
+			'position' => 'UCPO',
+			'name' => $this->input->post('ucpo_name'),
+			'cnic_name' => $this->input->post('ucpo_cnic'),
+			'province' => $this->input->post('ucpo_prov'),
+			'district' => $this->input->post('ucpo_distt'),
+			'tehsil' => $this->input->post('ucpo_tehsil'),
+			'uc' => $this->input->post('ucpo_uc'),
+			'cnic_peo' => $this->input->post('ucpo_peo'),
+			'cnic_ac' => $this->input->post('ucpo_ac'),
+			'ucpo_password' => $this->input->post('ucpo_pass'),
+			'join_date' => date('d-M-y', strtotime($this->input->post('join_date')))
+		);
+		$this->Performance_appraisal_model->add_ucpos($data);
+		$this->session->set_flashdata('success', '<strong>Success !</strong> UCPO has been added successfully!');
+		redirect('admin_dashboard/add_ucpos');
+	}
+	// Save TCSP's to the database.
+	public function save_tcsps(){
+		$data = array(
+			'position' => 'TCSP',
+			'name' => $this->input->post('tcsp_name'),
+			'cnic_name' => $this->input->post('tcsp_cnic'),
+			'province' => $this->input->post('tcsp_prov'),
+			'district' => $this->input->post('tcsp_distt'),
+			'tehsil' => $this->input->post('tcsp_tehsil'),
+			'uc' => $this->input->post('tcsp_uc'),
+			'cnic_peo' => $this->input->post('tcsp_peo'),
+			'cnic_ac' => $this->input->post('tcsp_ac'),
+			'tcsp_password' => $this->input->post('tcsp_pass'),
+			'join_date' => date('d-M-y', strtotime($this->input->post('join_date')))
+		);
+		$this->Performance_appraisal_model->add_tcsps($data);
+		$this->session->set_flashdata('success', '<strong>Success !</strong> UCPO has been added successfully!');
+		redirect('admin_dashboard/add_tcsps');
+	}
+	// ------------------------------ Edit, update, and delete operations ------------------------ //
+	// Edit UCPO.
+	public function edit_ucpo($id){
+		$data['title'] = 'Update | Performance Appraisals';
+        $data['content'] = 'performance_evaluation/add_ucpos';
+        $data['peos'] = $this->Performance_appraisal_model->get_peos();
+		$data['acs'] = $this->Performance_appraisal_model->get_acs();
+        $data['edit'] = $this->Performance_appraisal_model->edit_ucpo($id); // Model call.
+        $this->load->view('components/template', $data);
+	}
+	// Update UCPO.
+	public function update_ucpo(){
+		$id = $this->input->post('emp_id');
+		$data = array(
+			'position' => 'UCPO',
+			'name' => $this->input->post('ucpo_name'),
+			'cnic_name' => $this->input->post('ucpo_cnic'),
+			'province' => $this->input->post('ucpo_prov'),
+			'district' => $this->input->post('ucpo_distt'),
+			'tehsil' => $this->input->post('ucpo_tehsil'),
+			'uc' => $this->input->post('ucpo_uc'),
+			'cnic_peo' => $this->input->post('ucpo_peo'),
+			'cnic_ac' => $this->input->post('ucpo_ac'),
+			'ucpo_password' => $this->input->post('ucpo_pass'),
+			//'join_date' => date('d-M-y', strtotime($this->input->post('join_date')))
+		);
+		$this->Performance_appraisal_model->update_ucpo($id, $data);
+		$this->session->set_flashdata('success', '<strong>Success !</strong> UCPO has been updated successfully');
+		redirect('admin_dashboard/all_ucpos');
+	}
+	// Delete UCPO.
+	public function delete_ucpo($id){
+		if($this->Performance_appraisal_model->delete_ucpo($id)){
+			$this->session->set_flashdata('success', '<strong>Success !</strong> The delete operation was successful.');
+			redirect('admin_dashboard/all_ucpos');
+		}else{
+			echo "The operation wasn't successful !";
+		}
+	}
+	// Edit TCSP.
+	public function edit_tcsp($id){
+		$data['title'] = 'Update | Performance Appraisals';
+        $data['content'] = 'performance_evaluation/add_tcsps';
+        $data['peos'] = $this->Performance_appraisal_model->get_peos();
+		$data['acs'] = $this->Performance_appraisal_model->get_acs();
+        $data['edit'] = $this->Performance_appraisal_model->edit_tcsp($id); // Model call.
+        $this->load->view('components/template', $data);
+	}
+	// Update TCSP
+	public function update_tcsp(){
+		$id = $this->input->post('emp_id');
+		$data = array(
+			'position' => 'TCSP',
+			'name' => $this->input->post('tcsp_name'),
+			'cnic_name' => $this->input->post('tcsp_cnic'),
+			'province' => $this->input->post('tcsp_prov'),
+			'district' => $this->input->post('tcsp_distt'),
+			'tehsil' => $this->input->post('tcsp_tehsil'),
+			'uc' => $this->input->post('tcsp_uc'),
+			'cnic_peo' => $this->input->post('tcsp_peo'),
+			'cnic_ac' => $this->input->post('tcsp_ac'),
+			'tcsp_password' => $this->input->post('tcsp_pass'),
+			//'join_date' => date('d-M-y', strtotime($this->input->post('join_date')))
+		);
+		$this->Performance_appraisal_model->update_tcsp($id, $data);
+		$this->session->set_flashdata('success', '<strong>Success ! </strong>TCSP has been updated successfully!');
+		redirect('admin_dashboard/all_tcsps');
+	}
+	// Delete TCSP.
+	public function delete_tcsp($id){
+		if($this->Performance_appraisal_model->delete_tcsp($id)){
+			$this->session->set_flashdata('success', '<strong>Success ! </strong>The delete operation was successful!');
+			redirect('admin_dashboard/all_tcsps');
+		}else{
+			echo "The operation wasn't successful !";
+		}
+	}
+
 }
 
 ?>

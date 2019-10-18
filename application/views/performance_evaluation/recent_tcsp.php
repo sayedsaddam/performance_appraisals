@@ -380,6 +380,7 @@ $(document).ready(function() {
                               </div>
                               <!--Footer-->
                               <div class="modal-footer">
+                                <a target="blank" href="<?= base_url();?>Performance_evaluation/print_appraisal_tcsp/<?= $rec_evals->evalu_id; ?>" class="btn btn-primary">Print</a>
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                               </div>
                             </div>

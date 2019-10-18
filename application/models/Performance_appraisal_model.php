@@ -261,6 +261,32 @@ class Performance_appraisal_model extends CI_Model {
 	    $query = $this->db->get();
 	    return $query->result();
 	}
+	// Get for admin
+	public function get_tcsp_evaluations_admin($limit = '', $offset = ''){
+		$this->db->select('tcsp_evaluations.*,
+		  							tcsp_data.id,
+		  							tcsp_data.name,
+		  							tcsp_data.position,
+		  							tcsp_data.cnic_name,
+		  							tcsp_data.province,
+		  							tcsp_data.district,
+		  							tcsp_data.tehsil,
+		  							tcsp_data.uc,
+		  							tcsp_data.join_date,
+		  							peo_data.peo_id,
+		  							peo_data.peo_name,
+		  							peo_data.peo_cnic,
+		  							ac_data.ac_id,
+		  							ac_data.ac_name,
+		  							ac_data.ac_cnic');
+	    $this->db->from('tcsp_evaluations');
+	    $this->db->join('tcsp_data', 'tcsp_evaluations.employee_id = tcsp_data.id');
+	    $this->db->join('peo_data', 'tcsp_data.cnic_peo = peo_data.peo_cnic', 'left');
+	    $this->db->join('ac_data', 'tcsp_data.cnic_ac = ac_data.ac_cnic', 'left');
+	    $this->db->limit($limit, $offset);
+	    $query = $this->db->get();
+	    return $query->result();
+	}
 	// Insert data into the database, TCSP form data.
 	public function insert_tcsp_evaluations($data){
 		$this->db->insert('tcsp_evaluations', $data);
@@ -272,7 +298,7 @@ class Performance_appraisal_model extends CI_Model {
 	}
 	// Get TCSP's by ID.
 	public function get_tcsp_by_id($evalu_id){
-		$this->db->select('rollback_comment');
+		$this->db->select('evalu_id, rollback_comment');
 		$this->db->from('tcsp_evaluations');
 		$this->db->where('evalu_id', $evalu_id);
 		return $this->db->get()->row();
@@ -431,6 +457,7 @@ class Performance_appraisal_model extends CI_Model {
 	  $this->db->join('ac_data', 'ucpo_data.cnic_ac = ac_data.ac_cnic', 'left');
 	  $this->db->join('ptpp_remarks', 'ucpo_data.id = ptpp_remarks.employee_id', 'left');
 	  $this->db->join('sec_level_sup_remarks', 'ucpo_data.id = sec_level_sup_remarks.employee_id', 'left');
+	  $this->db->query('SET SQL_BIG_SELECTS=1');
 	  return $this->db->get()->result_array();
 	}
 
@@ -491,6 +518,7 @@ class Performance_appraisal_model extends CI_Model {
 		$this->db->join('peo_data', 'ucpo_data.cnic_peo = peo_data.peo_cnic', 'left');
 		$this->db->join('ac_data', 'ucpo_data.cnic_ac = ac_data.ac_cnic', 'left');
 		$this->db->where('id NOT IN(SELECT employee_id FROM ptpp_remarks)');
+		$this->db->order_by('ucpo_data.id', 'DESC');
 		$this->db->limit($limit, $offset);
 		return $this->db->get()->result();
 	}
@@ -509,6 +537,7 @@ class Performance_appraisal_model extends CI_Model {
 		$this->db->join('peo_data', 'tcsp_data.cnic_peo = peo_data.peo_cnic', 'left');
 		$this->db->join('ac_data', 'tcsp_data.cnic_ac = ac_data.ac_cnic', 'left');
 		$this->db->where('id NOT IN(SELECT employee_id FROM tcsp_remarks)');
+		$this->db->order_by('tcsp_data.id', 'DESC');
 		$this->db->limit($limit, $offset);
 		return $this->db->get()->result();
 	}
@@ -580,7 +609,64 @@ class Performance_appraisal_model extends CI_Model {
 			return false;
 		}
 	}
+	// Add UCPO's.
+	public function add_ucpos($data){
+		$this->db->insert('ucpo_data', $data);
+		if($this->db->affected_rows() > 0){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	// Add TCSP's.
+	public function add_tcsps($data){
+		$this->db->insert('tcsp_data', $data);
+		if($this->db->affected_rows() > 0){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	// Edit UCPO.
+	public function edit_ucpo($id){
+		$this->db->select('*');
+		$this->db->from('ucpo_data');
+		$this->db->where('id', $id);
+		return $this->db->get()->row();
+	}
+	// Update UCPO.
+	public function update_ucpo($id = '', $data = ''){
+        $this->db->where('id', $id);
+        $this->db->update('ucpo_data', $data);
+        return true;
+    }
+    // Delete UCPO.
+    public function delete_ucpo($id){
+    	$this->db->where('id', $id);
+    	$this->db->delete('ucpo_data');
+    	return true;
+    }
+    // Edit TCSP.
+    public function edit_tcsp($id){
+    	$this->db->select('*');
+    	$this->db->from('tcsp_data');
+    	$this->db->where('id', $id);
+    	return $this->db->get()->row();
+    }
+    // Update TCSP.
+    public function update_tcsp($id = '', $data = ''){
+    	$this->db->where('id', $id);
+    	$this->db->update('tcsp_data', $data);
+    	return true;
+    }
+    // Delete TCSP
+    public function delete_tcsp($id){
+    	$this->db->where('id', $id);
+    	$this->db->delete('tcsp_data');
+    	return true;
+    }
 	// ---------------------------------- Get data for PDF --------------------------------- //
+	// Print appraisal, UCPO.
 	public function appraisal_print($eval_id){
 		$this->db->select('performance_evaluation.*,
 							ucpo_data.id,
@@ -606,6 +692,32 @@ class Performance_appraisal_model extends CI_Model {
 	  // $this->db->or_where('ucpo_data.cnic_ac', $this->session->userdata('ac_cnic'));
 	  $query = $this->db->get();
 	  return $query->row();
+	}
+	// Print appraisal report, TCSP.
+	public function appraisal_print_tcsp($evalu_id){
+		$this->db->select('tcsp_evaluations.*,
+		  							tcsp_data.id,
+		  							tcsp_data.name,
+		  							tcsp_data.position,
+		  							tcsp_data.cnic_name,
+		  							tcsp_data.province,
+		  							tcsp_data.district,
+		  							tcsp_data.tehsil,
+		  							tcsp_data.uc,
+		  							tcsp_data.join_date,
+		  							peo_data.peo_id,
+		  							peo_data.peo_name,
+		  							peo_data.peo_cnic,
+		  							ac_data.ac_id,
+		  							ac_data.ac_name,
+		  							ac_data.ac_cnic');
+	    $this->db->from('tcsp_evaluations');
+	    $this->db->join('tcsp_data', 'tcsp_evaluations.employee_id = tcsp_data.id');
+	    $this->db->join('peo_data', 'tcsp_data.cnic_peo = peo_data.peo_cnic', 'left');
+	    $this->db->join('ac_data', 'tcsp_data.cnic_ac = ac_data.ac_cnic', 'left');
+	    $this->db->where('evalu_id', $evalu_id);
+	    $query = $this->db->get();
+	    return $query->row();
 	}
 }
 
