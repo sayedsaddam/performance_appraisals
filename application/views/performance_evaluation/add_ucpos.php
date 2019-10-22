@@ -128,9 +128,9 @@
                         <div class="row">
                           <div class="col-md-offset-3">
                             <select name="ucpo_peo" class="form-control select2">
+                               <option value="<?php if(!empty(@$edit)){ echo $edit->cnic_peo; ?>" selected>
+                                  <?php echo $edit->cnic_peo; } ?></option>
                               <option value="">Select PEO...</option>
-                              <option value="<?php if(!empty(@$edit)){ echo $edit->cnic_peo; ?>" selected>
-                                  <?php echo $edit->cnic_peo; } ?>
                               <?php foreach ($peos as $peo): ?>
                                 <option value="<?php echo $peo->peo_cnic; ?>"><?php echo $peo->peo_name; ?></option>
                               <?php endforeach; ?>
@@ -147,9 +147,9 @@
                         <div class="row">
                           <div class="col-md-offset-3">
                             <select name="ucpo_ac" class="form-control select2">
-                              <option value="">Select AC...</option>
-                              <option value="<?php if(!empty($edit)){ echo $edit->cnic_ac; ?>" selected>
+                               <option value="<?php if(!empty($edit)){ echo $edit->cnic_ac; ?>" selected>
                                   <?php echo $edit->cnic_ac; } ?></option>
+                              <option value="">Select AC...</option>
                                <?php foreach ($acs as $ac): ?>
                                 <option value="<?php echo $ac->ac_cnic; ?>"><?php echo $ac->ac_name; ?></option>
                               <?php endforeach; ?>

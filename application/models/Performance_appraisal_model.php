@@ -119,6 +119,7 @@ class Performance_appraisal_model extends CI_Model {
 		$this->db->join('ac_data', 'ucpo_data.cnic_ac = ac_data.ac_cnic', 'left');
 		$this->db->where('ucpo_data.cnic_ac', $this->session->userdata('ac_cnic'));
 		$this->db->where('employee_id NOT IN(SELECT employee_id FROM sec_level_sup_remarks)');
+		$this->db->group_by('ucpo_data.id');
 		$query = $this->db->get();
 		return $query->result();
 	}
@@ -252,7 +253,7 @@ class Performance_appraisal_model extends CI_Model {
 		  							ac_data.ac_name,
 		  							ac_data.ac_cnic');
 	    $this->db->from('tcsp_evaluations');
-	    $this->db->join('tcsp_data', 'tcsp_evaluations.employee_id = tcsp_data.id');
+	    $this->db->join('tcsp_data', 'tcsp_evaluations.employee_id = tcsp_data.id', 'left');
 	    $this->db->join('peo_data', 'tcsp_data.cnic_peo = peo_data.peo_cnic', 'left');
 	    $this->db->join('ac_data', 'tcsp_data.cnic_ac = ac_data.ac_cnic', 'left');
 	    $this->db->where(array('tcsp_data.cnic_peo'=> $this->session->userdata('peo_cnic')));
@@ -280,7 +281,7 @@ class Performance_appraisal_model extends CI_Model {
 		  							ac_data.ac_name,
 		  							ac_data.ac_cnic');
 	    $this->db->from('tcsp_evaluations');
-	    $this->db->join('tcsp_data', 'tcsp_evaluations.employee_id = tcsp_data.id');
+	    $this->db->join('tcsp_data', 'tcsp_evaluations.employee_id = tcsp_data.id', 'left');
 	    $this->db->join('peo_data', 'tcsp_data.cnic_peo = peo_data.peo_cnic', 'left');
 	    $this->db->join('ac_data', 'tcsp_data.cnic_ac = ac_data.ac_cnic', 'left');
 	    $this->db->limit($limit, $offset);
@@ -517,6 +518,7 @@ class Performance_appraisal_model extends CI_Model {
 		$this->db->from('ucpo_data');
 		$this->db->join('peo_data', 'ucpo_data.cnic_peo = peo_data.peo_cnic', 'left');
 		$this->db->join('ac_data', 'ucpo_data.cnic_ac = ac_data.ac_cnic', 'left');
+		$this->db->where('id NOT IN(SELECT employee_id FROM performance_evaluation)');
 		$this->db->where('id NOT IN(SELECT employee_id FROM ptpp_remarks)');
 		$this->db->order_by('ucpo_data.id', 'DESC');
 		$this->db->limit($limit, $offset);
@@ -536,6 +538,7 @@ class Performance_appraisal_model extends CI_Model {
 		$this->db->from('tcsp_data');
 		$this->db->join('peo_data', 'tcsp_data.cnic_peo = peo_data.peo_cnic', 'left');
 		$this->db->join('ac_data', 'tcsp_data.cnic_ac = ac_data.ac_cnic', 'left');
+		$this->db->where('id NOT IN(SELECT employee_id FROM tcsp_evaluations)');
 		$this->db->where('id NOT IN(SELECT employee_id FROM tcsp_remarks)');
 		$this->db->order_by('tcsp_data.id', 'DESC');
 		$this->db->limit($limit, $offset);
@@ -555,6 +558,7 @@ class Performance_appraisal_model extends CI_Model {
 		$this->db->from('ucpo_data');
 		$this->db->join('peo_data', 'ucpo_data.cnic_peo = peo_data.peo_cnic', 'left');
 		$this->db->join('ac_data', 'ucpo_data.cnic_ac = ac_data.ac_cnic', 'left');
+		$this->db->where('id NOT IN(SELECT employee_id FROM performance_evaluation)');
 		$this->db->where('id NOT IN(SELECT employee_id FROM ptpp_remarks)');
 		$this->db->like('peo_data.peo_name', $search);
 		$this->db->or_like('ac_data.ac_name', $search);
@@ -574,6 +578,7 @@ class Performance_appraisal_model extends CI_Model {
 		$this->db->from('tcsp_data');
 		$this->db->join('peo_data', 'tcsp_data.cnic_peo = peo_data.peo_cnic', 'left');
 		$this->db->join('ac_data', 'tcsp_data.cnic_ac = ac_data.ac_cnic', 'left');
+		$this->db->where('id NOT IN(SELECT employee_id FROM tcsp_evaluations)');
 		$this->db->where('id NOT IN(SELECT employee_id FROM tcsp_remarks)');
 		$this->db->like('peo_data.peo_name', $search);
 		$this->db->or_like('ac_data.ac_name', $search);

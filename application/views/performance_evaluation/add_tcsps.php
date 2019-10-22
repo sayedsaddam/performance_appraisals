@@ -68,7 +68,7 @@
                           <div class="col-md-offset-3">
                             <select name="tcsp_prov" class="form-control select2">
                               <option value="<?php if(!empty(@$edit AND $edit->province != NULL)){ ?>" selected>
-                                <?php echo $edit->province; } ?>
+                                <?php echo $edit->province; } ?></option>
                               <option value="">Select Province...</option>
                               <option value="KP">KP</option>
                               <option value="KP-TD">KP-TD</option>
@@ -127,9 +127,9 @@
                         <div class="row">
                           <div class="col-md-offset-3">
                             <select name="tcsp_peo" class="form-control select2">
-                              <option value="">Select PEO...</option>
                               <option value="<?php if(!empty(@$edit)){ echo $edit->cnic_peo; ?>" selected>
                                   <?php echo $edit->cnic_peo; } ?></option>
+                              <option value="">Select PEO...</option>
                               <?php foreach ($peos as $peo): ?>
                                 <option value="<?php echo $peo->peo_cnic; ?>"><?php echo $peo->peo_name; ?></option>
                               <?php endforeach; ?>
@@ -146,9 +146,9 @@
                         <div class="row">
                           <div class="col-md-offset-3">
                             <select name="tcsp_ac" class="form-control select2">
-                              <option value="">Select AC...</option>
                               <option value="<?php if(!empty($edit)){ echo $edit->cnic_ac; ?>" selected>
                                   <?php echo $edit->cnic_ac; } ?></option>
+                              <option value="">Select AC...</option>
                                <?php foreach ($acs as $ac): ?>
                                 <option value="<?php echo $ac->ac_cnic; ?>"><?php echo $ac->ac_name; ?></option>
                               <?php endforeach; ?>

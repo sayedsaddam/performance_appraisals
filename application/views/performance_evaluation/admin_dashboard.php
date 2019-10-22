@@ -1,5 +1,5 @@
 <?php $count_ucpos = $this->Performance_appraisal_model->all_ucpos(); ?>
- <?php $count_ucpos_pending = $this->Performance_appraisal_model->count_ucpos_pending(); ?>
+<?php $count_ucpos_pending = $this->Performance_appraisal_model->count_ucpos_pending(); ?>
 <?php $count_tcsps = $this->Performance_appraisal_model->count_tcsps_pending(); ?>
 <?php $count_tcsps_pending = $this->Performance_appraisal_model->all_tcsps(); ?>
 <?php $count_ac_ucpos = $this->Performance_appraisal_model->count_ac_ucpos_pending(); ?>
@@ -91,9 +91,9 @@
                   </thead>
                   <tbody>
                     <tr>
-                      <td><?php echo $count_tcsps; ?></td>
-                      <td><?php echo $pen_from_tcsps; ?></td>
                       <td><?php echo $count_tcsps_pending; ?></td>
+                      <td><?php echo $pen_from_tcsps; ?></td>
+                      <td><?php echo $count_tcsps; ?></td>
                       <td><?php echo $count_ac_tcsps; ?></td>
                       <td><?php echo $completed_tcsps; ?></td>
                     </tr>

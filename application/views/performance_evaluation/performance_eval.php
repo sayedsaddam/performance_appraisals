@@ -341,7 +341,7 @@
 									</div>
 									<div class="col-md-4">
 										<div class="inputFormMain">
-											<input type="text" name="ptpp_date" class="form-control date" placeholder="Date" autocomplete="off" value="<?php echo date('Y-m-d'); ?>"> <?php if($peo_session OR $ac_session): ?> disabled <?php endif; ?>Date
+											<input type="text" name="ptpp_date" class="form-control date" placeholder="Date" autocomplete="off" value="<?php echo date('Y-m-d'); ?>" <?php if($peo_session OR $ac_session): ?> disabled <?php endif; ?>>Date
 										</div>
 									</div>
 								</div><br>

@@ -339,12 +339,12 @@
 								<div class="row">
 									<div class="col-md-4">
 										<div class="inputFormMain">
-											<input type="text" name="apw_holder_name" class="form-control" placeholder="Name..." <?php if($peo_session OR $ac_session): ?> disabled <?php endif; ?>>APW holder (Name)
+											<input type="text" name="apw_holder_name" class="form-control" placeholder="Name..." <?php if($peo_session OR $ac_session): ?> disabled <?php endif; ?>>PTPP holder (Name)
 										</div>
 									</div>
 									<div class="col-md-4">
 										<div class="inputFormMain">
-											<input type="text" name="apw_holder_sign" class="form-control" placeholder="Write your names as a signature..." <?php if($peo_session OR $ac_session): ?> disabled <?php endif; ?>>APW holder (Signature)
+											<input type="text" name="apw_holder_sign" class="form-control" placeholder="Write your names as a signature..." <?php if($peo_session OR $ac_session): ?> disabled <?php endif; ?>>PTPP holder (Signature)
 										</div>
 									</div>
 									<div class="col-md-4">

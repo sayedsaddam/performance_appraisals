@@ -136,6 +136,7 @@ class Perf_login_model extends CI_Model
         $this->db->from('ucpo_data');
         $this->db->join('ac_data', 'ucpo_data.cnic_ac = ac_data.ac_cnic', 'left');
         $this->db->where('ucpo_data.cnic_ac', $this->session->userdata('ac_cnic'));
+        $this->db->where('id NOT IN(SELECT employee_id FROM sec_level_sup_remarks)');
         $query = $this->db->get();
         return $query->result();
     }
@@ -156,6 +157,7 @@ class Perf_login_model extends CI_Model
         $this->db->from('tcsp_data');
         $this->db->join('ac_data', 'tcsp_data.cnic_ac = ac_data.ac_cnic', 'left');
         $this->db->where('tcsp_data.cnic_ac', $this->session->userdata('ac_cnic'));
+        $this->db->where('id NOT IN(SELECT employee_id FROM sec_level_tcsp_remarks)');
         $query = $this->db->get();
         return $query->result();
     }
