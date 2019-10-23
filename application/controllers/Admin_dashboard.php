@@ -215,8 +215,8 @@ class Admin_dashboard extends CI_Controller
 			'tehsil' => $this->input->post('ucpo_tehsil'),
 			'uc' => $this->input->post('ucpo_uc'),
 			'cnic_peo' => $this->input->post('ucpo_peo'),
-			'cnic_ac' => $this->input->post('ucpo_ac'),
-			'ucpo_password' => $this->input->post('ucpo_pass'),
+			'cnic_ac' => $this->input->post('ucpo_ac')
+			// 'ucpo_password' => $this->input->post('ucpo_pass'),
 			//'join_date' => date('d-M-y', strtotime($this->input->post('join_date')))
 		);
 		$this->Performance_appraisal_model->update_ucpo($id, $data);
@@ -253,8 +253,8 @@ class Admin_dashboard extends CI_Controller
 			'tehsil' => $this->input->post('tcsp_tehsil'),
 			'uc' => $this->input->post('tcsp_uc'),
 			'cnic_peo' => $this->input->post('tcsp_peo'),
-			'cnic_ac' => $this->input->post('tcsp_ac'),
-			'tcsp_password' => $this->input->post('tcsp_pass'),
+			'cnic_ac' => $this->input->post('tcsp_ac')
+			// 'tcsp_password' => $this->input->post('tcsp_pass'),
 			//'join_date' => date('d-M-y', strtotime($this->input->post('join_date')))
 		);
 		$this->Performance_appraisal_model->update_tcsp($id, $data);

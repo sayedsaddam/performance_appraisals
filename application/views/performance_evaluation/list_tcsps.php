@@ -48,6 +48,7 @@
                     <tr>
                       <th>name of UCPO</th>
                       <th>UCPO CNIC</th>
+                      <th>province</th>
                       <th>name of PEO</th>
                       <th>PEO CNIC</th>
                       <th>name of AC</th>
@@ -61,6 +62,7 @@
                       <tr>
                         <td><?php echo $pending->name; ?></td>
                         <td><?php echo $pending->cnic_name; ?></td>
+                        <td><?php echo $pending->province; ?></td>
                         <td><?php echo $pending->peo_name; ?></td>
                         <td><?php echo $pending->cnic_peo; ?></td>
                         <td><?php echo $pending->ac_name; ?></td>

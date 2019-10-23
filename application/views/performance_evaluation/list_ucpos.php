@@ -10,6 +10,7 @@
                 <?php if(empty($search_results)): ?>
                   list of UCPOs | <a href="javascript:history.go(-1);" class="btn btn-primary btn-xs">
                     <i class="fa fa-angle-double-left"></i> Back</a>
+                    <a href="" class="btn btn-success btn-xs">Export Excel</a>
                 <?php elseif(!empty($search_results)): ?>
                   search results | <a href="javascript:history.go(-1);" class="btn btn-primary btn-xs">
                     <i class="fa fa-angle-double-left"></i> Back</a>
@@ -48,6 +49,7 @@
                     <tr>
                       <th>name of UCPO</th>
                       <th>UCPO CNIC</th>
+                      <th>province</th>
                       <th>name of PEO</th>
                       <th>PEO CNIC</th>
                       <th>name of AC</th>
@@ -61,6 +63,7 @@
                       <tr>
                         <td><?php echo $pending->name; ?></td>
                         <td><?php echo $pending->cnic_name; ?></td>
+                        <td><?php echo $pending->province; ?></td>
                         <td><?php echo $pending->peo_name; ?></td>
                         <td><?php echo $pending->cnic_peo; ?></td>
                         <td><?php echo $pending->ac_name; ?></td>

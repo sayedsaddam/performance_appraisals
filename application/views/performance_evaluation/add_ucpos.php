@@ -67,9 +67,8 @@
                         <div class="row">
                           <div class="col-md-offset-3">
                             <select name="ucpo_prov" class="form-control select2">
-                              <option value="<?php if(!empty(@$edit AND $edit->province != NULL)){ ?>" selected>
-                                <?php echo $edit->province; } ?>
-                              </option>
+                              <option value="<?php if(!empty(@$edit)){ echo $edit->province; ?>" selected>
+                                  <?php echo $edit->province; } ?></option>
                               <option value="">Select Province...</option>
                               <option value="KP">KP</option>
                               <option value="KP-TD">KP-TD</option>
@@ -165,7 +164,7 @@
                       <td>
                         <div class="row">
                           <div class="col-md-offset-3">
-                            <input type="password" name="ucpo_pass" class="form-control" placeholder="UCPO password here..." >
+                            <input type="password" name="ucpo_pass" class="form-control" placeholder="UCPO password here..." value="12345">
                           </div>
                         </div>
                       </td>

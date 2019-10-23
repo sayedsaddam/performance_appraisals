@@ -180,12 +180,12 @@
 	<strong>IV. Others</strong><br>
 	<p>Exceptional accomplishment: <br><?php echo $emp->comment_1; ?></p><br>
 	<p>Overall assessment: <br><?php echo $emp->comment_2; ?></p><hr>
-	<?php if(!empty($ptpp_remarks = $this->Performance_appraisal_model->get_ptpp_remarks($emp->employee_id))): ?>
+	<?php if(!empty($ptpp_remarks = $this->Performance_appraisal_model->get_tcsp_remarks($emp->employee_id))): ?>
 	<strong>PTPP Remarks</strong>
 	<p><?php echo $ptpp_remarks->remarks; ?></p>
 	<strong>PTPP Comments</strong>
 	<p><?php echo $ptpp_remarks->comment.'</p>'; endif; ?><hr>
-	<?php if(!empty($sup_remarks = $this->Performance_appraisal_model->get_sec_level_remarks($emp->employee_id))): ?>
+	<?php if(!empty($sup_remarks = $this->Performance_appraisal_model->get_sec_level_tcsp($emp->employee_id))): ?>
 	<strong>Second Level Supervisor Remarks</strong>
 	<p><?php echo $sup_remarks->assessment_result; endif; ?></p>
 

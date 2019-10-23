@@ -29,8 +29,8 @@ class Performance_appraisal_model extends CI_Model {
 							ac_data.ac_name,
 							ac_data.ac_cnic');
 	  $this->db->from('performance_evaluation');
-	  $this->db->join('ucpo_data', 'performance_evaluation.employee_id = ucpo_data.id');
-	  $this->db->join('peo_data', 'ucpo_data.cnic_peo = peo_data.peo_cnic');
+	  $this->db->join('ucpo_data', 'performance_evaluation.employee_id = ucpo_data.id', 'left');
+	  $this->db->join('peo_data', 'ucpo_data.cnic_peo = peo_data.peo_cnic', 'left');
 	  $this->db->join('ac_data', 'ucpo_data.cnic_ac = ac_data.ac_cnic', 'left');
 	  $this->db->where('ucpo_data.cnic_peo', $this->session->userdata('peo_cnic'));
 	  $this->db->or_where('ucpo_data.cnic_ac', $this->session->userdata('ac_cnic'));
@@ -511,6 +511,7 @@ class Performance_appraisal_model extends CI_Model {
 							ucpo_data.cnic_name,
 							ucpo_data.cnic_peo,
 							ucpo_data.cnic_ac,
+							ucpo_data.province,
 							peo_data.peo_cnic,
 							peo_data.peo_name,
 							ac_data.ac_cnic,
@@ -531,6 +532,7 @@ class Performance_appraisal_model extends CI_Model {
 							tcsp_data.cnic_name,
 							tcsp_data.cnic_peo,
 							tcsp_data.cnic_ac,
+							tcsp_data.province,
 							peo_data.peo_cnic,
 							peo_data.peo_name,
 							ac_data.ac_cnic,
