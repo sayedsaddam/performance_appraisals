@@ -561,6 +561,7 @@ class Performance_appraisal_model extends CI_Model {
 							ucpo_data.cnic_name,
 							ucpo_data.cnic_peo,
 							ucpo_data.cnic_ac,
+							ucpo_data.province,
 							peo_data.peo_cnic,
 							peo_data.peo_name,
 							ac_data.ac_cnic,
@@ -568,10 +569,10 @@ class Performance_appraisal_model extends CI_Model {
 		$this->db->from('ucpo_data');
 		$this->db->join('peo_data', 'ucpo_data.cnic_peo = peo_data.peo_cnic', 'left');
 		$this->db->join('ac_data', 'ucpo_data.cnic_ac = ac_data.ac_cnic', 'left');
-		$this->db->where('id NOT IN(SELECT employee_id FROM performance_evaluation)');
-		$this->db->where('id NOT IN(SELECT employee_id FROM ptpp_remarks)');
 		$this->db->like('peo_data.peo_name', $search);
 		$this->db->or_like('ac_data.ac_name', $search);
+		$this->db->where('id NOT IN(SELECT employee_id FROM performance_evaluation)');
+		$this->db->where('id NOT IN(SELECT employee_id FROM ptpp_remarks)');
 		return $this->db->get()->result();
 	}
 	// Search for TCSP's.
@@ -581,6 +582,7 @@ class Performance_appraisal_model extends CI_Model {
 							tcsp_data.cnic_name,
 							tcsp_data.cnic_peo,
 							tcsp_data.cnic_ac,
+							tcsp_data.province,
 							peo_data.peo_cnic,
 							peo_data.peo_name,
 							ac_data.ac_cnic,
@@ -588,10 +590,10 @@ class Performance_appraisal_model extends CI_Model {
 		$this->db->from('tcsp_data');
 		$this->db->join('peo_data', 'tcsp_data.cnic_peo = peo_data.peo_cnic', 'left');
 		$this->db->join('ac_data', 'tcsp_data.cnic_ac = ac_data.ac_cnic', 'left');
-		$this->db->where('id NOT IN(SELECT employee_id FROM tcsp_evaluations)');
-		$this->db->where('id NOT IN(SELECT employee_id FROM tcsp_remarks)');
 		$this->db->like('peo_data.peo_name', $search);
 		$this->db->or_like('ac_data.ac_name', $search);
+		$this->db->where('id NOT IN(SELECT employee_id FROM tcsp_evaluations)');
+		$this->db->where('id NOT IN(SELECT employee_id FROM tcsp_remarks)');
 		return $this->db->get()->result();
 	}
 	// ------- Get all PEO's & AC's to list them in the UCPO's addtion form -----------------//

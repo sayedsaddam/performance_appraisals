@@ -82,6 +82,7 @@
                       <tr>
                         <td><?php echo $result->name; ?></td>
                         <td><?php echo $result->cnic_name; ?></td>
+                        <td><?php echo $result->province; ?></td>
                         <td><?php echo $result->peo_name; ?></td>
                         <td><?php echo $result->cnic_peo; ?></td>
                         <td><?php echo $result->ac_name; ?></td>

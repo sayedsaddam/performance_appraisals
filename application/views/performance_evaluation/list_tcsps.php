@@ -47,8 +47,8 @@
                 <table class="table">
                   <thead>
                     <tr>
-                      <th>name of UCPO</th>
-                      <th>UCPO CNIC</th>
+                      <th>name of TCSP</th>
+                      <th>TCSP CNIC</th>
                       <th>province</th>
                       <th>name of PEO</th>
                       <th>PEO CNIC</th>
@@ -82,6 +82,7 @@
                       <tr>
                         <td><?php echo $result->name; ?></td>
                         <td><?php echo $result->cnic_name; ?></td>
+                        <td><?php echo $result->province; ?></td>
                         <td><?php echo $result->peo_name; ?></td>
                         <td><?php echo $result->cnic_peo; ?></td>
                         <td><?php echo $result->ac_name; ?></td>
