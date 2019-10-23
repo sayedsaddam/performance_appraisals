@@ -504,6 +504,10 @@ class Performance_appraisal_model extends CI_Model {
 	public function count_ac_tcsps_pending(){
 		return $this->db->where('employee_id NOT IN(SELECT employee_id FROM sec_level_tcsp_remarks)')->from('tcsp_remarks')->count_all_results();
 	}
+	// Count UCPO's pending in list TCSPs.
+	public function ucpos_pending(){
+		return $this->db->where('id NOT IN(SELECT employee_id FROM performance_evaluation)')->from('ucpo_data')->count_all_results();
+	}
 	// Get summary UCPO's.
 	public function get_summary_ucpos($limit, $offset){
 		$this->db->select('ucpo_data.id,
@@ -524,6 +528,10 @@ class Performance_appraisal_model extends CI_Model {
 		$this->db->order_by('ucpo_data.id', 'DESC');
 		$this->db->limit($limit, $offset);
 		return $this->db->get()->result();
+	}
+	// Count TCSPs pending in list TCSPs.
+	public function tcsps_pending(){
+		return $this->db->where('id NOT IN(SELECT employee_id FROM tcsp_evaluations)')->from('tcsp_data')->count_all_results();
 	}
 	// Get summary TCSP's.
 	public function get_summary_tcsps($limit, $offset){
@@ -725,6 +733,49 @@ class Performance_appraisal_model extends CI_Model {
 	    $this->db->where('evalu_id', $evalu_id);
 	    $query = $this->db->get();
 	    return $query->row();
+	}
+	// ----------------------- Export report to Excel ---------------------- //
+	// UCPOs.
+	public function ucpos_report(){
+		$this->db->select('ucpo_data.id,
+							ucpo_data.name,
+							ucpo_data.cnic_name,
+							ucpo_data.cnic_peo,
+							ucpo_data.cnic_ac,
+							ucpo_data.province,
+							ucpo_data.district,
+							ucpo_data.uc,
+							peo_data.peo_cnic,
+							peo_data.peo_name,
+							ac_data.ac_cnic,
+							ac_data.ac_name');
+		$this->db->from('ucpo_data');
+		$this->db->join('peo_data', 'ucpo_data.cnic_peo = peo_data.peo_cnic', 'left');
+		$this->db->join('ac_data', 'ucpo_data.cnic_ac = ac_data.ac_cnic', 'left');
+		$this->db->where('id NOT IN(SELECT employee_id FROM performance_evaluation)');
+		$this->db->where('id NOT IN(SELECT employee_id FROM ptpp_remarks)');
+		return $this->db->get()->result_array();
+	}
+	// TCSPs.
+	public function tcsps_report(){
+		$this->db->select('tcsp_data.id,
+							tcsp_data.name,
+							tcsp_data.cnic_name,
+							tcsp_data.cnic_peo,
+							tcsp_data.cnic_ac,
+							tcsp_data.province,
+							tcsp_data.district,
+							tcsp_data.uc,
+							peo_data.peo_cnic,
+							peo_data.peo_name,
+							ac_data.ac_cnic,
+							ac_data.ac_name');
+		$this->db->from('tcsp_data');
+		$this->db->join('peo_data', 'tcsp_data.cnic_peo = peo_data.peo_cnic', 'left');
+		$this->db->join('ac_data', 'tcsp_data.cnic_ac = ac_data.ac_cnic', 'left');
+		$this->db->where('id NOT IN(SELECT employee_id FROM tcsp_evaluations)');
+		$this->db->where('id NOT IN(SELECT employee_id FROM tcsp_remarks)');
+		return $this->db->get()->result_array();
 	}
 }
 

@@ -33,7 +33,7 @@ class Admin_dashboard extends CI_Controller
 		$this->load->library('pagination');
 		$config['uri_segment'] = 3;
 		$config['base_url'] = base_url('Admin_dashboard/all_ucpos');
-		$config['total_rows'] = $this->Performance_appraisal_model->all_ucpos();
+		$config['total_rows'] = $this->Performance_appraisal_model->ucpos_pending();
 		$config['per_page'] = $limit;
 		$config['num_links'] = 3;
 		$config["full_tag_open"] = '<ul class="pagination">';
@@ -76,8 +76,8 @@ class Admin_dashboard extends CI_Controller
 		}
 		$this->load->library('pagination');
 		$config['uri_segment'] = 3;
-		$config['base_url'] = base_url('Admin_dashboard/all_ucpos');
-		$config['total_rows'] = $this->Performance_appraisal_model->all_tcsps();
+		$config['base_url'] = base_url('Admin_dashboard/all_tcsps');
+		$config['total_rows'] = $this->Performance_appraisal_model->tcsps_pending();
 		$config['per_page'] = $limit;
 		$config['num_links'] = 3;
 		$config["full_tag_open"] = '<ul class="pagination">';
@@ -97,7 +97,7 @@ class Admin_dashboard extends CI_Controller
 	    $config["num_tag_open"] = "<li>";
 	    $config["num_tag_close"] = "</li>";
 		$this->pagination->initialize($config);
-		$data['title'] = "UCPO's List";
+		$data['title'] = "TCSP's List";
 		$data['content'] = 'performance_evaluation/list_tcsps';
 		$data['pending_tcsps'] = $this->Performance_appraisal_model->get_summary_tcsps($limit, $offset);
 		$this->load->view('components/template', $data);

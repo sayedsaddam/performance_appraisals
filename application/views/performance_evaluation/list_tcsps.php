@@ -10,6 +10,7 @@
                 <?php if(empty($search_results)): ?>
                   list of UCPOs | <a href="javascript:history.go(-1);" class="btn btn-primary btn-xs">
                     <i class="fa fa-angle-double-left"></i> Back</a>
+                    <a href="<?php echo base_url('export_excel/tcsps_report'); ?>" class="btn btn-success btn-xs">Export Excel</a>
                 <?php elseif(!empty($search_results)): ?>
                   search results | <a href="javascript:history.go(-1);" class="btn btn-primary btn-xs">
                     <i class="fa fa-angle-double-left"></i> Back</a>

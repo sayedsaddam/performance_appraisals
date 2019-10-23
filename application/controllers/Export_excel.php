@@ -141,12 +141,74 @@ class Export_excel extends CI_Controller{
 		  header("Content-Type: application/vnd.ms-excel");
         redirect(base_url()."/upload/".$fileName);              
     }
+    // ------------------------- Export to excel the pending UCPO's reports --------------------------- //
+    // UCPO's
+    public function ucpos_report() {
+      $fileName = 'ucpos_report.xlsx';  
+      $tcsps_data = $this->Performance_appraisal_model->ucpos_report();
+      $spreadsheet = new Spreadsheet();
+      $sheet = $spreadsheet->getActiveSheet();
+      $sheet->setCellValue('A1', 'Province');
+      $sheet->setCellValue('B1', 'District');
+      $sheet->setCellValue('C1', 'UC');
+      $sheet->setCellValue('D1', 'UCPO Name');
+      $sheet->setCellValue('E1', 'UCPO CNIC');
+      $sheet->setCellValue('F1', 'PEO Name');      
+      $sheet->setCellValue('G1', 'PEO CNIC');      
+      $sheet->setCellValue('H1', 'AC Name');      
+      $sheet->setCellValue('I1', 'AC CNIC');      
+      $rows = 2;
+        foreach ($tcsps_data as $val){
+            $sheet->setCellValue('A' . $rows, $val['province']);
+            $sheet->setCellValue('B' . $rows, $val['district']);
+            $sheet->setCellValue('C' . $rows, $val['uc']);
+            $sheet->setCellValue('D' . $rows, $val['name']);
+            $sheet->setCellValue('E' . $rows, $val['cnic_name']);
+            $sheet->setCellValue('F' . $rows, $val['peo_name']);
+            $sheet->setCellValue('G' . $rows, $val['peo_cnic']);
+            $sheet->setCellValue('H' . $rows, $val['ac_name']);
+            $sheet->setCellValue('I' . $rows, $val['ac_cnic']);
+            $rows++;
+        } 
+      $writer = new Xlsx($spreadsheet);
+      $writer->save("upload/".$fileName);
+      header("Content-Type: application/vnd.ms-excel");
+      redirect(base_url()."/upload/".$fileName);              
+    }
+    // TCSP's
+    public function tcsps_report() {
+      $fileName = 'tcsps_report.xlsx';  
+      $tcsps_data = $this->Performance_appraisal_model->tcsps_report();
+      $spreadsheet = new Spreadsheet();
+      $sheet = $spreadsheet->getActiveSheet();
+      $sheet->setCellValue('A1', 'Province');
+      $sheet->setCellValue('B1', 'District');
+      $sheet->setCellValue('C1', 'UC');
+      $sheet->setCellValue('D1', 'TCSP Name');
+      $sheet->setCellValue('E1', 'TCSP CNIC');
+      $sheet->setCellValue('F1', 'PEO Name');      
+      $sheet->setCellValue('G1', 'PEO CNIC');      
+      $sheet->setCellValue('H1', 'AC Name');      
+      $sheet->setCellValue('I1', 'AC CNIC');      
+      $rows = 2;
+        foreach ($tcsps_data as $val){
+            $sheet->setCellValue('A' . $rows, $val['province']);
+            $sheet->setCellValue('B' . $rows, $val['district']);
+            $sheet->setCellValue('C' . $rows, $val['uc']);
+            $sheet->setCellValue('D' . $rows, $val['name']);
+            $sheet->setCellValue('E' . $rows, $val['cnic_name']);
+            $sheet->setCellValue('F' . $rows, $val['peo_name']);
+            $sheet->setCellValue('G' . $rows, $val['peo_cnic']);
+            $sheet->setCellValue('H' . $rows, $val['ac_name']);
+            $sheet->setCellValue('I' . $rows, $val['ac_cnic']);
+            $rows++;
+        } 
+      $writer = new Xlsx($spreadsheet);
+      $writer->save("upload/".$fileName);
+      header("Content-Type: application/vnd.ms-excel");
+      redirect(base_url()."/upload/".$fileName);              
+    }
 }
-
-
-
-
-
 
 
 ?>
