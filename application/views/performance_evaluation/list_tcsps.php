@@ -8,7 +8,7 @@
             <div class="tabelHeading">
               <h3>
                 <?php if(empty($search_results)): ?>
-                  list of UCPOs | <a href="javascript:history.go(-1);" class="btn btn-primary btn-xs">
+                  list of TCSPs | <a href="javascript:history.go(-1);" class="btn btn-primary btn-xs">
                     <i class="fa fa-angle-double-left"></i> Back</a>
                     <a href="<?php echo base_url('export_excel/tcsps_report'); ?>" class="btn btn-success btn-xs">Export Excel</a>
                 <?php elseif(!empty($search_results)): ?>
@@ -59,7 +59,7 @@
                   </thead>
                   <?php if(empty($search_results)): ?>
                   <tbody>
-                    <?php foreach ($pending_tcsps as $pending): ?>
+                    <?php if(!empty($pending_tcsps)): foreach ($pending_tcsps as $pending): ?>
                       <tr>
                         <td><?php echo $pending->name; ?></td>
                         <td><?php echo $pending->cnic_name; ?></td>
@@ -74,7 +74,7 @@
                           <a href="<?php echo base_url(); ?>admin_dashboard/delete_tcsp/<?php echo $pending->id; ?>" class="btn btn-danger btn-xs" onclick="javascript:return confirm('Are you sure to delete ?');">Delete</a>
                         </td>
                       </tr>
-                    <?php endforeach; ?>
+                    <?php endforeach; endif; ?>
                   </tbody>
                   <?php elseif(!empty($search_results)): ?>
                     <tbody>
@@ -93,13 +93,13 @@
                           <a href="<?php echo base_url(); ?>admin_dashboard/delete_tcsp/<?php echo $result->id; ?>" class="btn btn-danger btn-xs" onclick="javascript:return confirm('Are you sure to delete ?');">Delete</a>
                         </td>
                       </tr>
-                    <?php endforeach; ?>
-                  </tbody>
-                  <?php else: ?>
-                    <div class="alert alert-danger">
-                      <strong>Aww Snap! </strong> We couldn't find what you need right now!
+                    <?php endforeach; endif; ?>
+                    <?php if(empty($search_results) AND empty($pending_tcsps)): ?>
+                    <div class="alert alert-danger text-center col-md-10 col-md-offset-1">
+                      <strong>Aww snap! </strong> We couldn't find what you need right now!
                     </div>
                   <?php endif; ?>
+                  </tbody>
                 </table>
               </div>
             </div>
@@ -108,7 +108,7 @@
         <div class="row">
           <div class="col-md-1"></div>
           <div class="col-md-10 text-center">
-            <?php if(empty($search_results)){ echo $this->pagination->create_links(); } ?>
+            <?php if(empty($search_results) AND !empty($pending_tcsps)){ echo $this->pagination->create_links(); } ?>
           </div>
           <div class="col-md-1"></div>
         </div>
