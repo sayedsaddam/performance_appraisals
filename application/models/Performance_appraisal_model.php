@@ -425,6 +425,7 @@ class Performance_appraisal_model extends CI_Model {
 	   $this->db->join('ac_data', 'tcsp_data.cnic_ac = ac_data.ac_cnic', 'left');
 	   $this->db->join('tcsp_remarks', 'tcsp_data.id = tcsp_remarks.employee_id', 'left');
 	   $this->db->join('sec_level_tcsp_remarks', 'tcsp_data.id = sec_level_tcsp_remarks.employee_id', 'left');
+	   $this->db->group_by('tcsp_data.id');
 	   $this->db->query('SET SQL_BIG_SELECTS=1');
 	   return $this->db->get()->result_array();
 	}
@@ -458,6 +459,7 @@ class Performance_appraisal_model extends CI_Model {
 	  $this->db->join('ac_data', 'ucpo_data.cnic_ac = ac_data.ac_cnic', 'left');
 	  $this->db->join('ptpp_remarks', 'ucpo_data.id = ptpp_remarks.employee_id', 'left');
 	  $this->db->join('sec_level_sup_remarks', 'ucpo_data.id = sec_level_sup_remarks.employee_id', 'left');
+	  $this->db->group_by('ucpo_data.id');
 	  $this->db->query('SET SQL_BIG_SELECTS=1');
 	  return $this->db->get()->result_array();
 	}
