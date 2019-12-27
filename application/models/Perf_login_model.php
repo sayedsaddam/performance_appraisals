@@ -95,6 +95,7 @@ class Perf_login_model extends CI_Model
         $this->db->join('peo_data', 'ucpo_data.cnic_peo = peo_data.peo_cnic', 'left');
         $this->db->where('ucpo_data.cnic_peo', $this->session->userdata('peo_cnic'));
         $this->db->where('id NOT IN(SELECT employee_id FROM performance_evaluation)');
+        $this->db->where('status', 0);
         $query = $this->db->get();
         return $query->result();
     }
@@ -116,6 +117,7 @@ class Perf_login_model extends CI_Model
         $this->db->join('peo_data', 'tcsp_data.cnic_peo = peo_data.peo_cnic', 'left');
         $this->db->where('tcsp_data.cnic_peo', $this->session->userdata('peo_cnic'));
         $this->db->where('id NOT IN(SELECT employee_id FROM tcsp_evaluations)');
+        $this->db->where('status', 0);
         $query = $this->db->get();
         return $query->result();
     }
@@ -137,6 +139,7 @@ class Perf_login_model extends CI_Model
         $this->db->join('ac_data', 'ucpo_data.cnic_ac = ac_data.ac_cnic', 'left');
         $this->db->where('ucpo_data.cnic_ac', $this->session->userdata('ac_cnic'));
         $this->db->where('id NOT IN(SELECT employee_id FROM sec_level_sup_remarks)');
+         $this->db->where('status', 0);
         $query = $this->db->get();
         return $query->result();
     }
@@ -158,6 +161,7 @@ class Perf_login_model extends CI_Model
         $this->db->join('ac_data', 'tcsp_data.cnic_ac = ac_data.ac_cnic', 'left');
         $this->db->where('tcsp_data.cnic_ac', $this->session->userdata('ac_cnic'));
         $this->db->where('id NOT IN(SELECT employee_id FROM sec_level_tcsp_remarks)');
+         $this->db->where('status', 0);
         $query = $this->db->get();
         return $query->result();
     }

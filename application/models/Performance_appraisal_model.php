@@ -527,6 +527,7 @@ class Performance_appraisal_model extends CI_Model {
 		$this->db->join('ac_data', 'ucpo_data.cnic_ac = ac_data.ac_cnic', 'left');
 		$this->db->where('id NOT IN(SELECT employee_id FROM performance_evaluation)');
 		$this->db->where('id NOT IN(SELECT employee_id FROM ptpp_remarks)');
+		$this->db->where('ucpo_data.status', 0);
 		$this->db->order_by('ucpo_data.id', 'DESC');
 		$this->db->limit($limit, $offset);
 		return $this->db->get()->result();
@@ -552,6 +553,7 @@ class Performance_appraisal_model extends CI_Model {
 		$this->db->join('ac_data', 'tcsp_data.cnic_ac = ac_data.ac_cnic', 'left');
 		$this->db->where('id NOT IN(SELECT employee_id FROM tcsp_evaluations)');
 		$this->db->where('id NOT IN(SELECT employee_id FROM tcsp_remarks)');
+		$this->db->where('tcsp_data.status', 0);
 		$this->db->order_by('tcsp_data.id', 'DESC');
 		$this->db->limit($limit, $offset);
 		return $this->db->get()->result();
@@ -575,6 +577,7 @@ class Performance_appraisal_model extends CI_Model {
 		$this->db->or_like('ac_data.ac_name', $search);
 		$this->db->where('id NOT IN(SELECT employee_id FROM performance_evaluation)');
 		$this->db->where('id NOT IN(SELECT employee_id FROM ptpp_remarks)');
+		$this->db->where('ucpo_data.status', 0);
 		return $this->db->get()->result();
 	}
 	// Search for TCSP's.
@@ -596,6 +599,7 @@ class Performance_appraisal_model extends CI_Model {
 		$this->db->or_like('ac_data.ac_name', $search);
 		$this->db->where('id NOT IN(SELECT employee_id FROM tcsp_evaluations)');
 		$this->db->where('id NOT IN(SELECT employee_id FROM tcsp_remarks)');
+		$this->db->where('tcsp_data.status', 0);
 		return $this->db->get()->result();
 	}
 	// ------- Get all PEO's & AC's to list them in the UCPO's addtion form -----------------//
